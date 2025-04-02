@@ -1,0 +1,31 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<form method="post" class="mb-6">
+    {% csrf_token %}
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {% for field in form %}
+        <div class="mb-4">
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
+                    {{ field.label }}
+                </label>
+                {% if field.field.widget.input_type == 'select' and field.field.widget.attrs.multiple %}
+                    {% render_field field class="selectize w-full rounded-lg border border-[#e0e6ed] px-4 py-2 text-sm dark:border-[#1b2e4b] dark:bg-[#1b2e4b] dark:text-white-dark" %}
+                {% elif field.field.widget.input_type == 'select' %}
+                    {% render_field field class="searchable-select w-full rounded-lg border border-[#e0e6ed] px-4 py-2 text-sm dark:border-[#1b2e4b] dark:bg-[#1b2e4b] dark:text-white-dark" %}
+                {% else %}
+                    {% render_field field class="w-full rounded-lg border border-[#e0e6ed] px-4 py-2 text-sm dark:border-[#1b2e4b] dark:bg-[#1b2e4b] dark:text-white-dark" %}
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="flex justify-end mt-4">
+        <div class="w-1/4">
+            <button type="submit" class="btn btn-primary w-full">
+                {% trans "Kaydet" %}
+            </button>
+        </div>
+    </div>
+</form>

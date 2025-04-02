@@ -1,0 +1,429 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load custom_filters %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --success-color: #2ecc71;
+        --warning-color: #f1c40f;
+        --danger-color: #e74c3c;
+        --light-bg: #f8f9fa;
+        --border-color: #e9ecef;
+    }
+
+    body {
+        background-color: var(--light-bg);
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    .navbar {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        padding: 1rem 0;
+        margin-bottom: 2rem;
+    }
+
+    .navbar-brand {
+        color: white !important;
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 15px 15px 0 0 !important;
+        padding: 1.5rem;
+    }
+
+    .card-header h3 {
+        margin: 0;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn-custom {
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: none;
+    }
+
+    .btn-edit {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        backdrop-filter: blur(5px);
+    }
+
+    .btn-edit:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .btn-delete {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: white;
+        backdrop-filter: blur(5px);
+    }
+
+    .btn-delete:hover {
+        background-color: rgba(231, 76, 60, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .header-icon {
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+        opacity: 0.9;
+    }
+
+    .header-title {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .detail-grid {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .detail-section {
+        background: white;
+        border-radius: 10px;
+        padding: 0.75rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        min-height: 90px;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .detail-value {
+        color: #2c3e50;
+        font-size: 0.9rem;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .info-icon {
+        color: var(--secondary-color);
+        margin-right: 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    .status-badge {
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .status-badge i {
+        font-size: 0.8rem;
+    }
+
+    .status-draft {
+        background-color: #f8f9fa;
+        color: #6c757d;
+    }
+
+    .status-confirmed {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .status-completed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-cancelled {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    .section-title {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+    .d-flex {
+        display: flex;
+    }
+    .justify-content-between {
+        justify-content: space-between;
+    }
+    .align-items-center {
+        align-items: center;
+    }
+
+    @media (max-width: 1400px) {
+        .detail-label {
+            font-size: 0.65rem;
+        }
+        .detail-value {
+            font-size: 0.85rem;
+        }
+        .detail-section {
+            padding: 0.6rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 1rem;
+        }
+        .detail-grid {
+            flex-wrap: wrap;
+        }
+        .detail-section {
+            flex: 1 1 calc(50% - 0.5rem);
+        }
+    }
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="panel">
+    <div class="grid grid-cols-1">
+        <div class="col-span-1">
+            <div class="bg-white dark:bg-[#0e1726] rounded-lg shadow-md">
+                <div class="p-6 border-b border-[#e0e6ed] dark:border-[#1b2e4b]">
+                    <h4 class="text-xl font-semibold text-black dark:text-white-light">{{ page_title }}</h4>    
+                </div>
+                <div class="p-6">
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h3>
+                                    <i class="fas fa-file-alt header-icon"></i>
+                                    <span class="header-title">Operasyon Detayları</span>
+                                </h3>
+                                <div class="header-actions">
+                                    <a href="operation_add_modal/index.html" class="btn btn-custom btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                        Düzenle
+                                    </a>
+                                    <a href="operation_add_modal/index.html" class="btn btn-custom btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                        Sil
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="detail-grid">
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-hashtag info-icon"></i>
+                                            Referans Numarası
+                                        </div>
+                                        <div class="detail-value" id="referenceNumber">{{ operation.reference_number|upper }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-info-circle info-icon"></i>
+                                            Durum
+                                        </div>
+                                        <div class="detail-value">
+                                            <span class="status-badge" id="status">{{ operation.status }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-alt info-icon"></i>
+                                            Başlangıç Tarihi
+                                        </div>
+                                        <div class="detail-value" id="startDate">{{ operation.start_date|date:"d.m.Y" }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-check info-icon"></i>
+                                            Bitiş Tarihi
+                                        </div>
+                                        <div class="detail-value" id="endDate">{{ operation.end_date|date:"d.m.Y" }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-handshake info-icon"></i>
+                                            Alıcı Şirket
+                                        </div>
+                                        <div class="detail-value" id="buyerCompany">{{ operation.buyer_company.name }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-plus info-icon"></i>
+                                            Oluşturan
+                                        </div>
+                                        <div class="detail-value" id="createdBy">{{ operation.created_by.first_name }} {{ operation.created_by.last_name }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-check info-icon"></i>
+                                            Takip Eden
+                                        </div>
+                                        <div class="detail-value" id="followBy">{{ operation.follow_by.first_name }} {{ operation.follow_by.last_name }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if customers %}
+                <div class="p-6">
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h3>
+                                    <i class="fas fa-file-alt header-icon"></i>
+                                    <span class="header-title">Müşteri Bilgileri</span>
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                {% for customer in customers %}
+                                <div class="detail-grid">
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-hashtag info-icon"></i>
+                                            Adı
+                                        </div>
+                                        <div class="detail-value" id="referenceNumber">{{ customer.first_name|upper }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-info-circle info-icon"></i>
+                                            Soyadı
+                                        </div>
+                                        <div class="detail-value">
+                                            <span class="status-badge" id="status">{{ customer.last_name|upper }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-info-circle info-icon"></i>
+                                            İletişim Bilgisi
+                                        </div>
+                                        <div class="detail-value">
+                                            <span class="status-badge" id="status">{{ customer.contact_info }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-info-circle info-icon"></i>
+                                            Müşteri Tipi
+                                        </div>
+                                        <div class="detail-value">
+                                            <span class="status-badge" id="status">{{ customer.customer_type }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-alt info-icon"></i>
+                                            Doğum Tarihi
+                                        </div>
+                                        <div class="detail-value" id="startDate">{{ customer.birth_date|date:"d.m.Y" }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-check info-icon"></i>
+                                            Pasaport No
+                                        </div>
+                                        <div class="detail-value" id="endDate">{{ customer.passport_no }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-handshake info-icon"></i>
+                                            Notlar
+                                        </div>
+                                        <div class="detail-value" id="notes">{{ customer.notes }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-handshake info-icon"></i>
+                                            İşlemler
+                                        </div>
+                                        <div class="detail-value" id="actions">
+                                            <a href="#" class="btn btn-custom btn-edit">
+                                                <i class="fas fa-edit"></i>
+                                                Düzenle
+                                            </a>
+                                            <a href="#" class="btn btn-custom btn-delete">  
+                                                <i class="fas fa-trash"></i>
+                                                Sil
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    {% if form %}
+                    <div id="form-container">
+                        {% include "includes/form.html" %}
+                    </div>
+                    {% endif %}
+                    <a href="{% url 'tour:create_operation_sales_price' operation.id %}" class="btn btn-custom btn-edit" style="background-color: black !important; color: white !important;">
+                        <i class="fas fa-plus"></i>
+                        Satış Fiyatı Oluştur
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

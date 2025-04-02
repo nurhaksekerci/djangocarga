@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="panel">
+    <div class="grid grid-cols-1">
+        <div class="col-span-1">
+            <div class="bg-white dark:bg-[#0e1726] rounded-lg shadow-md">
+                <div class="p-6 border-b border-[#e0e6ed] dark:border-[#1b2e4b]">
+                    <h4 class="text-xl font-semibold text-black dark:text-white-light">{{ page_title }}</h4>    
+                </div>
+                <div class="p-6">
+                    {% if form %}
+                    <div id="form-container">
+                        {% include "includes/form.html" %}
+                    </div>
+                    {% endif %}
+
+                    <div class="overflow-x-auto">
+                        {% if items %}
+                        <table class="table-responsive">
+                            <thead>
+                                <tr>
+                                    {% for field in form %}
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-black dark:text-white-light">
+                                        {{ field.label }}
+                                    </th>
+                                    {% endfor %}
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-black dark:text-white-light">
+                                        {% trans "İşlemler" %}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in items %}
+                                    {% include "includes/tr.html" %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <div class="text-center py-8">
+                            <p class="text-gray-500 dark:text-gray-400">
+                                {% trans "Henüz kayıt bulunmamaktadır." %}
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

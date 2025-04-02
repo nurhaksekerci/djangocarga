@@ -1,0 +1,847 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load custom_filters %}
+{% load static %}
+
+{% block title %}Operasyon Öğesi Oluştur{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --success-color: #2ecc71;
+        --warning-color: #f1c40f;
+        --danger-color: #e74c3c;
+        --light-bg: #f8f9fa;
+        --border-color: #e9ecef;
+    }
+
+    body {
+        background-color: var(--light-bg);
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    .navbar {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        padding: 1rem 0;
+        margin-bottom: 2rem;
+    }
+
+    .navbar-brand {
+        color: white !important;
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 15px 15px 0 0 !important;
+        padding: 1.5rem;
+    }
+
+    .card-header h3 {
+        margin: 0;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn-custom {
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: none;
+    }
+
+    .btn-edit {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        backdrop-filter: blur(5px);
+    }
+
+    .btn-edit:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .btn-delete {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: white;
+        backdrop-filter: blur(5px);
+    }
+
+    .btn-delete:hover {
+        background-color: rgba(231, 76, 60, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .header-icon {
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+        opacity: 0.9;
+    }
+
+    .header-title {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .detail-grid {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .detail-section {
+        background: white;
+        border-radius: 10px;
+        padding: 0.75rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        min-height: 90px;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .detail-value {
+        color: #2c3e50;
+        font-size: 0.9rem;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .info-icon {
+        color: var(--secondary-color);
+        margin-right: 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    .status-badge {
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .status-badge i {
+        font-size: 0.8rem;
+    }
+
+    .status-draft {
+        background-color: #f8f9fa;
+        color: #6c757d;
+    }
+
+    .status-confirmed {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .status-completed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-cancelled {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    .section-title {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+    .d-flex {
+        display: flex;
+    }
+    .justify-content-between {
+        justify-content: space-between;
+    }
+    .align-items-center {
+        align-items: center;
+    }
+
+    @media (max-width: 1400px) {
+        .detail-label {
+            font-size: 0.65rem;
+        }
+        .detail-value {
+            font-size: 0.85rem;
+        }
+        .detail-section {
+            padding: 0.6rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 1rem;
+        }
+        .detail-grid {
+            flex-wrap: wrap;
+        }
+        .detail-section {
+            flex: 1 1 calc(50% - 0.5rem);
+        }
+    }
+
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --success-color: #2ecc71;
+        --warning-color: #f1c40f;
+        --danger-color: #e74c3c;
+        --light-bg: #f8f9fa;
+        --border-color: #e9ecef;
+    }
+
+    body {
+        background-color: var(--light-bg);
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    .navbar {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        padding: 1rem 0;
+        margin-bottom: 2rem;
+    }
+
+    .navbar-brand {
+        color: white !important;
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 15px 15px 0 0 !important;
+        padding: 1.5rem;
+    }
+
+    .card-header h3 {
+        margin: 0;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn-custom {
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: none;
+    }
+
+    .btn-edit {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        backdrop-filter: blur(5px);
+    }
+
+    .btn-edit:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .btn-delete {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: white;
+        backdrop-filter: blur(5px);
+    }
+
+    .btn-delete:hover {
+        background-color: rgba(231, 76, 60, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .header-icon {
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+        opacity: 0.9;
+    }
+
+    .header-title {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .detail-section {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border: 1px solid var(--border-color);
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .detail-value {
+        color: #2c3e50;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .info-icon {
+        color: var(--secondary-color);
+        margin-right: 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    .section-title {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .status-badge {
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .status-badge i {
+        font-size: 0.8rem;
+    }
+
+    .status-active {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-inactive {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 1rem;
+        }
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div x-data="{
+    vehicleModal: false,
+    noVehicleModal: false,
+    activityModal: false,
+    guideModal: false,
+    hotelModal: false,
+    museumModal: false,
+    expenseModal: false,
+    transferModal: false,
+    tourModal: false,
+    subItemActivityModal: false,
+    selectedItemId: null,
+    selectedDayId: null
+}">
+    <div class="container-fluid">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-12 gap-4">
+                <!-- Operasyon Detayları -->
+                <div class="col-span-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Operasyon Detayı</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="flex flex-col space-y-4">
+                                <div class="detail-grid">
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-hashtag info-icon"></i>
+                                            Referans Numarası
+                                        </div>
+                                        <div class="detail-value" id="referenceNumber">{{ operation.reference_number|upper }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-info-circle info-icon"></i>
+                                            Durum
+                                        </div>
+                                        <div class="detail-value">
+                                            <span class="status-badge" id="status">{{ operation.status }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-handshake info-icon"></i>
+                                            Alıcı Şirket
+                                        </div>
+                                        <div class="detail-value" id="buyerCompany">{{ operation.buyer_company.name }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-plus info-icon"></i>
+                                            Oluşturan
+                                        </div>
+                                        <div class="detail-value" id="createdBy">{{ operation.created_by.first_name }} {{ operation.created_by.last_name }}</div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-check info-icon"></i>
+                                            Takip Eden
+                                        </div>
+                                        <div class="detail-value" id="followBy">{{ operation.follow_by.first_name }} {{ operation.follow_by.last_name }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Müşteri Bilgileri -->
+                {% if customers %}
+                <div class="col-span-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Müşteri Bilgileri</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="detail-grid">
+                                {% for customer in customers %}
+                                <div class="detail-section">
+                                    <div class="detail-label">
+                                        <i class="fas fa-user info-icon"></i>
+                                        Müşteri
+                                    </div>
+                                    <div class="detail-value">{{ customer.first_name|upper }} {{ customer.last_name|upper }}</div>
+                                </div>
+                                <div class="detail-section">
+                                    <div class="detail-label">
+                                        <i class="fas fa-phone info-icon"></i>
+                                        İletişim
+                                    </div>
+                                    <div class="detail-value">{{ customer.contact_info }}</div>
+                                </div>
+                                <div class="detail-section">
+                                    <div class="detail-label">
+                                        <i class="fas fa-tag info-icon"></i>
+                                        Tip
+                                    </div>
+                                    <div class="detail-value">{{ customer.customer_type }}</div>
+                                </div>
+                                <div class="detail-section">
+                                    <div class="detail-label">
+                                        <i class="fas fa-calendar info-icon"></i>
+                                        Doğum Tarihi
+                                    </div>
+                                    <div class="detail-value">{{ customer.birth_date|date:"d.m.Y" }}</div>
+                                </div>
+                                <div class="detail-section">
+                                    <div class="detail-label">
+                                        <i class="fas fa-passport info-icon"></i>
+                                        Pasaport
+                                    </div>
+                                    <div class="detail-value">{{ customer.passport_no }}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Satış Fiyatları -->
+                {% if sales_prices %}
+                <div class="col-span-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Satış Fiyatları</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="detail-grid">
+                                {% for sales_price in sales_prices %}
+                                <div class="detail-section">
+                                    <div class="detail-label">
+                                        <i class="fas fa-money-bill info-icon"></i>
+                                        Fiyat
+                                    </div>
+                                    <div class="detail-value">{{ sales_price.price }} {{ sales_price.currency }}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Operasyon Günleri -->
+                {% for day in operation_days %}
+                <div class="col-span-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <h4 class="card-title">{{ day.date|date:"d.m.Y" }}</h4>
+                            <div class="header-actions">
+                                <button type="button" class="btn btn-custom btn-edit" @click="vehicleModal = true; selectedDayId = '{{ day.id }}'">
+                                    <i class="fas fa-car"></i>
+                                    Araç
+                                </button>
+                                <button type="button" class="btn btn-custom btn-edit" @click="noVehicleModal = true; selectedDayId = '{{ day.id }}'">
+                                    <i class="fas fa-route"></i>
+                                    Araçsız Tur
+                                </button>
+                                <button type="button" class="btn btn-custom btn-edit" @click="activityModal = true; selectedDayId = '{{ day.id }}'">
+                                    <i class="fas fa-hiking"></i>
+                                    Aktivite
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {% for item in grouped_items|get_item:day.date %}
+                            <div class="card mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h3 class="flex items-center gap-2">
+                                        <i class="fas fa-file-alt text-xl"></i>
+                                        <span>{%if item.item_type == 'VEHICLE' %} Araç {%elif item.item_type == 'NO_VEHICLE_TOUR' %} Araçsız Tur {%elif item.item_type == 'NO_VEHICLE_ACTIVITY' %} Aktivite {%endif%} Detayları</span>
+                                    </h3>
+                                    <div class="header-actions">
+                                        <button class="btn btn-custom btn-edit" @click="editItem('{{ item.id }}')">
+                                            <i class="fas fa-edit"></i>
+                                            Düzenle
+                                        </button>
+                                        <button class="btn btn-custom btn-delete" @click="deleteItem('{{ item.id }}')">
+                                            <i class="fas fa-trash"></i>
+                                            Sil
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Konum Bilgileri -->
+                                    <div class="grid grid-cols-3 gap-4 mb-4">
+                                        <div class="space-y-4">
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-clock mr-2"></i>
+                                                    ALIŞ SAATİ
+                                                </div>
+                                                <div class="text-sm">{{ item.pick_time|default:"-"|upper }}</div>
+                                            </div>
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-map-pin mr-2"></i>
+                                                    ALIŞ LOKASYONU
+                                                </div>
+                                                <div class="text-sm">{{ item.pick_up_location|default:"-"|upper }}</div>
+                                            </div>
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-map-pin mr-2"></i>
+                                                    BIRAKIŞ LOKASYONU
+                                                </div>
+                                                <div class="text-sm">{{ item.drop_off_location|default:"-"|upper }}</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Araç/Tur/Aktivite Bilgileri -->
+                                        <div class="space-y-4">
+                                            {% if item.item_type == 'VEHICLE' %}
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-truck mr-2"></i>
+                                                    ARAÇ TİPİ
+                                                </div>
+                                                <div class="text-sm">{{ item.vehicle_type|default:"-"|upper }}</div>
+                                            </div>
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-truck mr-2"></i>
+                                                    ARAÇ PLAKASI
+                                                </div>
+                                                <div class="text-sm">{{ item.vehicle_plate_no|default:"-"|upper }}</div>
+                                            </div>
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-building mr-2"></i>
+                                                    ARAÇ TEDARİKÇİSİ
+                                                </div>
+                                                <div class="text-sm">{{ item.vehicle_supplier|default:"-"|upper }}</div>
+                                            </div>
+                                            {% elif item.item_type == 'NO_VEHICLE_TOUR' %}
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-route mr-2"></i>
+                                                    TUR
+                                                </div>
+                                                <div class="text-sm">{{ item.no_vehicle_tour|default:"-"|upper }}</div>
+                                            </div>
+                                            {% elif item.item_type == 'NO_VEHICLE_ACTIVITY' %}
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-hiking mr-2"></i>
+                                                    AKTİVİTE
+                                                </div>
+                                                <div class="text-sm">{{ item.no_vehicle_activity|default:"-"|upper }}</div>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Fiyat Bilgileri -->
+                                        <div class="space-y-4">
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-tag mr-2"></i>
+                                                    SATIŞ FİYATI
+                                                </div>
+                                                <div class="text-sm">{{ item.sales_price|default:"-" }} {{ item.sales_currency|default:"-" }}</div>
+                                            </div>
+                                            <div class="bg-white rounded-lg p-3 border">
+                                                <div class="text-xs text-gray-500 flex items-center mb-1">
+                                                    <i class="fas fa-coins mr-2"></i>
+                                                    MALİYET FİYATI
+                                                </div>
+                                                <div class="text-sm">{{ item.cost_price|default:"-" }} {{ item.cost_currency|default:"-" }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Alt Öğe Ekleme Butonları -->
+                                    <div class="mt-4 flex gap-2">
+                                        {% if item.item_type == 'VEHICLE' %}
+                                        <button type="button" class="btn btn-primary" @click="transferModal = true; selectedItemId = '{{ item.id }}'">
+                                            <i class="fas fa-exchange-alt"></i> Transfer Ekle
+                                        </button>
+                                        <button type="button" class="btn btn-primary" @click="tourModal = true; selectedItemId = '{{ item.id }}'">
+                                            <i class="fas fa-route"></i> Tur Ekle
+                                        </button>
+                                        {% endif %}
+                                        <button type="button" class="btn btn-primary" @click="guideModal = true; selectedItemId = '{{ item.id }}'">
+                                            <i class="fas fa-user-tie"></i> Rehber Ekle
+                                        </button>
+                                        <button type="button" class="btn btn-primary" @click="hotelModal = true; selectedItemId = '{{ item.id }}'">
+                                            <i class="fas fa-hotel"></i> Otel Ekle
+                                        </button>
+                                        <button type="button" class="btn btn-primary" @click="museumModal = true; selectedItemId = '{{ item.id }}'">
+                                            <i class="fas fa-landmark"></i> Müze Ekle
+                                        </button>
+                                        <button type="button" class="btn btn-primary" @click="expenseModal = true; selectedItemId = '{{ item.id }}'">
+                                            <i class="fas fa-receipt"></i> Harcama Ekle
+                                        </button>
+                                        
+                                        <button type="button" class="btn btn-primary" @click="subItemActivityModal = true; selectedItemId = '{{ item.id }}'">
+                                            <i class="fas fa-hiking"></i> Aktivite Ekle
+                                        </button>
+                                    </div>
+                                    <!-- Alt Öğeler -->
+                                    {% if item.subitems.exists %}
+                                    <div class="mt-4">
+                                        <h5 class="text-lg font-semibold mb-3">Alt Öğeler</h5>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            {% for sub_item in item.subitems.all %}
+                                            <div class="card">
+                                                <div class="card-header bg-gray-50">
+                                                    <h6 class="flex items-center gap-2">
+                                                        {% if sub_item.subitem_type == 'TOUR' %}
+                                                        <i class="fas fa-route text-primary"></i>
+                                                        <span>Tur</span>
+                                                        {% elif sub_item.subitem_type == 'TRANSFER' %}
+                                                        <i class="fas fa-exchange-alt text-info"></i>
+                                                        <span>Transfer</span>
+                                                        {% elif sub_item.subitem_type == 'MUSEUM' %}
+                                                        <i class="fas fa-landmark text-warning"></i>
+                                                        <span>Müze</span>
+                                                        {% elif sub_item.subitem_type == 'HOTEL' %}
+                                                        <i class="fas fa-hotel text-success"></i>
+                                                        <span>Otel</span>
+                                                        {% elif sub_item.subitem_type == 'GUIDE' %}
+                                                        <i class="fas fa-user-tie text-danger"></i>
+                                                        <span>Rehber</span>
+                                                        {% elif sub_item.subitem_type == 'ACTIVITY' %}
+                                                        <i class="fas fa-hiking text-purple"></i>
+                                                        <span>Aktivite</span>
+                                                        {% elif sub_item.subitem_type == 'OTHER_PRICE' %}
+                                                        <i class="fas fa-receipt text-gray"></i>
+                                                        <span>Harcama</span>
+                                                        {% endif %}
+                                                    </h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="space-y-2">
+                                                        {% if sub_item.subitem_type == 'TOUR' %}
+                                                        <div class="text-sm">Tur: {{ sub_item.tour|default:"-"|upper }}</div>
+                                                        {% elif sub_item.subitem_type == 'TRANSFER' %}
+                                                        <div class="text-sm">Transfer: {{ sub_item.transfer|default:"-"|upper }}</div>
+                                                        {% elif sub_item.subitem_type == 'MUSEUM' %}
+                                                        <div class="text-sm">
+                                                            {% for museum in sub_item.museums.all %}
+                                                            {{ museum|upper }}{% if not forloop.last %}, {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                        {% elif sub_item.subitem_type == 'HOTEL' %}
+                                                        <div class="text-sm">Otel: {{ sub_item.hotel|default:"-"|upper }}</div>
+                                                        <div class="text-sm">Otel Tipi: {{ sub_item.get_room_type_display|default:"-"|upper }}</div>
+                                                        {% elif sub_item.subitem_type == 'GUIDE' %}
+                                                        <div class="text-sm">Rehber: {{ sub_item.is_guide|yesno:"Var,Yok"|upper }}</div>
+                                                        <div class="text-sm">Rehber: {{ sub_item.guide|default:"-"|upper }}</div>
+                                                        {% elif sub_item.subitem_type == 'ACTIVITY' %}
+                                                        <div class="text-sm">Aktivite: {{ sub_item.activity|default:"-"|upper }}</div>
+                                                        <div class="text-sm">Aktivite Tedarikçisi: {{ sub_item.activity_supplier|default:"-"|upper }}</div>
+                                                        {% elif sub_item.subitem_type == 'OTHER_PRICE' %}
+                                                        <div class="text-sm">Diğer Harcama: {{ sub_item.other_price_description|default:"-"|upper }}</div>
+                                                        {% endif %}
+                                                        <div class="text-sm">
+                                                            Satış Fiyatı: {{ sub_item.sales_price|default:"-" }} {{ sub_item.sales_currency|default:"-" }} /
+                                                            Maliyet Fiyatı: {{ sub_item.cost_price|default:"-" }} {{ sub_item.cost_currency|default:"-" }}
+                                                        </div>
+                                                        {% if sub_item.notes %}
+                                                        <div class="text-sm text-gray-600">Not: {{ sub_item.notes|upper }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    {% include "operation/modals/vehicle_modal.html" %}
+    {% include "operation/modals/no_vehicle_modal.html" %}
+    {% include "operation/modals/activity_modal.html" %}
+    {% include "operation/modals/guide_modal.html" %}
+    {% include "operation/modals/hotel_modal.html" %}
+    {% include "operation/modals/museum_modal.html" %}
+    {% include "operation/modals/expense_modal.html" %}
+    {% include "operation/modals/transfer_modal.html" %}
+    {% include "operation/modals/tour_modal.html" %}
+    {% include "operation/modals/sub_item_activity_modal.html" %}
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('operationData', () => ({
+            days: [],
+            currentDay: null,
+            init() {
+                // Günleri yükle
+                this.loadDays();
+            },
+            loadDays() {
+                // Günleri yükleme işlemi
+            }
+        }));
+    });
+</script>
+{% endblock %}
+
