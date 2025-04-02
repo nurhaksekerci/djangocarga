@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_y^h5@t)7e8x^m)_00i8lvk4u6^%-ebv+-5hf5hi=$0cq@b2k4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -125,7 +125,6 @@ AUTH_USER_MODEL = 'tour.CustomUser'
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR / 'tour/static',
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
