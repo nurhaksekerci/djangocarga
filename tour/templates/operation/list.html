@@ -11,31 +11,21 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
         margin-bottom: 1rem;
-        overflow: hidden;
+        padding: 1.25rem;
     }
 
     .operation-header {
-        background: linear-gradient(135deg, #2c3e50, #3498db);
-        color: white;
-        padding: 1.25rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        cursor: pointer;
-        user-select: none;
-    }
-
-    .operation-header:hover {
-        background: linear-gradient(135deg, #34495e, #2980b9);
+        margin-bottom: 1rem;
     }
 
     .operation-title {
         font-size: 1.25rem;
         font-weight: 600;
         margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
+        color: #2c3e50;
     }
 
     .operation-actions {
@@ -44,7 +34,7 @@
     }
 
     .action-btn {
-        background: rgba(255, 255, 255, 0.1);
+        background: #3498db;
         color: white;
         border: none;
         padding: 0.5rem 1rem;
@@ -55,35 +45,24 @@
         gap: 0.5rem;
         transition: all 0.2s ease;
         cursor: pointer;
+        text-decoration: none;
     }
 
     .action-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: #2980b9;
         transform: translateY(-2px);
-    }
-
-    .operation-content {
-        padding: 1.5rem;
-        display: none;
-        background: #f8f9fa;
-    }
-
-    .operation-content.active {
-        display: block;
     }
 
     .detail-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1rem;
-        margin-bottom: 1.5rem;
     }
 
     .detail-box {
-        background: white;
+        background: #f8f9fa;
         border-radius: 8px;
         padding: 1rem;
-        border: 1px solid #e9ecef;
     }
 
     .detail-label {
@@ -103,83 +82,6 @@
         font-weight: 500;
     }
 
-    .timeline {
-        position: relative;
-        padding: 1rem 0;
-    }
-
-    .timeline::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background: #e9ecef;
-    }
-
-    .timeline-item {
-        position: relative;
-        padding-left: 2rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .timeline-item::before {
-        content: '';
-        position: absolute;
-        left: -4px;
-        top: 0;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #3498db;
-    }
-
-    .timeline-time {
-        font-size: 0.875rem;
-        color: #6c757d;
-        margin-bottom: 0.5rem;
-    }
-
-    .timeline-content {
-        background: white;
-        border-radius: 8px;
-        padding: 1rem;
-        border: 1px solid #e9ecef;
-    }
-
-    .timeline-title {
-        font-weight: 600;
-        color: #2c3e50;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .timeline-details {
-        font-size: 0.875rem;
-        color: #6c757d;
-    }
-
-    .timeline-details p {
-        margin-bottom: 0.5rem;
-    }
-
-    .timeline-details p:last-child {
-        margin-bottom: 0;
-    }
-
-    .timeline-icon {
-        width: 24px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        background: #e9ecef;
-    }
-
     .empty-state {
         text-align: center;
         padding: 3rem;
@@ -192,56 +94,6 @@
         font-size: 2rem;
         margin-bottom: 1rem;
         color: #adb5bd;
-    }
-
-    .sub-items {
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px dashed #e9ecef;
-    }
-
-    .sub-item {
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 6px;
-        padding: 0.75rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .sub-item-header {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .sub-item-icon {
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 4px;
-        background: #e9ecef;
-    }
-
-    .sub-item-title {
-        font-weight: 500;
-        color: #2c3e50;
-        margin: 0;
-    }
-
-    .sub-item-content {
-        font-size: 0.875rem;
-        color: #6c757d;
-    }
-
-    .collapse-icon {
-        transition: transform 0.3s ease;
-    }
-
-    .collapse-icon.active {
-        transform: rotate(180deg);
     }
 
     @media (max-width: 768px) {
@@ -275,152 +127,91 @@
                     </a>
                 </div>
 
+                <!-- Arama Formu -->
+                <div class="p-6 border-b border-[#e0e6ed] dark:border-[#1b2e4b]">
+                    <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="form-label">Referans Numarası</label>
+                            <input type="text" name="reference_number" value="{{ request.GET.reference_number }}" 
+                                   class="form-input" placeholder="Referans Numarası">
+                        </div>
+                        <div>
+                            <label class="form-label">Alıcı Firma</label>
+                            <input type="text" name="buyer_company" value="{{ request.GET.buyer_company }}" 
+                                   class="form-input" placeholder="Alıcı Firma">
+                        </div>
+                        <div>
+                            <label class="form-label">Takip Edilen Kişi</label>
+                            <input type="text" name="follow_by" value="{{ request.GET.follow_by }}" 
+                                   class="form-input" placeholder="Takip Edilen Kişi">
+                        </div>
+                        <div class="flex items-end">
+                            <button type="submit" class="btn btn-primary w-full">
+                                <i class="fas fa-search mr-2"></i>Ara
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="p-6">
                     <div class="grid grid-cols-1 gap-4">
                         {% for operation in operations %}
                         <div class="operation-card">
-                            <div class="operation-header" onclick="toggleCollapse('operation-{{ operation.id }}')">
+                            <div class="operation-header">
                                 <h6 class="operation-title">
-                                    <i class="fas fa-chevron-down collapse-icon" id="icon-{{ operation.id }}"></i>
-                                    {{ operation.reference_number }}
+                                    {{ operation.reference_number|upper }} - {{ operation.buyer_company.name|upper }}
                                 </h6>
                                 <div class="operation-actions">
-                                    <a href="{% url 'tour:create_operation_item' operation.id %}?type=VEHICLE" class="action-btn">
-                                        <i class="fas fa-car"></i>
-                                        Araç
+                                    <a href="{% url 'tour:create_operation_item' operation.id %}" class="action-btn">
+                                        <i class="fas fa-info-circle"></i>
+                                        Detaylar
                                     </a>
-                                    <a href="{% url 'tour:create_operation_item' operation.id %}?type=NO_VEHICLE_TOUR" class="action-btn">
-                                        <i class="fas fa-route"></i>
-                                        Tur
-                                    </a>
-                                    <a href="{% url 'tour:create_operation_item' operation.id %}?type=NO_VEHICLE_ACTIVITY" class="action-btn">
-                                        <i class="fas fa-hiking"></i>
-                                        Aktivite
+                                    <a href="{% url 'tour:toggle_operation' operation.id %}?next={{request.path}}" class="btn btn-custom btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                        {% if operation.is_active %}
+                                            Pasif Yap
+                                        {% else %}
+                                            Aktif Yap
+                                        {% endif %}
                                     </a>
                                 </div>
                             </div>
 
-                            <div class="operation-content" id="operation-{{ operation.id }}">
-                                <div class="detail-grid">
-                                    <div class="detail-box">
-                                        <div class="detail-label">
-                                            <i class="fas fa-building"></i>
-                                            Alıcı Firma
-                                        </div>
-                                        <div class="detail-value">{{ operation.buyer_company.name }}</div>
+                            <div class="detail-grid">
+                                <div class="detail-box">
+                                    <div class="detail-label">
+                                        <i class="fas fa-user"></i>
+                                        Takip Edilen Kişi
                                     </div>
-                                    <div class="detail-box">
-                                        <div class="detail-label">
-                                            <i class="fas fa-user"></i>
-                                            Takipçi
-                                        </div>
-                                        <div class="detail-value">{{ operation.follow_by.get_full_name }}</div>
-                                    </div>
+                                    <div class="detail-value">{{ operation.follow_by.get_full_name|upper }}</div>
                                 </div>
-
-                                <div class="timeline">
-                                    {% for day in operation.days.all %}
-                                    {% for item in day.items.all %}
-                                    <div class="timeline-item">
-                                        <div class="timeline-time">
-                                            <i class="fas fa-clock mr-2"></i>
-                                            {{ item.pick_time|time:"H:i" }}
-                                        </div>
-                                        <div class="timeline-content">
-                                            <div class="timeline-title">
-                                                <div class="timeline-icon">
-                                                    {% if item.item_type == 'VEHICLE' %}
-                                                    <i class="fas fa-car text-primary"></i>
-                                                    {% elif item.item_type == 'NO_VEHICLE_TOUR' %}
-                                                    <i class="fas fa-route text-success"></i>
-                                                    {% elif item.item_type == 'NO_VEHICLE_ACTIVITY' %}
-                                                    <i class="fas fa-hiking text-warning"></i>
-                                                    {% endif %}
-                                                </div>
-                                                {% if item.item_type == 'VEHICLE' %}
-                                                {{ item.vehicle_type.name }} - {{ item.vehicle_supplier.name }}
-                                                {% elif item.item_type == 'NO_VEHICLE_TOUR' %}
-                                                {{ item.no_vehicle_tour.name }}
-                                                {% elif item.item_type == 'NO_VEHICLE_ACTIVITY' %}
-                                                {{ item.no_vehicle_activity.name }}
-                                                {% endif %}
-                                            </div>
-                                            <div class="timeline-details">
-                                                <p>
-                                                    <i class="fas fa-map-marker-alt mr-2"></i>
-                                                    Alış: {{ item.pick_up_location|default:"-" }}
-                                                </p>
-                                                <p>
-                                                    <i class="fas fa-map-marker-alt mr-2"></i>
-                                                    Bırakış: {{ item.drop_off_location|default:"-" }}
-                                                </p>
-                                                {% if item.item_type == 'VEHICLE' %}
-                                                <p>
-                                                    <i class="fas fa-truck mr-2"></i>
-                                                    Araç: {{ item.vehicle_plate_no|default:"-" }}
-                                                </p>
-                                                {% endif %}
-                                            </div>
-
-                                            {% if item.subitems.exists %}
-                                            <div class="sub-items">
-                                                {% for subitem in item.subitems.all %}
-                                                <div class="sub-item">
-                                                    <div class="sub-item-header">
-                                                        <div class="sub-item-icon">
-                                                            {% if subitem.subitem_type == 'TOUR' %}
-                                                            <i class="fas fa-route text-primary"></i>
-                                                            {% elif subitem.subitem_type == 'TRANSFER' %}
-                                                            <i class="fas fa-exchange-alt text-info"></i>
-                                                            {% elif subitem.subitem_type == 'MUSEUM' %}
-                                                            <i class="fas fa-landmark text-warning"></i>
-                                                            {% elif subitem.subitem_type == 'HOTEL' %}
-                                                            <i class="fas fa-hotel text-success"></i>
-                                                            {% elif subitem.subitem_type == 'GUIDE' %}
-                                                            <i class="fas fa-user-tie text-danger"></i>
-                                                            {% elif subitem.subitem_type == 'ACTIVITY' %}
-                                                            <i class="fas fa-hiking text-purple"></i>
-                                                            {% endif %}
-                                                        </div>
-                                                        <h6 class="sub-item-title">
-                                                            {% if subitem.subitem_type == 'TOUR' %}
-                                                            Tur: {{ subitem.tour.name }}
-                                                            {% elif subitem.subitem_type == 'TRANSFER' %}
-                                                            Transfer: {{ subitem.transfer.name }}
-                                                            {% elif subitem.subitem_type == 'MUSEUM' %}
-                                                            Müze: {{ subitem.museum.name }}
-                                                            {% elif subitem.subitem_type == 'HOTEL' %}
-                                                            Otel: {{ subitem.hotel.name }}
-                                                            {% elif subitem.subitem_type == 'GUIDE' %}
-                                                            Rehber: {{ subitem.guide.name }}
-                                                            {% elif subitem.subitem_type == 'ACTIVITY' %}
-                                                            Aktivite: {{ subitem.activity.name }}
-                                                            {% endif %}
-                                                        </h6>
-                                                    </div>
-                                                    <div class="sub-item-content">
-                                                        {% if subitem.subitem_type == 'HOTEL' %}
-                                                        <p>Oda Tipi: {{ subitem.get_room_type_display }}</p>
-                                                        {% endif %}
-                                                        {% if subitem.notes %}
-                                                        <p>Not: {{ subitem.notes }}</p>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                {% endfor %}
-                                            </div>
-                                            {% endif %}
-                                        </div>
+                                <div class="detail-box">
+                                    <div class="detail-label">
+                                        <i class="fas fa-calendar"></i>
+                                        Başlangıç Tarihi
                                     </div>
-                                    {% endfor %}
-                                    {% endfor %}
+                                    <div class="detail-value">{{ operation.start_date|date:"d.m.Y" }}</div>
+                                </div>
+                                <div class="detail-box">
+                                    <div class="detail-label">
+                                        <i class="fas fa-calendar"></i>
+                                        Bitiş Tarihi
+                                    </div>
+                                    <div class="detail-value">{{ operation.end_date|date:"d.m.Y" }}</div>
+                                </div>
+                                <div class="detail-box">
+                                    <div class="detail-label">
+                                        <i class="fas fa-calendar"></i>
+                                        Durum
+                                    </div>
+                                    <div class="detail-value">{{ operation.is_active|yesno:"Aktif,Pasif" }}</div>
                                 </div>
                             </div>
                         </div>
                         {% empty %}
                         <div class="empty-state">
                             <i class="fas fa-calendar-times"></i>
-                            <p>Bu tarihte operasyon bulunmuyor.</p>
+                            <p>Operasyon bulunmuyor.</p>
                         </div>
                         {% endfor %}
                     </div>
@@ -429,30 +220,6 @@
         </div>
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Sayfa yüklendiğinde ilk operasyonu otomatik aç
-    const firstOperation = document.querySelector('.operation-card');
-    if (firstOperation) {
-        const operationId = firstOperation.querySelector('.operation-header').getAttribute('onclick').match(/'([^']+)'/)[1];
-        toggleCollapse(operationId);
-    }
-});
-
-function toggleCollapse(id) {
-    const content = document.getElementById(id);
-    const icon = document.getElementById('icon-' + id.split('-')[1]);
-    
-    if (content.classList.contains('active')) {
-        content.classList.remove('active');
-        icon.classList.remove('active');
-    } else {
-        content.classList.add('active');
-        icon.classList.add('active');
-    }
-}
-</script>
 {% endblock %}
 
 

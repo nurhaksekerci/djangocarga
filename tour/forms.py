@@ -1,6 +1,6 @@
 from django import forms
 from .models import (
-    Currency, City, CustomUser, District, Neighborhood, OperationItem, VehicleType, 
+    Currency, City, CustomUser, District, Neighborhood, OperationItem, Support, VehicleType, 
     BuyerCompany, Tour, NoVehicleTour, Transfer,
     Hotel, Museum, Activity, Guide, VehicleSupplier,
     ActivitySupplier, VehicleCost, ActivityCost, Operation,
@@ -326,8 +326,8 @@ class OperationSubItemMuseumForm(OperationSubItemForm):
 class OperationSubItemHotelForm(OperationSubItemForm):
     class Meta:
         model = OperationSubItem
-        fields = ['ordering', 'hotel', 'sales_currency', 'sales_price', 'cost_currency', 'cost_price', 'notes']
-        ordering = ['ordering', 'hotel', 'sales_price', 'sales_currency', 'cost_price', 'cost_currency', 'notes']
+        fields = ['ordering', 'hotel', 'room_type', 'sales_currency', 'sales_price', 'cost_currency', 'cost_price', 'notes']
+        ordering = ['ordering', 'hotel', 'room_type', 'sales_price', 'sales_currency', 'cost_price', 'cost_currency', 'notes']
 
 class OperationSubItemGuideForm(OperationSubItemForm):
     class Meta:
@@ -455,5 +455,13 @@ class OperationForm(forms.ModelForm):
 class SendSmsForm(forms.Form):
     users = forms.ModelChoiceField(queryset=CustomUser.objects.filter(is_active=True, phone__isnull=False), label='Kullanıcı')
     message = forms.CharField(label='Mesaj', widget=forms.Textarea)
+
+
+
+class SupportForm(forms.ModelForm):
+    class Meta:
+        model = Support
+        fields = ['subject', 'message']
+
 
 

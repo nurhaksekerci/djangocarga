@@ -251,7 +251,7 @@
                                     <span class="header-title">Operasyon Detayları</span>
                                 </h3>
                                 <div class="header-actions">
-                                    <a href="operation_add_modal/index.html" class="btn btn-custom btn-edit">
+                                    <a href="{% url 'tour:update_operation' operation.id %}" class="btn btn-custom btn-edit">
                                         <i class="fas fa-edit"></i>
                                         Düzenle
                                     </a>
@@ -326,7 +326,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3>
                                     <i class="fas fa-file-alt header-icon"></i>
-                                    <span class="header-title">Müşteri Bilgileri</span>
+                                    <span class="header-title">Müşteriler</span>
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -417,7 +417,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3>
                                     <i class="fas fa-file-alt header-icon"></i>
-                                    <span class="header-title">Satış Fiyatları</span>
+                                    <span class="header-title">Operasyon Detayları</span>
                                 </h3>
                             </div>
                             <div class="card-body">

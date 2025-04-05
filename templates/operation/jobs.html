@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">{{ page_title }}</h1>
+    
+    {% for date, days in grouped_days.items %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{ date|date:"d F Y, l" }}</h6>
+            </div>
+            <div class="card-body">
+                {% for day in days %}
+                    <div class="operation-day mb-4">
+                        <h5>{{ day.operation.buyer_company.name }}</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Araç</th>
+                                        <th>Program</th>
+                                        <th>Durum</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in day.items.all %}
+                                        <tr>
+                                            <td>
+                                                {% if item.vehicle_type %}
+                                                    {{ item.vehicle_type.name }}
+                                                {% endif %}
+                                                {% if item.vehicle_supplier %}
+                                                    <br>
+                                                    <small>{{ item.vehicle_supplier.name }}</small>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% for subitem in item.subitems.all %}
+                                                    <div class="mb-2">
+                                                        {% if subitem.tour %}
+                                                            <strong>{{ subitem.tour.name }}</strong>
+                                                        {% elif subitem.transfer %}
+                                                            <strong>{{ subitem.transfer.name }}</strong>
+                                                        {% endif %}
+                                                        
+                                                        {% if subitem.guide %}
+                                                            <br><small>Rehber: {{ subitem.guide.name }}</small>
+                                                        {% endif %}
+                                                        
+                                                        {% if subitem.hotel %}
+                                                            <br><small>Otel: {{ subitem.hotel.name }}</small>
+                                                        {% endif %}
+                                                        
+                                                        {% if subitem.activity %}
+                                                            <br><small>Aktivite: {{ subitem.activity.name }}</small>
+                                                            {% if subitem.activity_supplier %}
+                                                                ({{ subitem.activity_supplier.name }})
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% if item.missing_info %}
+                                                    <div class="alert alert-warning mb-0">
+                                                        <strong>Eksik Bilgiler:</strong>
+                                                        <ul class="mb-0">
+                                                            {% for info in item.missing_info %}
+                                                                <li>{{ info }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                {% else %}
+                                                    <span class="badge badge-success">Tam</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .operation-day {
+        border-bottom: 1px solid #e3e6f0;
+        padding-bottom: 1rem;
+    }
+    .operation-day:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    .alert {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+    .alert ul {
+        padding-left: 1.25rem;
+        margin-top: 0.25rem;
+    }
+</style>
+{% endblock %} 

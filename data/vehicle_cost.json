@@ -1,0 +1,4652 @@
+[
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": "ANTALYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 3600.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.04,
+        "minibus": 5500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": "FETHIYE-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 3500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": "FETHIYE-PAMUKKALE-KUSADASI",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": "ASPENDOS-ARKEOJI MUZESI-HADRIAN-MARINA",
+        "transfer": null,
+        "car": null,
+        "minivan": 3500.0,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": null,
+        "transfer": "AYT-OTEL",
+        "car": null,
+        "minivan": 600.0,
+        "minibus": 900.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": "ANTALYA-KAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 5500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": "ANTALYA-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 5500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": "FETHIYE-KAS-KAPUTAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 5500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ANTALYA",
+        "tour": "ANTALYA-ASPENDOS-MUZE-KALEICI",
+        "transfer": null,
+        "car": null,
+        "minivan": 3500.0,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": "FETHIYE-KAS-KAPUTAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": null,
+        "transfer": "DLM-FETHIYE",
+        "car": null,
+        "minivan": 1250.0,
+        "minibus": 1800.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": null,
+        "transfer": "OLUDENIZ-DLM",
+        "car": null,
+        "minivan": 1500.0,
+        "minibus": 2250.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": "FETHIYE-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": null,
+        "transfer": "OLUDENIZ-DLM",
+        "car": null,
+        "minivan": 1500.0,
+        "minibus": 2250.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": null,
+        "transfer": "FETHIYE-DLM",
+        "car": null,
+        "minivan": 1250.0,
+        "minibus": 1800.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": null,
+        "transfer": "DLM-OLUDENIZ",
+        "car": null,
+        "minivan": 1500.0,
+        "minibus": 2250.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": "FETHIYE-KAPUTAS-KAS",
+        "transfer": null,
+        "car": null,
+        "minivan": 2700.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": "KAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "ASR-KAPADOKYA",
+        "car": null,
+        "minivan": 2000.0,
+        "minibus": 2000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "NAV-KAPADOKYA",
+        "car": null,
+        "minivan": 1800.0,
+        "minibus": 1800.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "GREEN TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 3250.0,
+        "minibus": 3500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "RED TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2250.0,
+        "minibus": 2450.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "MIX TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": 2700.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAPADOKYA-NAV",
+        "car": null,
+        "minivan": 1800.0,
+        "minibus": 1800.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAPADOKYA-ASR",
+        "car": null,
+        "minivan": 2000.0,
+        "minibus": 2000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KAPADOKYA-ANKARA",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ATER KAPADOKYA",
+        "tour": null,
+        "transfer": "KAPADOKYA-ASR",
+        "car": null,
+        "minivan": 1400.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "AVR OTEL-IST",
+        "car": 500.0,
+        "minivan": 1000.0,
+        "minibus": 1300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "LD KISA TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "SAW-AVR OTEL",
+        "car": 600.0,
+        "minivan": 1200.0,
+        "minibus": 1600.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": 500.0,
+        "minivan": 1000.0,
+        "minibus": 1300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "AND OTEL-IST",
+        "car": 600.0,
+        "minivan": 1400.0,
+        "minibus": 1750.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": 2000.0,
+        "minivan": 3000.0,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "AVR OTEL-SAW",
+        "car": 600.0,
+        "minivan": 1200.0,
+        "minibus": 1600.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "LD TUR + IST",
+        "transfer": null,
+        "car": 2925.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "TUR + IST TRANSFER",
+        "transfer": null,
+        "car": 1500.0,
+        "minivan": 4500.0,
+        "minibus": 6150.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "SAW TRANSFER + TUR",
+        "transfer": null,
+        "car": 1500.0,
+        "minivan": 4600.0,
+        "minibus": 6300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "TUR + SAW TRANSFER",
+        "transfer": null,
+        "car": 1500.0,
+        "minivan": 4600.0,
+        "minibus": 6300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "IST + LD TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2925.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "LD TUR + SAW",
+        "transfer": null,
+        "car": null,
+        "minivan": 2975.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "SAW + LD TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2975.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "IST TRANSFER + TUR",
+        "transfer": null,
+        "car": 1500.0,
+        "minivan": 4500.0,
+        "minibus": 6150.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "IST TRANSFER + TUR",
+        "transfer": null,
+        "car": 1500.0,
+        "minivan": 4500.0,
+        "minibus": 6150.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "SULTANAHMET-AVR OTEL",
+        "car": 600.0,
+        "minivan": 1000.0,
+        "minibus": 1300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "LD KISA TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": 3500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "IST-AND OTEL",
+        "car": null,
+        "minivan": 1400.0,
+        "minibus": 1750.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "SAW-AND OTEL",
+        "car": null,
+        "minivan": 1200.0,
+        "minibus": 1600.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": 1000.0,
+        "minibus": 1300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "TUR + IST TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "SAW-AVR OTEL",
+        "car": null,
+        "minivan": 1200.0,
+        "minibus": 1600.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "SAW TRANSFER + TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4600.0,
+        "minibus": 6300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "TUR + SAW TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": 4600.0,
+        "minibus": 6300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "IST TRANSFER + TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 6150.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": 5500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 6150.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "SULTANAHMET-AVR OTEL",
+        "car": null,
+        "minivan": 1000.0,
+        "minibus": 1300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "LD TUR + IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 2925.0,
+        "minibus": 3925.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "LD TUR + SAW",
+        "transfer": null,
+        "car": null,
+        "minivan": 2975.0,
+        "minibus": 3975.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "AVR OTEL-IST",
+        "car": null,
+        "minivan": 1000.0,
+        "minibus": 1300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "SAW + LD TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2975.0,
+        "minibus": 3975.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "AVR OTEL-SAW",
+        "car": null,
+        "minivan": 1200.0,
+        "minibus": 1600.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": "IST + LD TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2925.0,
+        "minibus": 3925.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "SAW-IST",
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": 1600.0,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": null,
+        "transfer": "OTEL-DNZ",
+        "car": null,
+        "minivan": 1200.0,
+        "minibus": 1500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "IZMIR-EFES-SIRINCE-PAMUKKALE",
+        "transfer": null,
+        "car": 4000.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": null,
+        "transfer": "DNZ-PAMUKKALE",
+        "car": null,
+        "minivan": 1200.0,
+        "minibus": 1500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "FETHIYE-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "KAS-ASPENDOS-ANTALYA",
+        "transfer": null,
+        "car": 3250.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "PAMUKKALE-FETHIYE",
+        "transfer": null,
+        "car": 4000.0,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": null,
+        "transfer": "PAMUKKALE-DNZ",
+        "car": null,
+        "minivan": 1200.0,
+        "minibus": 1500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "PAMUKKALE-EFES-KUSADASI",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "PAMUKKALE-FETHIYE-KAPUTAS-KAS",
+        "transfer": null,
+        "car": 3250.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "PAMUKKALE-EFES-DNZ",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 3500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "INTERS",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": 3000.0,
+        "minivan": 2500.0,
+        "minibus": 4000.0,
+        "midibus": 6000.0,
+        "bus": 10000.0
+    },
+    {
+        "supplier": "INTERS",
+        "tour": "LD KISA TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 3500.0,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISTANBUL TRANSFER 600",
+        "tour": null,
+        "transfer": "AVR OTEL-AVR OTEL",
+        "car": null,
+        "minivan": 600.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "CAPPADOCIA SHUTTLE",
+        "tour": null,
+        "transfer": "ASR-KAPADOKYA SHUTTLE",
+        "car": null,
+        "minivan": 200.0,
+        "minibus": 200.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "CAPPADOCIA SHUTTLE",
+        "tour": null,
+        "transfer": "KAPADOKYA-NAV SHUTTLE",
+        "car": null,
+        "minivan": null,
+        "minibus": 200.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "CAPPADOCIA SHUTTLE",
+        "tour": null,
+        "transfer": "KAPADOKYA-ASR SHUTTLE",
+        "car": null,
+        "minivan": null,
+        "minibus": 200.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "CAPPADOCIA SHUTTLE",
+        "tour": null,
+        "transfer": "NAV-KAPADOKYA SHUTTLE",
+        "car": null,
+        "minivan": null,
+        "minibus": 200.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "ADB-EFES-ARTEMIS-KUSADASI",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "KUSADASI-EFES-ARTEMIS",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "IZMIR GUNLUK TUR + TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 7000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": null,
+        "transfer": "ADB-OTEL",
+        "car": null,
+        "minivan": 800.0,
+        "minibus": 2000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "KUSADASI-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "IZMIR-EFES-SIRINCE-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 3000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "KUSADASI-PAMUKKALE-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "PAMUKKALE-ALACATI- EFES",
+        "transfer": null,
+        "car": null,
+        "minivan": 7000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "KUSADASI-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 7000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ALPER ILHAN",
+        "tour": "RED TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2250.0,
+        "minibus": 2250.0,
+        "midibus": 4000.0,
+        "bus": null
+    },
+    {
+        "supplier": "ALPER ILHAN",
+        "tour": "MIX TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": 2500.0,
+        "midibus": 4000.0,
+        "bus": null
+    },
+    {
+        "supplier": "ALPER ILHAN",
+        "tour": null,
+        "transfer": "ASR-KAPADOKYA",
+        "car": null,
+        "minivan": 2000.0,
+        "minibus": 2000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ALPER ILHAN",
+        "tour": null,
+        "transfer": "NAV-KAPADOKYA",
+        "car": null,
+        "minivan": 1800.0,
+        "minibus": 1800.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ALPER ILHAN",
+        "tour": null,
+        "transfer": "KAPADOKYA-NAV",
+        "car": null,
+        "minivan": 1800.0,
+        "minibus": 1800.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ALI KARATAS",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": 5000.0,
+        "bus": null
+    },
+    {
+        "supplier": "ALPER ILHAN",
+        "tour": null,
+        "transfer": "KAPADOKYA-ASR",
+        "car": null,
+        "minivan": 2000.0,
+        "minibus": 2000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ALI KARATAS",
+        "tour": null,
+        "transfer": "AVR OTEL-IST",
+        "car": null,
+        "minivan": null,
+        "minibus": 1800.0,
+        "midibus": 3000.0,
+        "bus": null
+    },
+    {
+        "supplier": "ALI KARATAS",
+        "tour": "IST TRANSFER + TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5800.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GRUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAPADOKYA-ASR",
+        "car": null,
+        "minivan": 1400.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GRUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAPADOKYA-NAV",
+        "car": null,
+        "minivan": 1100.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "VIA GRUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAPADOKYA-ASR SHUTTLE",
+        "car": null,
+        "minivan": 1400.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "CAPPADOCIA IN TRANSFER",
+        "tour": null,
+        "transfer": "NAV-KAPADOKYA",
+        "car": null,
+        "minivan": 1400.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "CAPPADOCIA IN TRANSFER",
+        "tour": null,
+        "transfer": "KAPADOKYA-NAV",
+        "car": null,
+        "minivan": 1400.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "CAPPADOCIA IN TRANSFER",
+        "tour": null,
+        "transfer": "KAPADOKYA-ASR SHUTTLE",
+        "car": null,
+        "minivan": 1700.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "CAPPADOCIA IN TRANSFER",
+        "tour": null,
+        "transfer": "ASR-KAPADOKYA",
+        "car": null,
+        "minivan": 1700.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ARAC",
+        "tour": "FETHIYE-KAS-KAPUTAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ARAC",
+        "tour": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4250.0,
+        "minibus": 5250.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ARAC",
+        "tour": null,
+        "transfer": "AYT-OTEL",
+        "car": null,
+        "minivan": 700.0,
+        "minibus": 800.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ARAC",
+        "tour": null,
+        "transfer": "OTEL-AYT",
+        "car": null,
+        "minivan": 700.0,
+        "minibus": 800.0,
+        "midibus": 800.0,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": null,
+        "transfer": "SAW-AVR OTEL",
+        "car": null,
+        "minivan": 1100.0,
+        "minibus": 1400.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": null,
+        "transfer": "SAW-AND OTEL",
+        "car": null,
+        "minivan": 900.0,
+        "minibus": 1100.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": null,
+        "transfer": "AVR OTEL-SAW",
+        "car": null,
+        "minivan": 1100.0,
+        "minibus": 1400.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": null,
+        "transfer": "AVR OTEL-IST",
+        "car": null,
+        "minivan": 900.0,
+        "minibus": 1100.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": null,
+        "minivan": 900.0,
+        "minibus": 1100.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": null,
+        "transfer": "SAW-IST",
+        "car": null,
+        "minivan": 1500.0,
+        "minibus": 1900.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 3800.0,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": "LD KISA TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 3200.0,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": "LD TUR + IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 3700.0,
+        "minibus": 4600.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": "LD TUR + SAW",
+        "transfer": null,
+        "car": null,
+        "minivan": 3800.0,
+        "minibus": 4750.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": "IST + LD TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 3700.0,
+        "minibus": 4600.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": "SAW + LD TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 3800.0,
+        "minibus": 4750.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ADIONA",
+        "tour": "MIX TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2300.0,
+        "minibus": 2300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "ANTALYA-KONYA",
+        "transfer": null,
+        "car": 1.0,
+        "minivan": 6000.0,
+        "minibus": 1.0,
+        "midibus": 1.0,
+        "bus": 1.0
+    },
+    {
+        "supplier": "CAPPADOCIA IN TRANSFER",
+        "tour": null,
+        "transfer": "KAPADOKYA-ASR",
+        "car": null,
+        "minivan": 1700.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ATER KAPADOKYA",
+        "tour": "MIX TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ATER KAPADOKYA",
+        "tour": "RED TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "KONYA-KAPADOKYA",
+        "transfer": null,
+        "car": 1.0,
+        "minivan": 6000.0,
+        "minibus": 1.0,
+        "midibus": 1.0,
+        "bus": 1.0
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "KAS-ANTALYA",
+        "transfer": null,
+        "car": 1.0,
+        "minivan": 6000.0,
+        "minibus": 1.0,
+        "midibus": 1.0,
+        "bus": 1.0
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "ISTANBUL-CANAKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "KUSADASI-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "AYVALIK- KUSDASI",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "CANAKKALE- AYVALIK",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "PAMUKKALE-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "FETHIYE-KAPUTAS-KAS",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "PAMUKKALE-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ALPER ILHAN",
+        "tour": "GREEN TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 3250.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANKARA ARAÇ",
+        "tour": null,
+        "transfer": "ESB-OTEL",
+        "car": null,
+        "minivan": 1750.0,
+        "minibus": 1750.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANKARA ARAÇ",
+        "tour": null,
+        "transfer": "OTEL-ESB",
+        "car": null,
+        "minivan": 1750.0,
+        "minibus": 1750.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANKARA ARAÇ",
+        "tour": "ANKARA GÜNLÜK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANKARA ARAÇ",
+        "tour": "ANKARA TUR-ESB",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": "TUR + IST TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": 3700.0,
+        "minibus": 4600.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "KUSADASI-EFES-SIRINCE-MERYEM ANA",
+        "transfer": null,
+        "car": null,
+        "minivan": 3500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "KUSADASI-ALACATI-CESME-ADB BIRAKIS",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "ANKARA-SAFRANBOLU",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "SAFRANBOLU-ISTANBUL",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ALPEREN",
+        "tour": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4250.0,
+        "minibus": 5250.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ALPEREN",
+        "tour": null,
+        "transfer": "AYT-OTEL",
+        "car": null,
+        "minivan": 650.0,
+        "minibus": 750.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ALPEREN",
+        "tour": null,
+        "transfer": "OTEL-AYT",
+        "car": null,
+        "minivan": 650.0,
+        "minibus": 750.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ATER KAPADOKYA",
+        "tour": "KAPADOKYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2750.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "INTERS",
+        "tour": "IST TRANSFER + TUR",
+        "transfer": null,
+        "car": 4000.0,
+        "minivan": 6000.0,
+        "minibus": 8000.0,
+        "midibus": 13000.0,
+        "bus": 16000.0
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": "IST TRANSFER + TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 3650.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "INTERS",
+        "tour": "TUR + IST TRANSFER",
+        "transfer": null,
+        "car": 4000.0,
+        "minivan": 6000.0,
+        "minibus": 8000.0,
+        "midibus": 13000.0,
+        "bus": 16000.0
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": null,
+        "transfer": "FETHIYE-DLM",
+        "car": null,
+        "minivan": 1600.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ASR-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 5500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "CAPPADOCIA IN TRANSFER",
+        "tour": "KAPADOKYA-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 7000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ALPEREN",
+        "tour": "ANTALYA - KAŞ D400",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "SAW-AVR OTEL",
+        "car": null,
+        "minivan": 1100.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MAVI TRANSFER DALAMAN",
+        "tour": "KAŞ-FETHİYE D400",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "ANTALYA - KAŞ D400",
+        "transfer": null,
+        "car": null,
+        "minivan": 3500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": null,
+        "transfer": "DLM-FETHIYE",
+        "car": null,
+        "minivan": 1300.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": null,
+        "transfer": "DLM-OLUDENIZ",
+        "car": null,
+        "minivan": 1500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": null,
+        "transfer": "OLUDENIZ-DLM",
+        "car": null,
+        "minivan": 1500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 6500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "KAŞ-FETHİYE D400",
+        "transfer": null,
+        "car": null,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ATER KAPADOKYA",
+        "tour": "GREEN TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "ALAÇATI-EFES-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 8500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "ADB-OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 2000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KUSADASI-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "PAMUKKALE-KONYA",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KAPADOKYA-KONYA-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "AYT-OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 900.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ANTALYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ALPEREN OZKAN ANTALYA",
+        "tour": "ANTALYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "BODRUM ARAÇ",
+        "tour": null,
+        "transfer": "BJV-OTEL",
+        "car": null,
+        "minivan": 1400.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "FETHIYE-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ANTALYA-KAPADOKYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KAPADOKYA-TUZ GÖLÜ-YERALTI ŞEHRİ-IHLARA-GÖREME AÇIK HAVA MUZESİ",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "PAMUKKALE- EFES",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": null,
+        "transfer": "BJV-ÖLÜDENİZ",
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "BODRUM-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 5500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": null,
+        "transfer": "OTEL-ADB",
+        "car": null,
+        "minivan": 2000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ALPER ILHAN",
+        "tour": "KAPADOKYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "PAMUKKALE- EFES",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "OTEL-DNZ",
+        "car": null,
+        "minivan": null,
+        "minibus": 1000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "KUŞADASI-EFES-KUŞADASI",
+        "transfer": null,
+        "car": null,
+        "minivan": 3250.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "ADB-KUSADASI SELCUK",
+        "car": null,
+        "minivan": 1750.0,
+        "minibus": 2000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "FETHIYE-KAPUTAS-KAS",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": "TUR + SAW TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4600.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "IZMIR-ALAÇATI-ÇEŞME-IZMIR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ATER KAPADOKYA",
+        "tour": "BALON TURU",
+        "transfer": null,
+        "car": null,
+        "minivan": 1500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ALPEREN",
+        "tour": "BODRUM GÜNLÜK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 250.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "BODRUM GÜNLÜK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 250.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "KAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 3500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KUŞADASI-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "FETHIYE-KAS-KAPUTAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": 7500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": null,
+        "transfer": "ADB-CESME-ALACATI",
+        "car": null,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KAPADOKYA-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "PAMUKKALE-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "ANTALYA-KAŞ-KAPUTAŞ-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 8500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "PAMUKKALE-EFES-IZMIR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 7000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": null,
+        "minivan": 900.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "İZMİR-EFES-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 7000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "NAV-KAPADOKYA",
+        "car": null,
+        "minivan": 1000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "KAPADOKYA-NAV",
+        "car": null,
+        "minivan": 1000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "RED TUR-KONYA",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "ASR-KAPADOKYA",
+        "car": null,
+        "minivan": 1000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "ADB-ALAÇATI-ÇEŞME-IZMIR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "KAŞ-ANTALYA D400",
+        "transfer": null,
+        "car": null,
+        "minivan": 4250.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "DLM-ÖLÜDENİZ-KAŞ",
+        "transfer": null,
+        "car": null,
+        "minivan": 4250.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "IZMIR-SIRINCE-EFES-SELCUK",
+        "transfer": null,
+        "car": null,
+        "minivan": 5500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "ISTANBUL - BURSA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "FETHIYE-KAS-KAPUTAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "KUSADASI-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "BURSA-EFES-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "PAMUKKALE-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 5500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KAPADOKYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": 2500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "KAPADOKYA-ASR",
+        "car": null,
+        "minivan": 1000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ATER KAPADOKYA",
+        "tour": null,
+        "transfer": "OTEL-ESB",
+        "car": 4000.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAS-KAPADOKYA",
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAS-ANTALYA",
+        "car": null,
+        "minivan": null,
+        "minibus": 3000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAS-ANTALYA",
+        "car": null,
+        "minivan": null,
+        "minibus": 3000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KAŞ-ANTALYA D400",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 3000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "IHSAN KAPADOKYA",
+        "tour": "MIX TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 2500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ANTALYA-KONYA",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "IST-AND OTEL",
+        "car": null,
+        "minivan": 1400.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KONYA-KAPADOKYA",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": 6000.0,
+        "bus": null
+    },
+    {
+        "supplier": "ATER KAPADOKYA",
+        "tour": "KAPADOKYA-ANTALYA",
+        "transfer": null,
+        "car": 8000.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ADB-EFES-ARTEMIS-KUSADASI",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": null,
+        "transfer": "IST-SAW",
+        "car": null,
+        "minivan": 1400.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "ADB-ALAÇATI-ÇEŞME-IZMIR",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "IZMIR-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "İZMİR-EFES-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "KALKAN - KAŞ - ANTIPHELLOS ANTIK KENT - KALKAN",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "PAMUKKALE-KONYA-KAPADOKYA",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 8000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": null,
+        "transfer": "IST - AVR İSKELESİ",
+        "car": null,
+        "minivan": 1000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "ANTALYA-KONYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "KONYA-KAPADOKYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "FETHIYE-KAS-KAPUTAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "IHSAN KAPADOKYA",
+        "tour": "KAPADOKYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": 4250.0,
+        "bus": null
+    },
+    {
+        "supplier": "IHSAN KAPADOKYA",
+        "tour": null,
+        "transfer": "ASR-KAPADOKYA",
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": 4250.0,
+        "bus": null
+    },
+    {
+        "supplier": "IHSAN KAPADOKYA",
+        "tour": "GREEN TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": 7500.0,
+        "bus": null
+    },
+    {
+        "supplier": "INTERS",
+        "tour": "SAW TRANSFER + TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": 10250.0,
+        "bus": null
+    },
+    {
+        "supplier": "KAPADOKYA TAKSI",
+        "tour": "RED TUR",
+        "transfer": null,
+        "car": 3000.0,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "PAMUKKALE-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "KAPADOKYA TAKSI",
+        "tour": "KAPADOKYA GUNLUK TUR",
+        "transfer": null,
+        "car": 3000.0,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": null,
+        "transfer": "AYT-OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 900.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "ANTALYA-KAŞ",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "FETHIYE-PAMUKKLAE-SELÇUK",
+        "transfer": null,
+        "car": null,
+        "minivan": 8000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "KAŞ-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA ARAC",
+        "tour": "ANTALYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "PAMUKKALE-EFES-ÇEŞME",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "EFES-BODRUM-BODRUM TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KAPADOKYA-ANKARA-KAPADOKYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "IZMIR GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "ANTALYA-KONYA-KAPADOKYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 7000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "FETHIYE-PAMUKKALE-IZMIR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "MIX TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "IZMIR - ÇEŞME - ALAÇATI - KUŞADASI",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "KUŞADASI-EFES-ŞİRİNCE-İZMİR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ALPEREN OZKAN ANTALYA",
+        "tour": "AYT+ANTALYA TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YAVUZ TURİZM",
+        "tour": null,
+        "transfer": "ASR-KAPADOKYA",
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": 5000.0,
+        "bus": null
+    },
+    {
+        "supplier": "FLY ERVA",
+        "tour": null,
+        "transfer": "OTEL-OTEL",
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "FETHİYE ARAÇ",
+        "tour": "IZMIR GUNLUK TUR + TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "ISTANBUL-SAFRANBOLU",
+        "transfer": null,
+        "car": 4000.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ISTANBUL-CANAKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "CANAKKALE-BALIKESİR-IZMIR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "IZMIR-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "PAMUKKALE-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "OTEL-AYT",
+        "car": null,
+        "minivan": null,
+        "minibus": 1000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ŞAHİNOĞLU",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 3000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "İSTANBUL VİP TAŞIMACILIK ADEM YILMAZ",
+        "tour": null,
+        "transfer": "SAW-AND OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 1200.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAPADOKYA-IST",
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "ANTALYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 3000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "INTERS",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 3000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "EFES-ŞİRİNCE-ÇANAKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "LOKMAN BEY",
+        "tour": "IST TRANSFER + TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5400.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ÇANAKKALE-İSTANBUL",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "SEBAHATTIN ANTALYA",
+        "tour": "ANTALYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 3250.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MÜSLÜM İLKAN",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 1400.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "GERÇEK YILDIZLAR",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "KONYA TRANSFER HIZMETLERI",
+        "tour": "KONYA GÜNLÜK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "GERÇEK YILDIZLAR",
+        "tour": "TUR + IST TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 3000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "AVR OTEL-SAW",
+        "car": null,
+        "minivan": 1100.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ANKARA-ISTANBUL",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "İSTANBUL-KAPADOKYA",
+        "transfer": null,
+        "car": 5000.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "ISTANBUL-ANKARA-KAPADOKYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "PAMUKKALE-KUSADASI",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "KAPADOKYA-IST",
+        "car": 4500.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISTANBUL UCUZ ARABACI",
+        "tour": "IST TRANSFER + TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4600.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "KUŞADASI-EFES-İZMİR-ADB",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISTANBUL UCUZ ARABACI",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 3600.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISTANBUL UCUZ ARABACI",
+        "tour": null,
+        "transfer": "AVR OTEL-IST",
+        "car": null,
+        "minivan": 900.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISTANBUL UCUZ ARABACI",
+        "tour": null,
+        "transfer": "IST-SAW",
+        "car": null,
+        "minivan": 1500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISTANBUL UCUZ ARABACI",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": null,
+        "minivan": 900.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YAMAN BEY ANTALYA",
+        "tour": "ANTALYA - KAŞ D400",
+        "transfer": null,
+        "car": null,
+        "minivan": 5500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA TRANSFERCIM",
+        "tour": "ANTALYA - KAŞ D400",
+        "transfer": null,
+        "car": null,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA TRANSFERCIM",
+        "tour": "KAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "GOKHAN EMRAL",
+        "tour": "KAŞ-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "GOKHAN EMRAL",
+        "tour": null,
+        "transfer": "PAMUKKALE-DNZ",
+        "car": null,
+        "minivan": 2000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "IZMIR-EFES-SIRINCE-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "BİLAL KAPTAN",
+        "tour": null,
+        "transfer": "OTEL-ASR",
+        "car": null,
+        "minivan": 750.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANKARA VİP ARAÇ",
+        "tour": null,
+        "transfer": "ESB-OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 1800.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ERAY DENİZ İSTANBUL",
+        "tour": null,
+        "transfer": "IST-AVR OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 1200.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HALİL İBRAHİM ODABAŞ",
+        "tour": null,
+        "transfer": "SAW-AVR OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 1400.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "İSMAİL İNAL",
+        "tour": "GUNLUK TUR IST",
+        "transfer": null,
+        "car": null,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "SAERSA TURİZM",
+        "tour": null,
+        "transfer": "AVR OTEL-IST",
+        "car": null,
+        "minivan": null,
+        "minibus": 1200.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA CEM",
+        "tour": "AYT+ANTALYA TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 8860.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MEHMET AKİF ANTALYA",
+        "tour": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISTANBUL UCUZ ARABACI",
+        "tour": null,
+        "transfer": "AVR OTEL-SAW",
+        "car": null,
+        "minivan": 1100.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MESUT ANTALYA-FETHİYE",
+        "tour": "FETHİYE GÜNLÜK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MESUT ANTALYA-FETHİYE",
+        "tour": null,
+        "transfer": "FETHIYE-DLM",
+        "car": null,
+        "minivan": 1250.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "HIKMET PAMUKKALE",
+        "tour": "PAMUKKALE-ALACATI-IZMIR",
+        "transfer": null,
+        "car": null,
+        "minivan": 6500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISTANBUL UCUZ ARABACI",
+        "tour": null,
+        "transfer": "SAW-AVR OTEL",
+        "car": null,
+        "minivan": 1100.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "İSTANBUL-KAPADOKYA",
+        "car": null,
+        "minivan": null,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "IST TRANSFER + TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MURAT UCUZ AYT-FETHIYE",
+        "tour": "FETHIYE-KAS-KAPUTAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 6000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "İZMİR-EFES-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "FETHIYE-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KAPADOKYA-ISTANBUL",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "PAMUKKALE-DNZ",
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "AVR OTEL-IST",
+        "car": null,
+        "minivan": null,
+        "minibus": 1300.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "FETHİYE GÜNLÜK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA CEM",
+        "tour": null,
+        "transfer": "AYT-OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 3000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MURAT UCUZ AYT-FETHIYE",
+        "tour": null,
+        "transfer": "OTEL-AYT",
+        "car": null,
+        "minivan": 900.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ISTANBUL-ANKARA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "PAMUKKALE-ISTANBUL",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA CEM",
+        "tour": "ANTALYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 4500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MURAT UCUZ AYT-FETHIYE",
+        "tour": "ANTALYA GUNLUK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 3500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ANKARA-KAPADOKYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA CEM",
+        "tour": "ANTALYA - KAŞ D400",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "KUŞADASI-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 7500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "TUR + SAW TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": 3200.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA CEM",
+        "tour": null,
+        "transfer": "FETHIYE-DLM",
+        "car": null,
+        "minivan": null,
+        "minibus": 2500.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "İSMAİL İNAL",
+        "tour": "TUR + IST TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA CEM",
+        "tour": "KAŞ-FETHİYE D400",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 5000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KAPADOKYA-KONYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "KAPADOKYA-KONYA-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 6500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "KONYA-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 5500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "CANAKKALE-ALACATI-IZMIR",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "BURSA - ISTANBUL",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "BURSA - ISTANBUL",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "ANTALYA TUR+TRANSFER",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "FETHIYE-İSTANBUL",
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": 8000.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MURAT UCUZ AYT-FETHIYE",
+        "tour": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "FETHIYE-D350-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "AVR OTEL-AVR OTEL",
+        "car": null,
+        "minivan": null,
+        "minibus": 1200.0,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISMAIL BEY FETHIYE ARAC",
+        "tour": null,
+        "transfer": "FETHIYE-DLM",
+        "car": null,
+        "minivan": 1200.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISMAIL BEY FETHIYE ARAC",
+        "tour": null,
+        "transfer": "PAMUKKALE-FETHIYE",
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "KAPADOKYA-ANTALYA",
+        "car": null,
+        "minivan": 6500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "İSTANBUL-BURSA",
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MURAT UCUZ AYT-FETHIYE",
+        "tour": "ANTALYA-KAŞ",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": null,
+        "transfer": "BURSA-ISTANBUL",
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": null,
+        "transfer": "DLM-FETHIYE",
+        "car": null,
+        "minivan": 1200.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ANTALYA TRANSFERCIM",
+        "tour": null,
+        "transfer": "OTEL-AYT",
+        "car": null,
+        "minivan": 750.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "IZMIR-EFES-SIRINCE-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "ANKARA-ISTANBUL",
+        "transfer": null,
+        "car": null,
+        "minivan": 6000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "GULER TURIZM IZMIR",
+        "tour": null,
+        "transfer": "ADB-ALACATI",
+        "car": null,
+        "minivan": 2000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MENALLOS  IZMIR",
+        "tour": "Alaçatı-Pamukkale-Hierapolis-Alaçatı",
+        "transfer": null,
+        "car": null,
+        "minivan": 8000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "PAMUKKALE-KAŞ",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "ÇANAKKALE-İZMİR",
+        "transfer": null,
+        "car": null,
+        "minivan": 4000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "GODEDAY TURIZM",
+        "tour": "Alaçatı-Kuşadası-Efes-Şirince-Alaçatı",
+        "transfer": null,
+        "car": null,
+        "minivan": 5500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "GODEDAY TURIZM",
+        "tour": null,
+        "transfer": "ALACATI-ADB",
+        "car": null,
+        "minivan": 1800.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "IZMIR-PAMUKKALE",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP KAPADOKYA",
+        "tour": "FETHIYE-KAPUTAS-KAS",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": "KAS-ANTALYA",
+        "transfer": null,
+        "car": null,
+        "minivan": 4500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "OTEL-AYT",
+        "car": null,
+        "minivan": 750.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "ISMAIL BEY FETHIYE ARAC",
+        "tour": null,
+        "transfer": "FETHIYE-ANTALYA",
+        "car": null,
+        "minivan": 2500.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "YON TRANSFER",
+        "tour": null,
+        "transfer": "ANKARA-KAPADOKYA",
+        "car": null,
+        "minivan": 9000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "KAŞ-ANTALYA D400",
+        "transfer": null,
+        "car": null,
+        "minivan": 5000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP FETHIYE",
+        "tour": "FETHİYE GÜNLÜK TUR",
+        "transfer": null,
+        "car": null,
+        "minivan": 3000.0,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": null,
+        "tour": null,
+        "transfer": null,
+        "car": null,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    },
+    {
+        "supplier": "MNC GROUP ISTANBUL",
+        "tour": "SAFRANBOLU-ANKARA",
+        "transfer": null,
+        "car": 4000.0,
+        "minivan": null,
+        "minibus": null,
+        "midibus": null,
+        "bus": null
+    }
+]

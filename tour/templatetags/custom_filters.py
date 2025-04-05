@@ -38,3 +38,9 @@ def get_item(dictionary, key):
 def add_days(date, days):
     """Verilen tarihe belirtilen gün sayısını ekler"""
     return date + timedelta(days=int(days)) 
+
+
+@register.filter
+def add_class(field, class_name):
+    """Verilen alana belirtilen sınıfı ekler"""
+    return field.as_widget(attrs={'class': class_name})

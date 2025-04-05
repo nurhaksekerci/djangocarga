@@ -1,0 +1,692 @@
+[
+    {
+        "route": "RED TUR",
+        "start_city": "Nevşehir",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "MIX TUR",
+        "start_city": "Nevşehir",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "GREEN TUR",
+        "start_city": "Nevşehir",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "WALKING TUR IST",
+        "start_city": "İstanbul (Avrupa)",
+        "finish_city": "İstanbul (Avrupa)"
+    },
+    {
+        "route": "LD KISA TUR IST",
+        "start_city": "İstanbul (Avrupa)",
+        "finish_city": "İstanbul (Avrupa)"
+    },
+    {
+        "route": "FETHIYE-PAMUKKALE",
+        "start_city": "Muğla",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "GUNLUK TUR IST",
+        "start_city": "İstanbul (Avrupa)",
+        "finish_city": "İstanbul (Avrupa)"
+    },
+    {
+        "route": "FETHIYE-KAS-KAPUTAS-ANTALYA",
+        "start_city": "Muğla",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "ANTALYA-KAS-KAPUTAS-FETHIYE",
+        "start_city": "Antalya",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "VIA ISTANBUL OZEL TUR",
+        "start_city": "İstanbul (Avrupa)",
+        "finish_city": "İstanbul (Avrupa)"
+    },
+    {
+        "route": "TUR + SAW TRANSFER",
+        "start_city": "İstanbul (Avrupa)",
+        "finish_city": "İstanbul (Anadolu)"
+    },
+    {
+        "route": "SAW TRANSFER + TUR",
+        "start_city": "İstanbul (Anadolu)",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "TUR + IST TRANSFER",
+        "start_city": "İstanbul",
+        "finish_city": "İstanbul (Avrupa)"
+    },
+    {
+        "route": "FETHIYE-KAPUTAS-KAS",
+        "start_city": "Muğla",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "KAS-ANTALYA",
+        "start_city": "Antalya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "IST TRANSFER + TUR",
+        "start_city": "İstanbul (Avrupa)",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "IST + LD TUR",
+        "start_city": "İstanbul",
+        "finish_city": "İstanbul (Avrupa)"
+    },
+    {
+        "route": "SAW + LD TUR",
+        "start_city": "İstanbul (Anadolu)",
+        "finish_city": "İstanbul (Avrupa)"
+    },
+    {
+        "route": "LD TUR + SAW",
+        "start_city": "İstanbul (Avrupa)",
+        "finish_city": "İstanbul (Anadolu)"
+    },
+    {
+        "route": "ISTANBUL-ANKARA",
+        "start_city": "İstanbul",
+        "finish_city": "Ankara"
+    },
+    {
+        "route": "LD TUR + IST",
+        "start_city": "İstanbul (Avrupa)",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "CANAKKALE-KUSADASI",
+        "start_city": "Çanakkale",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ANKARA-KAPADOKYA",
+        "start_city": "Ankara",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "KAPADOKYA-ANTALYA",
+        "start_city": "Nevşehir",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "PAMUKKALE-FETHIYE",
+        "start_city": "Denizli",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "KONYA-KAPADOKYA",
+        "start_city": "Konya",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "ANTALYA-KONYA",
+        "start_city": "Antalya",
+        "finish_city": "Konya"
+    },
+    {
+        "route": "ISTANBUL-CANAKKALE",
+        "start_city": "İstanbul",
+        "finish_city": "Çanakkale"
+    },
+    {
+        "route": "KAPADOKYA-ANKARA",
+        "start_city": "Nevşehir",
+        "finish_city": "Ankara"
+    },
+    {
+        "route": "ANKARA-SAFRANBOLU",
+        "start_city": "Ankara",
+        "finish_city": "Karabük"
+    },
+    {
+        "route": "ANTALYA-ASPENDOS-MUZE-KALEICI",
+        "start_city": "Antalya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "KUSADASI-PAMUKKALE",
+        "start_city": "İzmir",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "SAFRANBOLU-ISTANBUL",
+        "start_city": "Karabük",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "KUSADASI-EFES-ARTEMIS",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "PAMUKKALE- EFES",
+        "start_city": "Denizli",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ANTALYA-PAMUKKALE",
+        "start_city": "Antalya",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "IZMIR-EFES-SIRINCE-PAMUKKALE",
+        "start_city": "İzmir",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "FETHIYE-PAMUKKALE-KUSADASI",
+        "start_city": "Muğla",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "KUSADASI-EFES-SIRINCE-ADB BIRAKIS",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "KAS-ASPENDOS-ANTALYA",
+        "start_city": "Antalya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "PAMUKKALE-EFES-DNZ",
+        "start_city": "Denizli",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "KAPADOKYA-KONYA-ANTALYA",
+        "start_city": "Nevşehir",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "PAMUKKALE-EFES-KUSADASI",
+        "start_city": "Denizli",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "PAMUKKALE-FETHIYE-KAPUTAS-KAS",
+        "start_city": "Denizli",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "IZMIR GUNLUK TUR + TRANSFER",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "KUSADASI-IZMIR-ISTANBUL",
+        "start_city": "İzmir",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "ANTALYA GUNLUK TUR",
+        "start_city": "Antalya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "ASPENDOS-ARKEOJI MUZESI-HADRIAN-MARINA",
+        "start_city": "Antalya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "ANTALYA-KAS-ANTALYA",
+        "start_city": "Antalya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "ADB-EFES-ARTEMIS-KUSADASI",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ISTANBUL-IZMIR",
+        "start_city": "İstanbul",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "PAMUKKALE-ISTANBUL",
+        "start_city": "Denizli",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "IZMIR-SIRINCE-EFES-SELCUK",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ISTANBUL GECE TURU",
+        "start_city": "İstanbul",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "IZMIR-PAMUKKALE",
+        "start_city": "İzmir",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "PAMUKKALE TUR",
+        "start_city": "Denizli",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "KUSADASI-PAMUKKALE-FETHIYE",
+        "start_city": "İzmir",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "AYVALIK- KUSDASI",
+        "start_city": "Balıkesir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "PAMUKKALE-ALACATI- EFES",
+        "start_city": "Denizli",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "CANAKKALE- AYVALIK",
+        "start_city": "Çanakkale",
+        "finish_city": "Balıkesir"
+    },
+    {
+        "route": "IZMIR TRANSFER-EFES-MERYEM ANA-SIRINCE-IZMIR",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "BODRUM-FETHIYE",
+        "start_city": "Muğla",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "KAPADOKYA GUNLUK TUR",
+        "start_city": "Nevşehir",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "KUSADASI-EFES-SIRINCE-MERYEM ANA",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "KUSADASI-ALACATI-CESME-ADB BIRAKIS",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ANKARA GÜNLÜK TUR",
+        "start_city": "Ankara",
+        "finish_city": "Ankara"
+    },
+    {
+        "route": "ANKARA TUR-ESB",
+        "start_city": "Ankara",
+        "finish_city": "Ankara"
+    },
+    {
+        "route": "ANTALYA - KAŞ D400",
+        "start_city": "Antalya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "KAŞ-FETHİYE D400",
+        "start_city": "Antalya",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "ALAÇATI-EFES-PAMUKKALE",
+        "start_city": "İzmir",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "ASR-PAMUKKALE",
+        "start_city": "Kayseri",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "KUŞADASI-EFES-KUŞADASI",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "KUŞADASI-FETHIYE",
+        "start_city": "İzmir",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "PAMUKKALE-KONYA",
+        "start_city": "Denizli",
+        "finish_city": "Konya"
+    },
+    {
+        "route": "KAPADOKYA-TUZ GÖLÜ-YERALTI ŞEHRİ-IHLARA-GÖREME AÇIK HAVA MUZESİ",
+        "start_city": "Nevşehir",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "BODRUM GÜNLÜK TUR",
+        "start_city": "Muğla",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "ANTALYA-KAPADOKYA",
+        "start_city": "Antalya",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "KAPADOKYA TUZGÖLU YERALTI ŞEHRİ",
+        "start_city": "Nevşehir",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "IZMIR-ALAÇATI-ÇEŞME-IZMIR",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "BALON TURU",
+        "start_city": "Nevşehir",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "ANTALYA-KAŞ-KAPUTAŞ-PAMUKKALE",
+        "start_city": "Antalya",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "PAMUKKALE-EFES-IZMIR",
+        "start_city": "Denizli",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "İZMİR-EFES-PAMUKKALE",
+        "start_city": "İzmir",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "RED TUR-KONYA",
+        "start_city": "Nevşehir",
+        "finish_city": "Konya"
+    },
+    {
+        "route": "ADB-ALAÇATI-ÇEŞME-IZMIR",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "KONYA-ANTALYA",
+        "start_city": "Konya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "PAMUKKALE-KONYA-KAPADOKYA",
+        "start_city": "Denizli",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "DLM-ÖLÜDENİZ-KAŞ",
+        "start_city": "Muğla",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "KAŞ-ANTALYA D400",
+        "start_city": "Antalya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "KUŞADASI-PAMUKKALE-DNZ",
+        "start_city": "İzmir",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "ISTANBUL - BURSA",
+        "start_city": "İstanbul",
+        "finish_city": "Bursa"
+    },
+    {
+        "route": "BURSA-EFES-PAMUKKALE",
+        "start_city": "Bursa",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "PAMUKKALE-ANTALYA",
+        "start_city": "Denizli",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "ANKARA-ISTANBUL",
+        "start_city": "Ankara",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "BURSA - İZMİR",
+        "start_city": "Bursa",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "IZMIR-PAMUKKALE-FETHIYE",
+        "start_city": "İzmir",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "BURSA - ISTANBUL",
+        "start_city": "Bursa",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "KAŞ-PAMUKKALE",
+        "start_city": "Antalya",
+        "finish_city": "Denizli"
+    },
+    {
+        "route": "PAMUKKALE-EFES-ÇEŞME",
+        "start_city": "Denizli",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ANTALYA-KAŞ",
+        "start_city": "Antalya",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "EFES-BODRUM-BODRUM TRANSFER",
+        "start_city": "İzmir",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "KALKAN - KAŞ - ANTIPHELLOS ANTIK KENT - KALKAN",
+        "start_city": "Antalya",
+        "finish_city": null
+    },
+    {
+        "route": "FETHIYE-PAMUKKALE-IZMIR",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "FETHIYE-PAMUKKLAE-SELÇUK",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "IZMIR GUNLUK TUR",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "KAPADOKYA-ANKARA-KAPADOKYA",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "ANTALYA-KONYA-KAPADOKYA",
+        "start_city": "Antalya",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "IZMIR-ALAÇATI-ÇEŞME-KUŞADASI",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "KUŞADASI-EFES-ŞİRİNCE-İZMİR",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "IZMIR - ÇEŞME - ALAÇATI - KUŞADASI",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "AYT+ANTALYA TUR",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "PAMUKKALE-EFES-ALACATI",
+        "start_city": "Denizli",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ISTANBUL-SAFRANBOLU",
+        "start_city": "İstanbul",
+        "finish_city": "Karabük"
+    },
+    {
+        "route": "ÇANAKKALE-İSTANBUL",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "İZMİR-AYVALIK-ÇANAKKALE",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "CANAKKALE-BALIKESİR-IZMIR",
+        "start_city": "Çanakkale",
+        "finish_city": "Balıkesir"
+    },
+    {
+        "route": "SAFRANBOLU-ANKARA",
+        "start_city": "Karabük",
+        "finish_city": "Ankara"
+    },
+    {
+        "route": "EFES-ŞİRİNCE-ÇANAKKALE",
+        "start_city": "İzmir",
+        "finish_city": "Çanakkale"
+    },
+    {
+        "route": "KONYA GÜNLÜK TUR",
+        "start_city": "Konya",
+        "finish_city": "Konya"
+    },
+    {
+        "route": "İSTANBUL-KAPADOKYA",
+        "start_city": "İstanbul",
+        "finish_city": "Nevşehir"
+    },
+    {
+        "route": "KAPADOKYA-ISTANBUL",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "ISTANBUL-ANKARA-KAPADOKYA",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "PAMUKKALE-KUSADASI",
+        "start_city": "Denizli",
+        "finish_city": "Aydın"
+    },
+    {
+        "route": "KUŞADASI-EFES-İZMİR-ADB",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "IZMIR-EFES-SIRINCE-FETHIYE",
+        "start_city": "İzmir",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "FETHİYE GÜNLÜK TUR",
+        "start_city": "Muğla",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "KAPADOKYA-KONYA",
+        "start_city": "Nevşehir",
+        "finish_city": "Konya"
+    },
+    {
+        "route": "PAMUKKALE-ALACATI-IZMIR",
+        "start_city": "Denizli",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ANTALYA TUR+TRANSFER",
+        "start_city": null,
+        "finish_city": null
+    },
+    {
+        "route": "CANAKKALE-ALACATI-IZMIR",
+        "start_city": "Çanakkale",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "FETHIYE-İSTANBUL",
+        "start_city": "Muğla",
+        "finish_city": "İstanbul"
+    },
+    {
+        "route": "FETHIYE-D350-ANTALYA",
+        "start_city": "Muğla",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "ANTALYA--D350-FETHIYE",
+        "start_city": "Antalya",
+        "finish_city": "Muğla"
+    },
+    {
+        "route": "PAMUKKALE-KAŞ",
+        "start_city": "Denizli",
+        "finish_city": "Antalya"
+    },
+    {
+        "route": "Alaçatı-Kuşadası-Efes-Şirince-Alaçatı",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "Alaçatı-Pamukkale-Hierapolis-Alaçatı",
+        "start_city": "İzmir",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ÇANAKKALE-İZMİR",
+        "start_city": "Çanakkale",
+        "finish_city": "İzmir"
+    },
+    {
+        "route": "ANTALYA-KAS-KAPUTAS-FETHIYE-PAMUKKALE",
+        "start_city": "Antalya",
+        "finish_city": "Muğla"
+    }
+]

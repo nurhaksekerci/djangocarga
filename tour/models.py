@@ -615,9 +615,6 @@ class OperationCustomer(models.Model):
         help_text=_("Phone number or email")
     )
 
-    def clean(self):
-        from .services import CustomerService
-        CustomerService.validate_customer(self)
 
     def get_full_name(self):
         """Müşterinin tam adını döndürür"""
@@ -717,13 +714,6 @@ class OperationItem(models.Model):
     updated_at = models.DateTimeField(verbose_name="Updated At", auto_now=True)
     is_active = models.BooleanField(verbose_name="Is Active", default=True)
 
-    def clean(self):
-        if self.item_type == self.VEHICLE and not self.vehicle_type:
-            raise ValidationError("Vehicle supplier is required for vehicle items")
-        elif self.item_type == self.NO_VEHICLE_TOUR and not self.no_vehicle_tour:
-            raise ValidationError("No vehicle tour is required for no vehicle tour items")
-        elif self.item_type == self.NO_VEHICLE_ACTIVITY and not self.no_vehicle_activity:
-            raise ValidationError("No vehicle activity is required for no vehicle activity items")
 
     def __str__(self):
         return f"{self.operation_day} - {self.get_item_type_display()}"
@@ -795,4 +785,26 @@ class OperationSubItem(models.Model):
 
     class Meta:
         ordering = ['ordering']
+
+class Support(models.Model):
+    user = models.ForeignKey(CustomUser, verbose_name="User", on_delete=models.CASCADE)
+    subject = models.CharField(verbose_name="Subject", max_length=255)
+    message = models.TextField(verbose_name="Message")
+    created_at = models.DateTimeField(verbose_name="Created At", auto_now_add=True)
+    is_active = models.BooleanField(verbose_name="Is Active", default=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.subject}"
+
+class SupportMessage(models.Model):
+    support = models.ForeignKey(Support, verbose_name="Support", on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(CustomUser, verbose_name="Sender", on_delete=models.CASCADE)
+    message = models.TextField(verbose_name="Message")
+    created_at = models.DateTimeField(verbose_name="Created At", auto_now_add=True)
+    is_active = models.BooleanField(verbose_name="Is Active", default=True)
+
+    def __str__(self):
+        return f"{self.support} - {self.sender}"
+
+
 
