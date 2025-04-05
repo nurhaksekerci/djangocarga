@@ -112,7 +112,7 @@ def login_view(request):
                 # Kullanıcı rolüne göre yönlendirme
                 if next_url:
                     return redirect(next_url)
-                if user.role == 'admin':
+                elif user.role == 'admin':
                     return redirect('admin:index')
                 else:
                     return redirect('tour:jobs')
