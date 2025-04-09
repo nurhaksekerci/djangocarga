@@ -1,0 +1,48 @@
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JavaScript -->
+<script>
+    // Aktif sayfayı vurgulama
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentLocation = location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentLocation) {
+                link.classList.add('active');
+            }
+        });
+        
+        // Sidebar toggle işlevi
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            
+            // İkon değiştirme
+            const icon = sidebarToggle.querySelector('i');
+            if (sidebar.classList.contains('collapsed')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Mobil görünümde sidebar'ı otomatik olarak küçült
+        function checkWidth() {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+            }
+        }
+        
+        // Sayfa yüklendiğinde ve boyut değiştiğinde kontrol et
+        checkWidth();
+        window.addEventListener('resize', checkWidth);
+    });
+</script>
+{% block extra_js %}{% endblock %} 

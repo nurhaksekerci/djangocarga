@@ -1,0 +1,398 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Operasyonlar</h5>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a hx-get="{% url 'tour:operation_update' operation.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary">Düzenle</a>
+                        <a href="{% url 'tour:toggle_operation' operation.id %}?{{ request.path }}" class="btn {% if operation.is_active %}btn-danger{% else %}btn-success{% endif %}">{% if operation.is_active %}Sil{% else %}Geri Yükle{% endif %}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Operasyon Kodu</th>
+                            <th>Alıcı Şirket</th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
+                            <th>Operasyon Durumu</th>
+                            <th>Toplam Kişi</th>
+                            <th>Oluşturan</th>
+                            <th>Takip Eden</th>
+                            <th>Notlar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ operation.reference_number|default:"-"|upper }}</td>
+                            <td>{{ operation.buyer_company.name|default:"-"|upper }}</td>
+                            <td>{{ operation.start_date|date:"d.m.Y"|default:"-" }}</td>
+                            <td>{{ operation.end_date|date:"d.m.Y"|default:"-" }}</td>
+                            <td>{{ operation.status|default:"-"|upper }}</td>
+                            <td>{{ operation.total_pax|default:"-"|upper }}</td>
+                            <td>{{ operation.created_by.first_name|default:"-"|upper }} {{ operation.created_by.last_name|default:"-"|upper }}</td>
+                            <td>{{ operation.follow_by.first_name|default:"-"|upper }} {{ operation.follow_by.last_name|default:"-"|upper }}</td>
+                            <td>{{ operation.notes|default:"-"|upper }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Müşteriler</h5>
+                <div>
+                    <a hx-get="{% url 'tour:operation_customer_create' operation.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary">Müşteri Ekle</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Adı</th>
+                            <th>Soyadı</th>
+                            <th>Türü</th>
+                            <th>Doğum Tarihi</th>
+                            <th>Pasaport No</th>
+                            <th>İletişim</th>
+                            <th>Notlar</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in customers %}
+                        <tr>
+                            <td>{{ customer.first_name|default:"-"|upper }}</td>
+                            <td>{{ customer.last_name|default:"-"|upper }}</td>
+                            <td>{{ customer.customer_type|default:"-"|upper }}</td>
+                            <td>{{ customer.birth_date|date:"d.m.Y"|default:"-" }}</td>
+                            <td>{{ customer.passport_no|default:"-"|upper }}</td>
+                            <td>{{ customer.contact_info|default:"-"|upper }}</td>
+                            <td>{{ customer.notes|default:"-"|upper }}</td>
+                            <td>
+
+                                <a hx-get="{% url 'tour:operation_customer_update' customer.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary">Güncelle</a>
+                                <a href="{% url 'tour:toggle_operation_customer' customer.id %}?{{ request.path }}" class="btn btn-danger">{% if customer.is_active %}Sil{% else %}Geri Yükle{% endif %}</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3">
+                                    <p class="card-text">Bu operasyon için müşteri yok.</p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Satış Fiyatları</h5>
+                <div>
+                    <a hx-get="{% url 'tour:operation_sales_price_create' operation.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary">Satış Fiyatı Ekle</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Satış Fiyatı</th>
+                            <th>Satış Birimi</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sales_price in sales_prices %}
+                        <tr>
+                            <td>{{ sales_price.price|default:"-"|upper }}</td>
+                            <td>{{ sales_price.currency|default:"-"|upper }}</td>
+                            <td>
+                                <a hx-get="{% url 'tour:operation_sales_price_update' sales_price.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary">Güncelle</a>
+                                <a href="{% url 'tour:toggle_operation_sales_price' sales_price.id %}?{{ request.path }}" class="btn btn-danger">{% if sales_price.is_active %}Sil{% else %}Geri Yükle{% endif %}</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3">
+                                    <p class="card-text">Bu operasyon için satış fiyatı yok.</p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Operasyon Günleri</h5>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="btn btn-primary">Başa Ekle</a>
+                        <a href="#" class="btn btn-danger">Sona Ekle</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                {% for day in days %}
+                    <div class="card mb-3">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">{{ day.date|date:"d.m.Y" }}</h5>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a hx-get="{% url 'tour:vehicle_item_create' day.id %}?{{ request.path }}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success">Araç Ekle</a>
+                                    <a hx-get="{% url 'tour:no_vehicle_activity_item_create' day.id %}?{{ request.path }}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success">Araçsız Aktivite Ekle</a>
+                                    <a hx-get="{% url 'tour:no_vehicle_tour_item_create' day.id %}?{{ request.path }}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success">Araçsız Tur Ekle</a>
+                                    <a hx-get="{% url 'tour:no_vehicle_guide_item_create' day.id %}?{{ request.path }}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success">Araçsız Rehber Ekle</a>
+                                    <a href="#" class="btn btn-danger">Günü Sil</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {% for item in items %}
+                                    {% if item.operation_day == day %}
+                                        <div class="col-md-12 mt-3">
+                                            <div class="card">
+                                                <div class="card-header d-flex justify-content-between align-items-center">
+                                                    <h5 class="card-title">{% if item.item_type == "VEHICLE" %}Araç{% elif item.item_type == "NO_VEHICLE_TOUR" %}Araçsız Tur{% elif item.item_type == "NO_VEHICLE_ACTIVITY" %}Araçsız Aktivite{% elif item.item_type == "NO_VEHICLE_GUIDE" %}Araçsız Rehber{% endif %}</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            {% if item.item_type == "VEHICLE" %}
+                                                                <a hx-get="{% url 'tour:vehicle_item_update' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary">Güncelle</a>
+                                                            {% elif item.item_type == "NO_VEHICLE_TOUR" %}
+                                                                <a hx-get="{% url 'tour:no_vehicle_tour_item_update' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary">Güncelle</a>
+                                                            {% elif item.item_type == "NO_VEHICLE_ACTIVITY" %}
+                                                                <a hx-get="{% url 'tour:no_vehicle_activity_item_update' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary">Güncelle</a>
+                                                            {% elif item.item_type == "NO_VEHICLE_GUIDE" %}
+                                                                <a hx-get="{% url 'tour:no_vehicle_guide_item_update' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary">Güncelle</a>
+                                                            {% endif %}
+                                                            <a href="#" class="btn btn-danger">{% if item.item_type == "VEHICLE" %}Araç{% elif item.item_type == "NO_VEHICLE_TOUR" %}Araçsız Tur{% elif item.item_type == "NO_VEHICLE_ACTIVITY" %}Araçsız Aktivite{% elif item.item_type == "NO_VEHICLE_GUIDE" %}Araçsız Rehber{% endif %} Sil</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md">
+                                                            <h6 class="card-title">Alış Saati</h6>
+                                                            <p class="card-text">{{ item.pick_time|default:"-"|date:"H:i" }}</p>
+                                                        </div>
+                                                        <div class="col-md">
+                                                            <h6 class="card-title">Alış Yeri</h6>
+                                                            <p class="card-text">{{ item.pick_up_location|default:"-"|upper }}</p>
+                                                        </div>
+                                                        <div class="col-md">
+                                                            <h6 class="card-title">Bırakış Yeri</h6>
+                                                            <p class="card-text">{{ item.drop_off_location|default:"-"|upper }}</p>
+                                                        </div>
+                                                        {% if item.item_type == "VEHICLE" %}
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Araç</h6>
+                                                                <p class="card-text">{{ item.vehicle_type|default:"-"|upper }}</p>
+                                                            </div>
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Araç Tedarikçisi</h6>
+                                                                <p class="card-text">{{ item.vehicle_supplier|default:"-"|upper }}</p>
+                                                            </div>
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Araç Plaka Numarası</h6>
+                                                                <p class="card-text">{{ item.vehicle_plate_no|default:"-"|upper }}</p>
+                                                            </div>
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Şoför</h6>
+                                                                <p class="card-text">{{ item.driver_name|default:"-"|upper }}</p>
+                                                            </div>
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Şoför Telefon</h6>
+                                                                <p class="card-text">{{ item.driver_phone|default:"-"|upper }}</p>
+                                                            </div>
+                                                        {% elif item.item_type == "NO_VEHICLE_TOUR" %}
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Tur</h6>
+                                                                <p class="card-text">{{ item.no_vehicle_tour|default:"-"|upper }}</p>
+                                                            </div>
+                                                        {% elif item.item_type == "NO_VEHICLE_ACTIVITY" %}
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Aktivite</h6>
+                                                                <p class="card-text">{{ item.no_vehicle_activity|default:"-"|upper }}</p>
+                                                            </div>
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Aktivite Tedarikçisi</h6>
+                                                                <p class="card-text">{{ item.activity_supplier|default:"-"|upper }}</p>
+                                                            </div>
+                                                        {% elif item.item_type == "NO_VEHICLE_GUIDE" %}
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Rehber Var</h6>
+                                                                <p class="card-text">{{ item.is_guide|yesno:"EVET,HAYIR" }}</p>
+                                                            </div>
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Rehber</h6>
+                                                                <p class="card-text">{{ item.no_vehicle_guide|default:"-"|upper }}</p>
+                                                            </div>
+                                                        {% endif %}
+                                                        <div class="col-md">
+                                                            <h6 class="card-title">Maliyet</h6>
+                                                            <p class="card-text">{{ item.cost_price|default:"-"|upper }} {{ item.cost_currency|default:"-"|upper }}</p>
+                                                        </div>
+                                                        {% if item.item_type != "VEHICLE" %}
+                                                            <div class="col-md">
+                                                                <h6 class="card-title">Satış Fiyatı</h6>
+                                                                <p class="card-text">{{ item.sales_price|default:"-"|upper }} {{ item.sales_currency|default:"-"|upper }}</p>
+                                                            </div>
+                                                        {% endif %}
+                                                        <div class="col-md">
+                                                            <h6 class="card-title">Notlar</h6>
+                                                            <p class="card-text">{{ item.notes|default:"-"|upper }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <h5 class="card-title">Görevler</h5>
+                                                            </div>
+                                                            <div class="col-11 d-flex justify-content-end">
+                                                                {% if item.item_type != "NO_VEHICLE_GUIDE" %}
+                                                                    {% if item.item_type == "VEHICLE" %}
+                                                                        <a hx-get="{% url 'tour:sub_item_tour_create' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success mx-2">Tur Ekle</a>
+                                                                        <a hx-get="{% url 'tour:sub_item_transfer_create' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success mx-2">Transfer Ekle</a>
+                                                                    {% endif %}
+                                                                    <a hx-get="{% url 'tour:sub_item_hotel_create' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success mx-2">Otel Ekle</a>
+                                                                    <a hx-get="{% url 'tour:sub_item_activity_create' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success mx-2">Aktivite Ekle</a>
+                                                                    <a hx-get="{% url 'tour:sub_item_museum_create' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success mx-2">Müze Ekle</a>
+                                                                    <a hx-get="{% url 'tour:sub_item_guide_create' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success mx-2">Rehber Ekle</a>
+                                                                {% endif %}
+                                                                <a hx-get="{% url 'tour:sub_item_other_price_create' item.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-success mx-2">Masraf Ekle</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-3">
+                                                            {% for subitem in sub_items %}
+                                                                {% if subitem.operation_item == item %}
+                                                                <div class="col-md-12 mt-3">
+                                                                    <div class="card">
+                                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                                            <h5 class="card-title">{{ subitem.get_subitem_type_display|default:"-"|upper }}</h5>
+                                                                            <div>
+                                                                                {% if subitem.subitem_type == "TOUR" %}
+                                                                                    <a hx-get="{% url 'tour:sub_item_tour_update' subitem.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary mx-2">Düzenle</a>
+                                                                                {% elif subitem.subitem_type == "TRANSFER" %}
+                                                                                    <a hx-get="{% url 'tour:sub_item_transfer_update' subitem.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary mx-2">Düzenle</a>
+                                                                                {% elif subitem.subitem_type == "ACTIVITY" %}
+                                                                                    <a hx-get="{% url 'tour:sub_item_activity_update' subitem.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary mx-2">Düzenle</a>
+                                                                                {% elif subitem.subitem_type == "MUSEUM" %}
+                                                                                    <a hx-get="{% url 'tour:sub_item_museum_update' subitem.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary mx-2">Düzenle</a>
+                                                                                {% elif subitem.subitem_type == "HOTEL" %}
+                                                                                    <a hx-get="{% url 'tour:sub_item_hotel_update' subitem.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary mx-2">Düzenle</a>
+                                                                                {% elif subitem.subitem_type == "GUIDE" %}
+                                                                                    <a hx-get="{% url 'tour:sub_item_guide_update' subitem.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary mx-2">Düzenle</a>
+                                                                                {% elif subitem.subitem_type == "OTHER_PRICE" %}
+                                                                                    <a hx-get="{% url 'tour:sub_item_other_price_update' subitem.id %}" hx-target="#operation-container" hx-swap="innerHTML" class="btn btn-primary mx-2">Düzenle</a>
+                                                                                {% endif %}
+                                                                                <a href="{% url 'tour:toggle_operation_sub_item' subitem.id %}?{{ request.path }}" class="btn {% if subitem.is_active %}btn-danger{% else %}btn-success{% endif %} mx-2">{% if subitem.subitem_type == "VEHICLE" %}Araç{% elif subitem.subitem_type == "TOUR" %}Turu{% elif subitem.subitem_type == "ACTIVITY" %}Aktiviteyi{% elif subitem.subitem_type == "GUIDE" %}Rehberi{% elif subitem.subitem_type == "HOTEL" %}Oteli{% elif subitem.subitem_type == "MUSEUM" %}Müzeyi{% elif subitem.subitem_type == "OTHER_PRICE" %}Masrafı{% endif %}{% if subitem.is_active %} Sil{% else %}Geri Yükle{% endif %}</a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            <div class="row">
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Sıra</h6>
+                                                                                    <p class="card-text">{{ subitem.ordering|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                {% if subitem.subitem_type == "TOUR" %}
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Tur</h6>
+                                                                                    <p class="card-text">{{ subitem.tour|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                {% elif subitem.subitem_type == "TRANSFER" %}
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Transfer</h6>
+                                                                                    <p class="card-text">{{ subitem.transfer|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                {% elif subitem.subitem_type == "ACTIVITY" %}
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Aktivite</h6>
+                                                                                    <p class="card-text">{{ subitem.activity|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Aktivite Tedarikçisi</h6>
+                                                                                    <p class="card-text">{{ subitem.activity_supplier|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                {% elif subitem.subitem_type == "GUIDE" %}
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Rehber</h6>
+                                                                                    <p class="card-text">{{ subitem.guide|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                {% elif subitem.subitem_type == "HOTEL" %}
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Otel</h6>
+                                                                                    <p class="card-text">{{ subitem.hotel|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Oda Türü</h6>
+                                                                                    <p class="card-text">{{ subitem.room_type|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                {% elif subitem.subitem_type == "MUSEUM" %}
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Müzeler</h6>
+                                                                                    <p class="card-text">{{ subitem.museums.all|join:", "|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                {% elif subitem.subitem_type == "OTHER_PRICE" %}
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Ekstra Masraflar</h6>
+                                                                                    <p class="card-text">{{ subitem.other_price_description|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                {% endif %}
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Maliyet</h6>
+                                                                                    <p class="card-text">{{ subitem.cost_price|default:"-"|upper }} {{ subitem.cost_currency|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Satış Fiyatı</h6>
+                                                                                    <p class="card-text">{{ subitem.sales_price|default:"-"|upper }} {{ subitem.sales_currency|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                                <div class="col-md">
+                                                                                    <h6 class="card-title">Notlar</h6>
+                                                                                    <p class="card-text">{{ subitem.notes|default:"-"|upper }}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% empty %}
+                                    <div class="col-md-12">
+                                        <p class="card-text">Bu operasyon için görev yok.</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Bu operasyon için gün yok.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

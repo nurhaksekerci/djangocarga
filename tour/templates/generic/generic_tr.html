@@ -1,0 +1,46 @@
+{% comment %}
+Bu şablon, generic_table.html içinde kullanılacak tablo satırı şablonudur.
+Kullanım örneği:
+{% include 'generic/generic_tr.html' with object=object fields=fields detail_url=detail_url update_url=update_url delete_url=delete_url %}
+{% endcomment %}
+
+{% load custom_filters %}
+
+<tr id="row-{{ object.id }}">
+    {% for field in fields %}
+    <td>
+        {% if field.name == 'image' and object.image %}
+            <img src="{{ object.image.url }}" alt="{{ object }}" class="img-thumbnail" style="max-width: 50px;">
+        {% elif field.name == 'date' %}
+            {{ object|getattr_filter:field.name|date:"d.m.Y" }}
+        {% elif field.name == 'time' %}
+            {{ object|getattr_filter:field.name|time:"%H:%M" }}
+        {% elif field.name == 'is_active' %}
+            {% if object|getattr_filter:field.name|upper %}
+                <span class="badge bg-success">AKTİF</span>
+            {% else %}
+                <span class="badge bg-danger">PASİF</span>
+            {% endif %}
+        {% else %}
+            {{ object|getattr_filter:field.name|upper }}
+        {% endif %}
+    </td>
+    {% endfor %}
+    <td>
+        <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-outline-warning" title="Düzenle" 
+                    hx-get="{% url 'tour:update' model=model pk=object.id %}"
+                    hx-target="#form-container"
+                    hx-swap="innerHTML">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-outline-danger" title="Sil" 
+                    hx-delete="{% url 'tour:delete' model=model pk=object.id %}"
+                    hx-target="#row-{{ object.id }}"
+                    hx-swap="outerHTML"
+                    hx-confirm="Bu kaydı silmek istediğinizden emin misiniz?">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </td>
+</tr>

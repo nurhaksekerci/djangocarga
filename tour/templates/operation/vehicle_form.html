@@ -1,0 +1,32 @@
+{% load custom_filters %}
+
+<div class="modal fade" id="vehicleModal{{ day_id }}" tabindex="-1" aria-labelledby="vehicleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="post" action="{% url 'tour:operation_item_vehicle_create' day_id %}">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="vehicleModalLabel">Araç Ekle</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% csrf_token %}
+          <input type="hidden" name="operation_day" value="{{ day_id }}">
+          <div class="row">
+            {% for field in vehicle_form %}
+            <div class="col-md-6 mb-3">
+              <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span
+                  class="text-danger">*</span>{% endif %}</label>
+              {{ field|add_class:"form-control" }}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

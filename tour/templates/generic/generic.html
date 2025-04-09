@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .htmx-indicator {
+        display: none;
+    }
+    .htmx-request .htmx-indicator {
+        display: inline-block;
+    }
+    .htmx-request.htmx-indicator {
+        display: inline-block;
+    }
+    .htmx-request.htmx-indicator::after {
+        content: "";
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-left: 0.5rem;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{ page_title }}</h3>
+                </div>
+                <div class="card-body">
+                    {% include 'generic/generic_form.html' with form=form %}
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">Liste</h3>
+                    <div class="d-flex justify-content-end">
+                        <!-- Search -->
+                        <div class="input-group me-2" style="width: 300px;">
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="search-input" 
+                                   name="search" 
+                                   placeholder="Arama yap..." 
+                                   value="{{ search_query }}"
+                                   hx-get="{% url 'tour:list' model=model %}"
+                                   hx-trigger="keyup changed delay:500ms, search"
+                                   hx-target="#table-container"
+                                   hx-push-url="true">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                        <!-- Export -->
+                        <a href="{% url 'tour:export' model=model %}" class="btn btn-primary">
+                            <i class="fas fa-file-excel"></i>
+                            Excel
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="table-container">
+                        {% include 'generic/generic_table.html' with objects=objects fields=fields detail_url=detail_url update_url=update_url delete_url=delete_url %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // HTMX olaylarını dinle
+        document.body.addEventListener('htmx:afterRequest', function(evt) {
+            // Form gönderimi sonrası tabloyu yenile
+            if (evt.detail.target.id === 'form-container' && evt.detail.successful) {
+                // Tabloyu güncelle
+                htmx.ajax('GET', '{% url "tour:list" model=model %}', {
+                    target: '#table-container',
+                    swap: 'innerHTML'
+                });
+            }
+        });
+        
+        // Özel yenileme olayını dinle
+        document.body.addEventListener('refresh', function() {
+            htmx.ajax('GET', '{% url "tour:list" model=model %}', {
+                target: '#table-container',
+                swap: 'innerHTML'
+            });
+        });
+    });
+</script>
+{% endblock %}

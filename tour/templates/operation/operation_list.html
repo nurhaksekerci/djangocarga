@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Operasyon{% endblock %}
+
+{% block extra_css %}{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <!-- Ay Filtreleme Butonları -->
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-center">
+            <div class="btn-group" role="group">
+                {% for month_num, month_name in months %}
+                    <a href="?month={{ month_num }}" 
+                       class="btn {% if current_month == month_num %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                        {{ month_name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtreleme Formu -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <form method="get" class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="reference_number">Referans No</label>
+                                <input type="text" class="form-control" id="reference_number" name="reference_number" 
+                                       value="{{ filters.reference_number }}">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="created_by">Oluşturan</label>
+                                <select class="form-control" id="created_by" name="created_by">
+                                    <option value="">Seçiniz</option>
+                                    {% for user in users %}
+                                        <option value="{{ user.username }}" 
+                                                {% if filters.created_by == user.username %}selected{% endif %}>
+                                            {{ user.get_full_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="follow_by">Takip Eden</label>
+                                <select class="form-control" id="follow_by" name="follow_by">
+                                    <option value="">Seçiniz</option>
+                                    {% for user in users %}
+                                        <option value="{{ user.username }}"
+                                                {% if filters.follow_by == user.username %}selected{% endif %}>
+                                            {{ user.get_full_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="buyer_company">Alıcı Firma</label>
+                                <select class="form-control" id="buyer_company" name="buyer_company">
+                                    <option value="">Seçiniz</option>
+                                    {% for company in buyer_companies %}
+                                        <option value="{{ company.name }}"
+                                                {% if filters.buyer_company == company.name %}selected{% endif %}>
+                                            {{ company.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="status">Durum</label>
+                                <select class="form-control" id="status" name="status">
+                                    <option value="">Seçiniz</option>
+                                    {% for status_code, status_name in status_choices %}
+                                        <option value="{{ status_code }}"
+                                                {% if filters.status == status_code %}selected{% endif %}>
+                                            {{ status_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-end">
+                            <div class="form-group align-self-end">
+                                <label>&nbsp;</label>
+                                <button type="submit" class="btn btn-primary btn-block">Filtrele</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Operasyon Listesi -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Referans No</th>
+                                    <th>Oluşturan</th>
+                                    <th>Takip Eden</th>
+                                    <th>Alıcı Firma</th>
+                                    <th>Başlangıç Tarihi</th>
+                                    <th>Bitiş Tarihi</th>
+                                    <th>Durum</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for operation in operations %}
+                                <tr>
+                                    <td>{{ operation.reference_number }}</td>
+                                    <td>{{ operation.created_by.get_full_name }}</td>
+                                    <td>{{ operation.follow_by.get_full_name }}</td>
+                                    <td>{{ operation.buyer_company.name }}</td>
+                                    <td>{{ operation.start_date|date:"d.m.Y" }}</td>
+                                    <td>{{ operation.end_date|date:"d.m.Y" }}</td>
+                                    <td>
+                                        <span class="badge bg-primary">
+                                            {{ operation.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'tour:operation' operation.id %}" 
+                                           class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center">Kayıt bulunamadı.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

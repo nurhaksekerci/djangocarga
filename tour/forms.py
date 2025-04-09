@@ -332,8 +332,8 @@ class OperationSubItemHotelForm(OperationSubItemForm):
 class OperationSubItemGuideForm(OperationSubItemForm):
     class Meta:
         model = OperationSubItem
-        fields = ['ordering', 'is_guide', 'guide', 'sales_currency', 'sales_price', 'cost_currency', 'cost_price', 'notes']
-        ordering = ['ordering', 'is_guide', 'guide', 'sales_price', 'sales_currency', 'cost_price', 'cost_currency', 'notes']
+        fields = ['ordering', 'guide', 'sales_currency', 'sales_price', 'cost_currency', 'cost_price', 'notes']
+        ordering = ['ordering', 'guide', 'sales_price', 'sales_currency', 'cost_price', 'cost_currency', 'notes']
 
 class OperationSubItemActivityForm(OperationSubItemForm):
     class Meta:
@@ -341,7 +341,7 @@ class OperationSubItemActivityForm(OperationSubItemForm):
         fields = ['ordering', 'activity', 'activity_supplier', 'sales_currency', 'sales_price', 'cost_currency', 'cost_price', 'notes']
         ordering = ['ordering', 'activity', 'activity_supplier', 'sales_price', 'sales_currency', 'cost_price', 'cost_currency', 'notes']
 
-class OperationSubItemOtherForm(OperationSubItemForm):
+class OperationSubItemOtherPriceForm(OperationSubItemForm):
     class Meta:
         model = OperationSubItem
         fields = ['ordering', 'other_price_description', 'sales_currency', 'sales_price', 'cost_currency', 'cost_price', 'notes']
@@ -353,13 +353,26 @@ class OperationItemVehicleForm(BaseOperationForm):
         fields = [
             'pick_time', 'pick_up_location', 'drop_off_location',
             'vehicle_type', 'vehicle_supplier', 'driver_name',
-            'driver_phone', 'vehicle_plate_no', 'sales_price',
-            'sales_currency', 'cost_price', 'cost_currency', 'notes'
+            'driver_phone', 'vehicle_plate_no', 'cost_price', 'cost_currency', 'notes'
         ]
-        ordering = ['pick_time', 'pick_up_location', 'drop_off_location', 'vehicle_type', 'vehicle_supplier', 'driver_name', 'driver_phone', 'vehicle_plate_no', 'sales_price', 'sales_currency', 'cost_price', 'cost_currency', 'notes']
+        ordering = ['pick_time', 'pick_up_location', 'drop_off_location', 'vehicle_type', 'vehicle_supplier', 'driver_name', 'driver_phone', 'vehicle_plate_no', 'cost_price', 'cost_currency', 'notes']
         widgets = {
             'pick_time': forms.TimeInput(attrs={'type': 'time'}),
         }
+class OperationItemNoVehicleGuideForm(BaseOperationForm):
+    class Meta:
+        model = OperationItem
+        fields = [
+            'pick_time', 'pick_up_location', 'drop_off_location',
+            'no_vehicle_guide', 'sales_price', 'sales_currency',
+            'cost_price', 'cost_currency', 'notes'
+        ]
+        ordering = ['pick_time', 'pick_up_location', 'drop_off_location', 'no_vehicle_guide', 'sales_price', 'sales_currency', 'cost_price', 'cost_currency', 'notes']
+        widgets = {
+            'pick_time': forms.TimeInput(attrs={'type': 'time'}),
+        }
+
+
 class OperationItemNoVehicleTourForm(BaseOperationForm):
     class Meta:
         model = OperationItem

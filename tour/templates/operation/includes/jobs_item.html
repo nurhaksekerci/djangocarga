@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-md">
+        <h6 class="card-title">Alış Saati</h6>
+        <p class="card-text">{{ item.pick_time|default:"-"|date:"H:i" }}</p>
+    </div>
+    <div class="col-md">
+        <h6 class="card-title">Alış Yeri</h6>
+        <p class="card-text">{{ item.pick_up_location|default:"-"|upper }}</p>
+    </div>
+    <div class="col-md">
+        <h6 class="card-title">Bırakış Yeri</h6>
+        <p class="card-text">{{ item.drop_off_location|default:"-"|upper }}</p>
+    </div>
+    {% if item.item_type == "VEHICLE" %}
+        <div class="col-md">
+            <h6 class="card-title">Araç</h6>
+            <p class="card-text">{{ item.vehicle_type|default:"-"|upper }}</p>
+        </div>
+        <div class="col-md">
+            <h6 class="card-title">Araç Tedarikçisi</h6>
+            <p class="card-text">{{ item.vehicle_supplier|default:"-"|upper }}</p>
+        </div>
+        <div class="col-md">
+            <h6 class="card-title">Araç Plaka Numarası</h6>
+            <p class="card-text">{{ item.vehicle_plate_no|default:"-"|upper }}</p>
+        </div>
+        <div class="col-md">
+            <h6 class="card-title">Şoför</h6>
+            <p class="card-text">{{ item.driver_name|default:"-"|upper }}</p>
+        </div>
+        <div class="col-md">
+            <h6 class="card-title">Şoför Telefon</h6>
+            <p class="card-text">{{ item.driver_phone|default:"-"|upper }}</p>
+        </div>
+    {% elif item.item_type == "NO_VEHICLE_TOUR" %}
+        <div class="col-md">
+            <h6 class="card-title">Tur</h6>
+            <p class="card-text">{{ item.no_vehicle_tour|default:"-"|upper }}</p>
+        </div>
+    {% elif item.item_type == "NO_VEHICLE_ACTIVITY" %}
+        <div class="col-md">
+            <h6 class="card-title">Aktivite</h6>
+            <p class="card-text">{{ item.no_vehicle_activity|default:"-"|upper }}</p>
+        </div>
+        <div class="col-md">
+            <h6 class="card-title">Aktivite Tedarikçisi</h6>
+            <p class="card-text">{{ item.activity_supplier|default:"-"|upper }}</p>
+        </div>
+    {% elif item.item_type == "NO_VEHICLE_GUIDE" %}
+        <div class="col-md">
+            <h6 class="card-title">Rehber Var</h6>
+            <p class="card-text">{{ item.is_guide|yesno:"EVET,HAYIR" }}</p>
+        </div>
+        <div class="col-md">
+            <h6 class="card-title">Rehber</h6>
+            <p class="card-text">{{ item.no_vehicle_guide|default:"-"|upper }}</p>
+        </div>
+    {% endif %}
+    <div class="col-md">
+        <h6 class="card-title">Maliyet</h6>
+        <p class="card-text">{{ item.cost_price|default:"-"|upper }} {{ item.cost_currency|default:"-"|upper }}</p>
+    </div>
+    {% if item.item_type != "VEHICLE" %}
+        <div class="col-md">
+            <h6 class="card-title">Satış Fiyatı</h6>
+            <p class="card-text">{{ item.sales_price|default:"-"|upper }} {{ item.sales_currency|default:"-"|upper }}</p>
+        </div>
+    {% endif %}
+    <div class="col-md">
+        <h6 class="card-title">Notlar</h6>
+        <p class="card-text">{{ item.notes|default:"-"|upper }}</p>
+    </div>
+</div>

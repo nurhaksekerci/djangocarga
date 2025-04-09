@@ -4,3 +4,5 @@
 # Bu dosya templatetags paketinin bir Python paketi olduğunu belirtir 
 
 # Bu dosya boş olmalı 
+
+# Bu dosya, templatetags dizininin bir Python paketi olduğunu belirtir. 

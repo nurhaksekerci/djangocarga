@@ -4,50 +4,81 @@ from . import views
 app_name = 'tour'  # Namespace tanımı
 
 urlpatterns = [
+    # Kullanıcı İşlemleri
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
-    path('password-reset/', views.password_reset_request, name='password_reset'),
-    path('password-reset/confirm/<str:token>/', views.password_reset_verify, name='password_reset_confirm'),
-    path('generic/<str:model>/', views.generic_list_view, name='list'),
-    path('generic/<str:model>/<int:pk>/update/', views.generic_update_view, name='update'),
-    path('generic/<str:model>/<int:pk>/delete/', views.generic_delete_view, name='delete'),
-    path('operation/create/', views.create_operation, name='create_operation'),
-    path('operation/list/', views.operation_list, name='operation_list'),
-    path('operation/<int:operation_id>/customer/create/', views.create_operation_customer, name='create_operation_customer'),
-    path('operation/<int:operation_id>/sales-price/create/', views.create_operation_sales_price, name='create_operation_sales_price'),
-    path('operation/<int:operation_id>/item/create/', views.create_operation_item, name='create_operation_item'),
-    path('operation/<int:operation_id>/item/vehicle/create/', views.create_operation_item_vehicle, name='create_operation_item_vehicle'),
-    path('operation/<int:operation_id>/item/no-vehicle/create/', views.create_operation_item_no_vehicle, name='create_operation_item_no_vehicle'),
-    path('operation/<int:operation_id>/item/activity/create/', views.create_operation_item_activity, name='create_operation_item_activity'),
-    path('operation/sub-item/other/create/', views.create_operation_sub_item_other_price, name='create_operation_sub_item_other_price'),
-    path('operation/sub-item/guide/create/', views.create_operation_sub_item_guide, name='create_operation_sub_item_guide'),
-    path('operation/sub-item/hotel/create/', views.create_operation_sub_item_hotel, name='create_operation_sub_item_hotel'),
-    path('operation/sub-item/museum/create/', views.create_operation_sub_item_museum, name='create_operation_sub_item_museum'),
-    path('operation/sub-item/tour/create/', views.create_operation_sub_item_tour, name='create_operation_sub_item_tour'),
-    path('operation/sub-item/transfer/create/', views.create_operation_sub_item_transfer, name='create_operation_sub_item_transfer'),
-    path('operation/sub-item/activity/create/', views.create_operation_sub_item_activity, name='create_operation_sub_item_activity'),
-    path('sms/send/', views.send_sms, name='send_sms'),
-    path('operation/jobs/', views.jobs, name='jobs'),
-    path('operation/sub-item/other/<int:operation_sub_item_id>/update/', views.update_operation_sub_item_other_price, name='update_operation_sub_item_other_price'),
-    path('operation/sub-item/guide/<int:operation_sub_item_id>/update/', views.update_operation_sub_item_guide, name='update_operation_sub_item_guide'),
-    path('operation/sub-item/hotel/<int:operation_sub_item_id>/update/', views.update_operation_sub_item_hotel, name='update_operation_sub_item_hotel'),
-    path('operation/sub-item/museum/<int:operation_sub_item_id>/update/', views.update_operation_sub_item_museum, name='update_operation_sub_item_museum'),
-    path('operation/sub-item/tour/<int:operation_sub_item_id>/update/', views.update_operation_sub_item_tour, name='update_operation_sub_item_tour'),
-    path('operation/sub-item/transfer/<int:operation_sub_item_id>/update/', views.update_operation_sub_item_transfer, name='update_operation_sub_item_transfer'),
-    path('operation/sub-item/activity/<int:operation_sub_item_id>/update/', views.update_operation_sub_item_activity, name='update_operation_sub_item_activity'),
-    path('operation/item/vehicle/<int:operation_item_id>/update/', views.update_operation_item_vehicle, name='update_operation_item_vehicle'),
-    path('operation/item/no-vehicle/<int:operation_item_id>/update/', views.update_operation_item_no_vehicle, name='update_operation_item_no_vehicle'),
-    path('operation/item/activity/<int:operation_item_id>/update/', views.update_operation_item_activity, name='update_operation_item_activity'),
-    path('operation/<int:operation_id>/update/', views.update_operation, name='update_operation'),
-    path('operation/customer/<int:operation_customer_id>/update/', views.update_operation_customer, name='update_operation_customer'),
-    path('operation/sales-price/<int:operation_sales_price_id>/update/', views.update_operation_sales_price, name='update_operation_sales_price'),
+    path('password-reset/', views.password_reset_request, name='password_reset_request'),
+    path('password-reset/verify/<str:uidb64>/<str:token>/', views.password_reset_verify, name='password_reset_verify'),
+    # Generic Views
+    path('list/<str:model>/', views.generic_list_view, name='list'),
+    path('create/<str:model>/', views.generic_create_view, name='create'),
+    path('detail/<str:model>/<int:pk>/', views.generic_detail_view, name='detail'),
+    path('update/<str:model>/<int:pk>/', views.generic_update_view, name='update'),
+    path('delete/<str:model>/<int:pk>/', views.generic_delete_view, name='delete'),
+    path('export/<str:model>/', views.generic_export_view, name='export'),
+    
+    #Operation
+    path('operation/<int:operation_id>/', views.operation, name='operation'),
+    path('operation/update/<int:operation_id>/', views.operation_update, name='operation_update'),
     path('operation/toggle/<int:operation_id>/', views.toggle_operation, name='toggle_operation'),
+    path('operation/customer/toggle/<int:operation_customer_id>/', views.toggle_operation_customer, name='toggle_operation_customer'),
+    path('operation/sales_price/toggle/<int:operation_sales_price_id>/', views.toggle_operation_sales_price, name='toggle_operation_sales_price'),
     path('operation/day/toggle/<int:operation_day_id>/', views.toggle_operation_day, name='toggle_operation_day'),
     path('operation/item/toggle/<int:operation_item_id>/', views.toggle_operation_item, name='toggle_operation_item'),
-    path('operation/sub-item/toggle/<int:operation_sub_item_id>/', views.toggle_operation_sub_item, name='toggle_operation_sub_item'),
-    path('operation/customer/toggle/<int:operation_customer_id>/', views.toggle_customer, name='toggle_customer'),
-    path('operation/sales-price/toggle/<int:operation_sales_price_id>/', views.toggle_sales_price, name='toggle_sales_price'),
-    path('support/create/', views.create_support, name='create_support'),
-    path('support/list/', views.support_list, name='support_list'),
-    path('', views.jobs),
-] 
+    path('operation/sub_item/toggle/<int:operation_sub_item_id>/', views.toggle_operation_sub_item, name='toggle_operation_sub_item'),
+    path('operation/customer/update/<int:operation_customer_id>/', views.operation_customer_update, name='operation_customer_update'),
+    path('operation/sales_price/update/<int:operation_sales_price_id>/', views.operation_sales_price_update, name='operation_sales_price_update'),
+
+    #Operation Item
+    path('operation/day/<int:operation_day_id>/no_vehicle_activity_item_create/', views.no_vehicle_activity_item_create, name='no_vehicle_activity_item_create'),
+    path('operation/day/<int:operation_day_id>/no_vehicle_tour_item_create/', views.no_vehicle_tour_item_create, name='no_vehicle_tour_item_create'),
+    path('operation/day/<int:operation_day_id>/no_vehicle_guide_item_create/', views.no_vehicle_guide_item_create, name='no_vehicle_guide_item_create'),
+    path('operation/day/<int:operation_day_id>/vehicle_item_create/', views.vehicle_item_create, name='vehicle_item_create'),
+
+    #Operation Item Update
+    path('operation/item/no_vehicle_activity_item_update/<int:operation_item_id>/', views.no_vehicle_activity_item_update, name='no_vehicle_activity_item_update'),
+    path('operation/item/no_vehicle_tour_item_update/<int:operation_item_id>/', views.no_vehicle_tour_item_update, name='no_vehicle_tour_item_update'),
+    path('operation/item/no_vehicle_guide_item_update/<int:operation_item_id>/', views.no_vehicle_guide_item_update, name='no_vehicle_guide_item_update'),
+    path('operation/item/vehicle_item_update/<int:operation_item_id>/', views.vehicle_item_update, name='vehicle_item_update'),
+
+    #Operation Sub Item
+    path('operation/sub_item/tour_create/<int:operation_item_id>/', views.sub_item_tour_create, name='sub_item_tour_create'),
+    path('operation/sub_item/transfer_create/<int:operation_item_id>/', views.sub_item_transfer_create, name='sub_item_transfer_create'),
+    path('operation/sub_item/hotel_create/<int:operation_item_id>/', views.sub_item_hotel_create, name='sub_item_hotel_create'),
+    path('operation/sub_item/activity_create/<int:operation_item_id>/', views.sub_item_activity_create, name='sub_item_activity_create'),
+    path('operation/sub_item/museum_create/<int:operation_item_id>/', views.sub_item_museum_create, name='sub_item_museum_create'),
+    path('operation/sub_item/guide_create/<int:operation_item_id>/', views.sub_item_guide_create, name='sub_item_guide_create'),
+    path('operation/sub_item/other_price_create/<int:operation_item_id>/', views.sub_item_other_price_create, name='sub_item_other_price_create'),
+
+    #Operation Sub Item Update
+    path('operation/sub_item/tour_update/<int:operation_sub_item_id>/', views.sub_item_tour_update, name='sub_item_tour_update'),
+    path('operation/sub_item/transfer_update/<int:operation_sub_item_id>/', views.sub_item_transfer_update, name='sub_item_transfer_update'),
+    path('operation/sub_item/hotel_update/<int:operation_sub_item_id>/', views.sub_item_hotel_update, name='sub_item_hotel_update'),
+    path('operation/sub_item/activity_update/<int:operation_sub_item_id>/', views.sub_item_activity_update, name='sub_item_activity_update'),
+    path('operation/sub_item/museum_update/<int:operation_sub_item_id>/', views.sub_item_museum_update, name='sub_item_museum_update'),
+    path('operation/sub_item/guide_update/<int:operation_sub_item_id>/', views.sub_item_guide_update, name='sub_item_guide_update'),
+    path('operation/sub_item/other_price_update/<int:operation_sub_item_id>/', views.sub_item_other_price_update, name='sub_item_other_price_update'),
+
+    #Operation Customer
+    path('operation/<int:operation_id>/customer/create', views.operation_customer_create, name='operation_customer_create'),
+    path('operation/<int:operation_id>/sales_price/create', views.operation_sales_price_create, name='operation_sales_price_create'),
+
+    #Operation Create
+    path('operation/create', views.operation_create, name='operation_create'),
+    path('operation/list', views.operation_list, name='operation_list'),
+
+    #Operation Jobs
+    path('operation/jobs', views.operation_jobs, name='operation_jobs'),
+    path('operation/jobs/vehicle_item_update/<int:operation_item_id>/', views.jobs_vehicle_item_update, name='jobs_vehicle_item_update'),
+    path('operation/jobs/no_vehicle_tour_item_update/<int:operation_item_id>/', views.jobs_no_vehicle_tour_item_update, name='jobs_no_vehicle_tour_item_update'),
+    path('operation/jobs/no_vehicle_activity_item_update/<int:operation_item_id>/', views.jobs_no_vehicle_activity_item_update, name='jobs_no_vehicle_activity_item_update'),
+    path('operation/jobs/no_vehicle_guide_item_update/<int:operation_item_id>/', views.jobs_no_vehicle_guide_item_update, name='jobs_no_vehicle_guide_item_update'),
+    path('operation/jobs/sub_item/hotel_update/<int:operation_sub_item_id>/', views.jobs_sub_item_hotel_update, name='jobs_sub_item_hotel_update'),
+    path('operation/jobs/sub_item/activity_update/<int:operation_sub_item_id>/', views.jobs_sub_item_activity_update, name='jobs_sub_item_activity_update'),
+    path('operation/jobs/sub_item/museum_update/<int:operation_sub_item_id>/', views.jobs_sub_item_museum_update, name='jobs_sub_item_museum_update'),
+    path('operation/jobs/sub_item/guide_update/<int:operation_sub_item_id>/', views.jobs_sub_item_guide_update, name='jobs_sub_item_guide_update'),
+    path('operation/jobs/sub_item/other_price_update/<int:operation_sub_item_id>/', views.jobs_sub_item_other_price_update, name='jobs_sub_item_other_price_update'),
+    path('operation/jobs/sub_item/transfer_update/<int:operation_sub_item_id>/', views.jobs_sub_item_transfer_update, name='jobs_sub_item_transfer_update'),
+    path('operation/jobs/sub_item/tour_update/<int:operation_sub_item_id>/', views.jobs_sub_item_tour_update, name='jobs_sub_item_tour_update'),
+    path('operation/jobs/my', views.my_operation_jobs, name='my_operation_jobs'),
+]   

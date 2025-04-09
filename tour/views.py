@@ -1,8 +1,9 @@
 from gettext import translation
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib import messages
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.apps import apps
 from django.core.cache import cache
@@ -24,10 +25,10 @@ from tour.models import (
 from .services import LoginService, PasswordResetService, sms
 from .forms import (
     CurrencyForm, CityForm, DistrictForm, NeighborhoodForm, 
-    OperationItemActivityForm, OperationItemNoVehicleTourForm, 
+    OperationItemActivityForm, OperationItemNoVehicleGuideForm, OperationItemNoVehicleTourForm, 
     OperationItemVehicleForm, OperationSubItemActivityForm, 
     OperationSubItemGuideForm, OperationSubItemHotelForm, 
-    OperationSubItemMuseumForm, OperationSubItemOtherForm, 
+    OperationSubItemMuseumForm, OperationSubItemOtherPriceForm, 
     OperationSubItemTourForm, OperationSubItemTransferForm, SendSmsForm, SupportForm,
     VehicleTypeForm, BuyerCompanyForm, TourForm, NoVehicleTourForm, 
     TransferForm, HotelForm, MuseumForm, ActivityForm, GuideForm, 
@@ -36,10 +37,28 @@ from .forms import (
     OperationSalesPriceForm
 )
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils import timezone
 from django.db import transaction
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
+def send_sms(request):
+    if request.method == 'POST':
+        form = SendSmsForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data['users']
+            message = form.cleaned_data['message']
+            full_message = f"{user.first_name}, Mesajınız: {message} Gönderen: {request.user.first_name} {request.user.last_name} {request.user.role.title()}"
+            sms(user.phone, full_message)
+            messages.success(request, 'SMS başarıyla gönderildi.')
+            return redirect('tour:send_sms')
+    else:
+        form = SendSmsForm()
+    return render(request, 'header/send_sms.html', {'form': form})
+
+
+#Authentications
 def password_reset_request(request):
     """Parola sıfırlama kodu gönderme sayfası"""
     if request.method == 'POST':
@@ -52,11 +71,11 @@ def password_reset_request(request):
         
         if success:
             messages.success(request, message)
-            return redirect('password_reset_verify', phone=phone)
+            return redirect('tour:password_reset_verify', phone=phone)
         else:
             messages.error(request, message)
     
-    return render(request, 'tour/password-reset.html')
+    return render(request, 'auth/password-reset.html')
 
 def password_reset_verify(request, phone):
     """Parola sıfırlama kodunu doğrulama sayfası"""
@@ -87,18 +106,18 @@ def password_reset_verify(request, phone):
             
             if success:
                 messages.success(request, message)
-                return redirect('login')
+                return redirect('tour:login')
             else:
                 messages.error(request, message)
         
-        return render(request, 'tour/password_reset_verify.html', {'user': user})
+        return render(request, 'auth/password_reset_verify.html', {'user': user})
     except CustomUser.DoesNotExist:
         messages.error(request, _('Kullanıcı bulunamadı.'))
-        return redirect('password_reset_request')
+        return redirect('auth:password_reset_request')
 
-
-# Create your views here.
 def login_view(request):
+    if request.user.is_authenticated:
+            return redirect('tour:jobs')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -121,19 +140,31 @@ def login_view(request):
         else:
             messages.error(request, _('Geçersiz kullanıcı adı veya şifre.'))
     
-    return render(request, 'tour/login.html')
+    return render(request, 'auth/login.html')
 
 def logout_view(request):
     logout(request)
     messages.success(request, _('Başarıyla çıkış yaptınız.'))
     return redirect('tour:login')
 
-
+#Generic Views
 @login_required
 def generic_list_view(request, model):
     try:
         model_class = apps.get_model(app_label="tour", model_name=model)
         objects = model_class.objects.all()
+        
+        # Arama işlemi
+        search_query = request.GET.get('search', '')
+        if search_query:
+            from django.db.models import Q
+            search_filters = Q()
+            for field in model_class._meta.fields:
+                if field.get_internal_type() in ['CharField', 'TextField']:
+                    search_filters |= Q(**{f"{field.name}__icontains": search_query})
+                elif field.get_internal_type() in ['ForeignKey']:
+                    search_filters |= Q(**{f"{field.name}__name__icontains": search_query})
+            objects = objects.filter(search_filters)
         
         # Form sınıfını belirle
         form_classes = {
@@ -150,7 +181,6 @@ def generic_list_view(request, model):
             'VehicleSupplier': VehicleSupplierForm,
             'ActivitySupplier': ActivitySupplierForm,
             'VehicleCost': VehicleCostForm,
-            'ActivityCost': ActivityCostForm,
         }
         
         form_class = form_classes.get(model)
@@ -158,21 +188,47 @@ def generic_list_view(request, model):
             raise ValueError(f'Form sınıfı bulunamadı: {model}')
             
         if request.method == 'POST':
-            form = form_class(request.POST)
+            form = form_class(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
-                messages.success(request, 'Kayıt başarıyla eklendi.')
+                messages.success(request, 'Kayıt başarıyla oluşturuldu.')
+                
+                # HTMX isteği ise sadece form şablonunu döndür
+                if request.headers.get('HX-Request'):
+                    return render(request, 'generic/generic_form.html', {'form': form_class()})
+                    
                 return redirect('tour:list', model=model)
         else:
             form = form_class()
             
+        # Sayfalama işlemi
+        paginator = Paginator(objects, 100)  # Her sayfada 100 kayıt göster
+        page = request.GET.get('page')
+        
+        try:
+            objects = paginator.page(page)
+        except PageNotAnInteger:
+            objects = paginator.page(1)
+        except EmptyPage:
+            objects = paginator.page(paginator.num_pages)
+            
         context = {
-            'items': objects,
             'page_title': f'{model} Listesi',
             'model': model,
-            'form': form
+            'form': form,
+            'objects': objects,
+            'fields': model_class._meta.fields,
+            'detail_url': 'tour:detail',
+            'update_url': 'tour:update',
+            'delete_url': 'tour:delete',
+            'search_query': search_query,  # Arama sorgusunu context'e ekle
         }
-        return render(request, 'includes/list.html', context)
+        
+        # HTMX isteği ise sadece tablo şablonunu döndür
+        if request.headers.get('HX-Request'):
+            return render(request, 'generic/generic_table.html', context)
+            
+        return render(request, 'generic/generic.html', context)
         
     except (LookupError, ValueError) as e:
         messages.error(request, f'Model bulunamadı: {str(e)}')
@@ -207,10 +263,38 @@ def generic_update_view(request, model, pk):
             raise ValueError(f'Form sınıfı bulunamadı: {model}')
             
         if request.method == 'POST':
-            form = form_class(request.POST, instance=object)
+            form = form_class(request.POST, request.FILES, instance=object)
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Kayıt başarıyla güncellendi.')
+                
+                # HTMX isteği ise hem tablo hem de form verilerini döndür
+                if request.headers.get('HX-Request'):
+                    # Tablo verilerini hazırla
+                    table_context = {
+                        'objects': model_class.objects.all(),
+                        'fields': model_class._meta.fields,
+                        'detail_url': 'tour:detail',
+                        'update_url': 'tour:update',
+                        'delete_url': 'tour:delete',
+                        'model': model
+                    }
+                    
+                    # Tablo HTML'ini oluştur
+                    table_html = render(request, 'generic/generic_table.html', table_context).content.decode('utf-8')
+                    
+                    # Form verilerini hazırla
+                    form_context = {
+                        'form': form_class(),
+                        'model': model
+                    }
+                    
+                    # Form HTML'ini oluştur
+                    form_html = render(request, 'generic/generic_form.html', form_context).content.decode('utf-8')
+                    
+                    # Her iki HTML'i birleştir
+                    return HttpResponse(form_html + table_html)
+                    
                 return redirect('tour:list', model=model)
         else:
             form = form_class(instance=object)  
@@ -219,9 +303,15 @@ def generic_update_view(request, model, pk):
             'item': object,
             'page_title': f'{model} Düzenle',
             'model': model,
-            'form': form
+            'form': form,
+            'object': object
         }
-        return render(request, 'includes/update_form.html', context)
+        
+        # HTMX isteği ise sadece güncelleme form şablonunu döndür
+        if request.headers.get('HX-Request'):
+            return render(request, 'generic/generic_update_form.html', context)
+            
+        return render(request, 'generic/generic_update_form.html', context)
         
     except (LookupError, ValueError) as e:
         messages.error(request, f'Model bulunamadı: {str(e)}')
@@ -240,6 +330,10 @@ def generic_delete_view(request, model, pk):
         obj.delete()
         messages.success(request, 'Kayıt başarıyla silindi.')
         
+        # HTMX isteği ise boş yanıt döndür (satır zaten silinecek)
+        if request.headers.get('HX-Request'):
+            return HttpResponse('')
+        
         # Liste sayfasına yönlendir
         return redirect('tour:list', model=model)
         
@@ -251,920 +345,194 @@ def generic_delete_view(request, model, pk):
         return render(request, 'tour/error.html', {'error': 'Bir hata oluştu'})
 
 
-
-
+@login_required
+def generic_export_view(request, model):
+    try:
+        model_class = apps.get_model(app_label="tour", model_name=model)
+        objects = model_class.objects.all()
+        
+        # Excel dosyası oluştur
+        from openpyxl import Workbook
+        from openpyxl.styles import Font, PatternFill, Alignment
+        from django.http import HttpResponse
+        
+        # Yeni bir Excel çalışma kitabı oluştur
+        wb = Workbook()
+        ws = wb.active
+        ws.title = model
+        
+        # Başlık satırı için stil tanımla
+        header_font = Font(bold=True)
+        header_fill = PatternFill(start_color="CCCCCC", end_color="CCCCCC", fill_type="solid")
+        header_alignment = Alignment(horizontal="center", vertical="center")
+        
+        # Başlık satırını ekle
+        headers = [field.verbose_name for field in model_class._meta.fields]
+        for col, header in enumerate(headers, 1):
+            cell = ws.cell(row=1, column=col, value=header)
+            cell.font = header_font
+            cell.fill = header_fill
+            cell.alignment = header_alignment
+        
+        # Veri satırlarını ekle
+        for row, obj in enumerate(objects, 2):
+            for col, field in enumerate(model_class._meta.fields, 1):
+                value = getattr(obj, field.name)
+                
+                # İlişkili alanları işle
+                if hasattr(value, '_meta'):  # Eğer değer bir model nesnesi ise
+                    value = str(value)
+                elif field.name == 'image' and value:
+                    value = value.url
+                elif field.name == 'date' and value:
+                    value = value.strftime('%d.%m.%Y')
+                elif field.name == 'time' and value:
+                    value = value.strftime('%H:%M')
+                elif field.name == 'is_active' and value is not None:
+                    value = 'Aktif' if value else 'Pasif'
+                elif field.name == 'created_at' and value:
+                    value = value.strftime('%d.%m.%Y %H:%M')
+                elif field.name == 'updated_at' and value:
+                    value = value.strftime('%d.%m.%Y %H:%M')
+                
+                ws.cell(row=row, column=col, value=value)
+        
+        # Sütun genişliklerini otomatik ayarla
+        for column in ws.columns:
+            max_length = 0
+            column_letter = column[0].column_letter
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(str(cell.value))
+                except:
+                    pass
+            adjusted_width = (max_length + 2)
+            ws.column_dimensions[column_letter].width = adjusted_width
+        
+        # Excel dosyasını HTTP yanıtı olarak döndür
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f'attachment; filename="{model.lower()}_export.xlsx"'
+        wb.save(response)
+        
+        return response
+        
+    except Exception as e:
+        messages.error(request, f'Dışa aktarma hatası: {str(e)}')
+        return redirect('tour:list', model=model)
 
 @login_required
-def create_operation(request):
-    if request.method == 'POST':
-        form = OperationForm(request.POST)
-        if form.is_valid():
-            operation = form.save(commit=False)
-            operation.created_by = request.user
-            operation.save()
-            messages.success(request, 'İşlem başarıyla oluşturuldu.')
-            return redirect('tour:create_operation_customer', operation_id=operation.id)
-    else:
-        form = OperationForm()
-    return render(request, 'operation/create_operation.html', {'form': form, 'page_title': 'Operasyon Oluştur'})
-
-@login_required
-def update_operation(request, operation_id):
-    operation = get_object_or_404(Operation, id=operation_id)
-    if request.method == 'POST':
-        form = OperationForm(request.POST, instance=operation)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'İşlem başarıyla güncellendi.')
-            next_url = request.GET.get('next')
-            if next_url:
-                return redirect(next_url)
-            return redirect('tour:operation_list')
-    else:
-        form = OperationForm(instance=operation)
-    return render(request, 'operation/modals/operation_modal.html', {'form': form, 'operation': operation, 'page_title': 'Operasyon Güncelle'})
-
-@login_required
-def create_operation_customer(request, operation_id):
-    operation = get_object_or_404(Operation, id=operation_id)
-    customers = OperationCustomer.objects.filter(operation=operation)
-    if request.method == 'POST':
-        form = OperationCustomerForm(request.POST)
-        if form.is_valid():
-            customer = form.save(commit=False)
-            customer.operation = operation
-            customer.save()
-            messages.success(request, 'Müşteri başarıyla oluşturuldu.')
-            return redirect('tour:create_operation_customer', operation_id=operation_id)
-    else:
-        form = OperationCustomerForm()
-    return render(request, 'operation/create_customer.html', {'form': form, 'operation': operation, 'customers': customers, 'page_title': 'Müşteri Oluştur'})
-
-@login_required
-def update_operation_customer(request, operation_customer_id):
-    operation_customer = get_object_or_404(OperationCustomer, id=operation_customer_id)
-    if request.method == 'POST':
-        form = OperationCustomerForm(request.POST, instance=operation_customer)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Müşteri başarıyla güncellendi.')
-            next_url = request.GET.get('next')
-            if next_url:
-                return redirect(next_url)
-            return redirect('tour:create_operation_customer', operation_id=operation_customer.operation.id)
-        else:
-            print(form.errors)
-    else:
-        form = OperationCustomerForm(instance=operation_customer)
-    return render(request, 'operation/update_customer.html', {'form': form, 'operation_customer': operation_customer, 'page_title': 'Müşteri Güncelle'})
-
-@login_required
-def create_operation_sales_price(request, operation_id):
-    operation = get_object_or_404(Operation, id=operation_id)
-    customers = OperationCustomer.objects.filter(operation=operation)
-    sales_prices = OperationSalesPrice.objects.filter(operation=operation)
-    if request.method == 'POST':
-        form = OperationSalesPriceForm(request.POST)
-        if form.is_valid():
-            sales_price = form.save(commit=False)
-            sales_price.operation = operation
-            sales_price.save() 
-            messages.success(request, 'Satış fiyatı başarıyla oluşturuldu.')
-            return redirect('tour:create_operation_sales_price', operation_id=operation_id)
-    else:
-        form = OperationSalesPriceForm()
-    return render(request, 'operation/create_sales_price.html', {'form': form, 'operation': operation, 'customers': customers, 'sales_prices': sales_prices, 'page_title': 'Satış Fiyatı Oluştur'})
-
-@login_required
-def update_operation_sales_price(request, operation_sales_price_id):
-    operation_sales_price = get_object_or_404(OperationSalesPrice, id=operation_sales_price_id)
-    if request.method == 'POST':
-        form = OperationSalesPriceForm(request.POST, instance=operation_sales_price)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Satış fiyatı başarıyla güncellendi.')
-            next_url = request.GET.get('next')
-            if next_url:
-                return redirect(next_url)
-            return redirect('tour:create_operation_sales_price', operation_id=operation_sales_price.operation.id)
-    else:
-        form = OperationSalesPriceForm(instance=operation_sales_price)
-    return render(request, 'operation/update_sales_price.html', {'form': form, 'operation_sales_price': operation_sales_price, 'page_title': 'Satış Fiyatı Güncelle'})
-
-
-@login_required
-def create_operation_item(request, operation_id):
-    # Ana operasyon verisini al
-    operation = get_object_or_404(Operation.objects.select_related(
-        'buyer_company',
-        'created_by',
-        'follow_by'
-    ).prefetch_related(
-        'customers',
-        'sales_prices'
-    ), id=operation_id)
-
-    # Müşterileri ve satış fiyatlarını al
-    customers = operation.customers.filter(is_active=True).order_by('first_name', 'last_name')
-    sales_prices = operation.sales_prices.filter(is_active=True)
-
-    # Operasyon güncelleme formunu oluştur
-    operation_form = OperationForm(instance=operation)
-    
-    # Her müşteri için ayrı form oluştur
-    customer_forms = {}
-    for customer in customers:
-        customer_forms[customer.id] = OperationCustomerForm(instance=customer)
-
-    # Satış fiyatları için ayrı form oluştur
-    sales_price_forms = {}
-    for sales_price in sales_prices:
-        sales_price_forms[sales_price.id] = OperationSalesPriceForm(instance=sales_price)
-
-    # Operasyon günlerini al
-    operation_days = operation.days.filter(is_active=True).order_by('date')
-
-    # Operasyon öğelerini al
-    operation_items = OperationItem.objects.filter(operation_day__in=operation_days, is_active=True)
-
-    operation_sub_items = OperationSubItem.objects.filter(operation_item__in=operation_items, is_active=True)
-
-    vehicle_forms = {}
-    for item in operation_items:
-        if item.item_type == 'VEHICLE':
-            vehicle_forms[item.id] = OperationItemVehicleForm(instance=item)
-
-    no_vehicle_tour_forms = {}
-    for item in operation_items:
-        if item.item_type == 'NO_VEHICLE_TOUR':
-            no_vehicle_tour_forms[item.id] = OperationItemNoVehicleTourForm(instance=item)
-            
-    no_vehicle_activity_forms = {}
-    for item in operation_items:
-        if item.item_type == 'NO_VEHICLE_ACTIVITY':
-            no_vehicle_activity_forms[item.id] = OperationItemActivityForm(instance=item)
-
-    tour_forms = {}
-    for item in operation_sub_items:
-        if item.subitem_type == 'TOUR':
-            tour_forms[item.id] = OperationSubItemTourForm(instance=item)
-
-    transfer_forms = {}
-    for item in operation_sub_items:
-        if item.subitem_type == 'TRANSFER':
-            transfer_forms[item.id] = OperationSubItemTransferForm(instance=item)
-
-    museum_forms = {}
-    for item in operation_sub_items:
-        if item.subitem_type == 'MUSEUM':
-            museum_forms[item.id] = OperationSubItemMuseumForm(instance=item)
-
-    hotel_forms = {}
-    for item in operation_sub_items:
-        if item.subitem_type == 'HOTEL':
-            hotel_forms[item.id] = OperationSubItemHotelForm(instance=item)
-            
-    guide_forms = {}
-    for item in operation_sub_items:
-        if item.subitem_type == 'GUIDE':
-            guide_forms[item.id] = OperationSubItemGuideForm(instance=item)
-
-    activity_forms = {}
-    for item in operation_sub_items:
-        if item.subitem_type == 'ACTIVITY':
-            activity_forms[item.id] = OperationSubItemActivityForm(instance=item)
-
-    other_forms = {}
-    for item in operation_sub_items:
-        if item.subitem_type == 'OTHER_PRICE':
-            other_forms[item.id] = OperationSubItemOtherForm(instance=item)
-
-    # Form seçeneklerini önbellekten al veya oluştur
-    form_choices = cache.get('form_choices')
-    if not form_choices:
-        # Tüm seçenekleri tek seferde yükle ve önbelleğe al
-        form_choices = {
-            'currencies': Currency.objects.all(),
-            'vehicle_types': VehicleType.objects.all(),
-            'vehicle_suppliers': VehicleSupplier.objects.all(),
-            'no_vehicle_tours': NoVehicleTour.objects.all(),
-            'no_vehicle_activities': Activity.objects.all(),
-            'tours': Tour.objects.select_related('start_city', 'end_city').all(),
-            'transfers': Transfer.objects.select_related('start_city', 'end_city').all(),
-            'museums': Museum.objects.all(),
-            'hotels': Hotel.objects.select_related('city').all(),
-            'guides': Guide.objects.all(),
-            'activity_suppliers': ActivitySupplier.objects.all()
+def generic_detail_view(request, model, pk):
+    try:
+        # Model sınıfını al
+        model_class = apps.get_model(app_label="tour", model_name=model)
+        # Nesneyi bul
+        obj = get_object_or_404(model_class, pk=pk)
+        
+        # Form sınıfını belirle
+        form_classes = {
+            'Currency': CurrencyForm,
+            'VehicleType': VehicleTypeForm,
+            'BuyerCompany': BuyerCompanyForm,
+            'Tour': TourForm,
+            'NoVehicleTour': NoVehicleTourForm,
+            'Transfer': TransferForm,
+            'Hotel': HotelForm,
+            'Museum': MuseumForm,
+            'Activity': ActivityForm,
+            'Guide': GuideForm,
+            'VehicleSupplier': VehicleSupplierForm,
+            'ActivitySupplier': ActivitySupplierForm,
+            'VehicleCost': VehicleCostForm,
+            'ActivityCost': ActivityCostForm,
         }
         
-        # Seçenekleri önbelleğe al (1 saat)
-        cache.set('form_choices', form_choices, 3600)
-
-    # Form sınıflarını hazırla
-    form_kwargs = {
-        'use_required_attribute': False,
-        'initial': {'currency': form_choices['currencies'].first()}
-    }
-
-    # Form sınıflarını oluştur
-    form_classes = {
-        'vehicle': OperationItemVehicleForm,
-        'no_vehicle_tour': OperationItemNoVehicleTourForm,
-        'no_vehicle_activity': OperationItemActivityForm
-    }
-
-    # Form alanlarını önbellekten gelen verilerle doldur
-    forms = {}
-    for form_name, form_class in form_classes.items():
-        form = form_class(**form_kwargs)
-        for field_name, field in form.fields.items():
-            if field_name in form_choices:
-                if isinstance(field, ModelChoiceField):
-                    field.queryset = form_choices[field_name]
-                elif isinstance(field, ModelMultipleChoiceField):
-                    field.queryset = form_choices[field_name]
-                elif isinstance(field, ChoiceField):
-                    field.choices = [(obj.id, str(obj)) for obj in form_choices[field_name]]
-        forms[form_name] = form
-
-    # Alt öğe formlarını oluştur
-    subitem_forms = {
-        'transfer': OperationSubItemTransferForm(**form_kwargs),
-        'tour': OperationSubItemTourForm(**form_kwargs),
-        'museum': OperationSubItemMuseumForm(**form_kwargs),
-        'hotel': OperationSubItemHotelForm(**form_kwargs),
-        'guide': OperationSubItemGuideForm(**form_kwargs),
-        'activity': OperationSubItemActivityForm(**form_kwargs),
-        'other': OperationSubItemOtherForm(**form_kwargs)
-    }
-
-    # Alt öğe formlarının alanlarını doldur
-    for form in subitem_forms.values():
-        for field_name, field in form.fields.items():
-            if field_name in form_choices:
-                if isinstance(field, ModelChoiceField):
-                    field.queryset = form_choices[field_name]
-                elif isinstance(field, ModelMultipleChoiceField):
-                    field.queryset = form_choices[field_name]
-                elif isinstance(field, ChoiceField):
-                    field.choices = [(obj.id, str(obj)) for obj in form_choices[field_name]]
-
-    # Operasyon günlerini al
-    operation_days = operation.days.filter(is_active=True).order_by('date')
-
-    grouped_items = {}
-    for item in operation_items:
-        date = item.operation_day.date
-        if date not in grouped_items:
-            grouped_items[date] = []
-        grouped_items[date].append(item)
-
-    # Operasyon öğelerini al
-    operation_items = OperationItem.objects.filter(
-        operation_day__operation=operation
-    ).select_related(
-        'operation_day',
-        'vehicle_type',
-        'vehicle_supplier',
-        'no_vehicle_tour',
-        'no_vehicle_activity',
-        'activity_supplier',
-        'sales_currency',
-        'cost_currency'
-    ).prefetch_related(
-        'subitems',
-        'subitems__tour',
-        'subitems__transfer',
-        'subitems__hotel',
-        'subitems__guide',
-        'subitems__activity',
-        'subitems__activity_supplier',
-        'subitems__sales_currency',
-        'subitems__cost_currency',
-        'subitems__museums'
-    ).order_by('operation_day__date', 'pick_time')
-
-
-
-    context = {
-        'operation': operation,
-        'customers': customers,
-        'sales_prices': sales_prices,
-        'forms': forms,
-        'subitem_forms': subitem_forms,
-        'operation_days': operation_days,
-        'grouped_items': grouped_items,
-        'operation_items': operation_items,
-        'form_choices': form_choices,
-        'operation_form': operation_form,
-        'customer_forms': customer_forms,
-        'sales_price_forms': sales_price_forms,
-        'vehicle_forms': vehicle_forms,
-        'no_vehicle_tour_forms': no_vehicle_tour_forms,
-        'no_vehicle_activity_forms': no_vehicle_activity_forms,
-        'tour_forms': tour_forms,
-        'transfer_forms': transfer_forms,
-        'museum_forms': museum_forms,
-        'hotel_forms': hotel_forms,
-        'guide_forms': guide_forms,
-        'activity_forms': activity_forms,
-        'other_forms': other_forms,
-        'operation_sub_items': operation_sub_items,
-        'page_title': 'Operasyon Detayı'
-    }
-
-    return render(request, 'operation/create_item.html', context)
+        form_class = form_classes.get(model)
+        if not form_class:
+            raise ValueError(f'Form sınıfı bulunamadı: {model}')
+            
+        # Form oluştur (salt okunur)
+        form = form_class(instance=obj)
+        for field in form.fields.values():
+            field.disabled = True
+            
+        context = {
+            'item': obj,
+            'page_title': f'{model} Detayı',
+            'model': model,
+            'form': form,
+            'fields': model_class._meta.fields,
+        }
+        
+        # HTMX isteği ise sadece form şablonunu döndür
+        if request.headers.get('HX-Request'):
+            return render(request, 'generic/generic_form.html', context)
+            
+        return render(request, 'generic/generic_detail.html', context)
+        
+    except (LookupError, ValueError) as e:
+        messages.error(request, f'Model bulunamadı: {str(e)}')
+        return render(request, 'tour/error.html', {'error': 'Model bulunamadı'})
 
 @login_required
-def create_operation_item_vehicle(request, operation_id):
-    operation = get_object_or_404(Operation, id=operation_id)
-    if request.method == 'POST':
-        form = OperationItemVehicleForm(request.POST)
-        operation_day = request.POST.get('operation_day')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_day = OperationDay.objects.get(id=operation_day)
-            item.item_type = 'VEHICLE'
-            item.save()
-            messages.success(request, 'Araç başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_id)
+def generic_create_view(request, model):
+    try:
+        model_class = apps.get_model(app_label="tour", model_name=model)
+        
+        # Form sınıfını belirle
+        form_classes = {
+            'Currency': CurrencyForm,
+            'VehicleType': VehicleTypeForm,
+            'BuyerCompany': BuyerCompanyForm,
+            'Tour': TourForm,
+            'NoVehicleTour': NoVehicleTourForm,
+            'Transfer': TransferForm,
+            'Hotel': HotelForm,
+            'Museum': MuseumForm,
+            'Activity': ActivityForm,
+            'Guide': GuideForm,
+            'VehicleSupplier': VehicleSupplierForm,
+            'ActivitySupplier': ActivitySupplierForm,
+            'VehicleCost': VehicleCostForm,
+        }
+        
+        form_class = form_classes.get(model)
+        if not form_class:
+            raise ValueError(f'Form sınıfı bulunamadı: {model}')
+            
+        if request.method == 'POST':
+            form = form_class(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Kayıt başarıyla oluşturuldu.')
+                
+                # HTMX isteği ise sadece form şablonunu döndür
+                if request.headers.get('HX-Request'):
+                    return render(request, 'generic/generic_form.html', {'form': form_class()})
+                    
+                return redirect('tour:list', model=model)
         else:
-            print(form.errors)
-    else:
-        form = OperationItemVehicleForm()
-    return render(request, 'operation/modals/item_vehicle_modal.html', {'form': form, 'operation': operation})
-
-@login_required
-def update_operation_item_vehicle(request, operation_item_id):
-    operation_item = get_object_or_404(OperationItem, id=operation_item_id)
-    if request.method == 'POST':
-        form = OperationItemVehicleForm(request.POST, instance=operation_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Araç başarıyla güncellendi.')
-            next_url = request.GET.get('next')
-            if next_url:
-                return redirect(next_url)
-            return redirect('tour:create_operation_item', operation_id=operation_item.operation_day.operation.id)
-        else:
-            print(form.errors)
-    else:
-        form = OperationItemVehicleForm(instance=operation_item)
-    return render(request, 'operation/modals/item_vehicle_modal.html', {'form': form, 'operation': operation_item.operation_day.operation})
-
-@login_required
-def create_operation_item_no_vehicle(request, operation_id):
-    operation = get_object_or_404(Operation, id=operation_id)
-    if request.method == 'POST':
-        form = OperationItemNoVehicleTourForm(request.POST)
-        operation_day = request.POST.get('operation_day')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_day = OperationDay.objects.get(id=operation_day)
-            item.item_type = 'NO_VEHICLE_TOUR'
-            item.save()
-            messages.success(request, 'Araçsız tur başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_id)
-    else:
-        form = OperationItemNoVehicleTourForm()
-    return render(request, 'operation/modals/item_no_vehicle_modal.html', {'form': form, 'operation': operation})
-
-@login_required
-def update_operation_item_no_vehicle(request, operation_item_id):
-    operation_item = get_object_or_404(OperationItem, id=operation_item_id)
-    if request.method == 'POST':
-        form = OperationItemNoVehicleTourForm(request.POST, instance=operation_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Araçsız tur başarıyla güncellendi.')
-            next_url = request.GET.get('next')
-            if next_url:
-                return redirect(next_url)
-            return redirect('tour:create_operation_item', operation_id=operation_item.operation_day.operation.id)
-    else:
-        form = OperationItemNoVehicleTourForm(instance=operation_item)
-    return render(request, 'operation/modals/item_no_vehicle_modal.html', {'form': form, 'operation': operation_item.operation_day.operation})
-
-@login_required
-def create_operation_item_activity(request, operation_id):
-    operation = get_object_or_404(Operation, id=operation_id)
-    if request.method == 'POST':
-        form = OperationItemActivityForm(request.POST)
-        operation_day = request.POST.get('operation_day')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_day = OperationDay.objects.get(id=operation_day)
-            item.item_type = 'NO_VEHICLE_ACTIVITY'
-            item.save()
-            messages.success(request, 'Aktivite başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_id)
-    else:
-        form = OperationItemActivityForm()
-    return render(request, 'operation/modals/item_activity_modal.html', {'form': form, 'operation': operation})
-
-@login_required
-def update_operation_item_activity(request, operation_item_id):
-    operation_item = get_object_or_404(OperationItem, id=operation_item_id)
-    if request.method == 'POST':
-        form = OperationItemActivityForm(request.POST, instance=operation_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Aktivite başarıyla güncellendi.')
-            next_url = request.GET.get('next')
-            if next_url:
-                return redirect(next_url)
-            return redirect('tour:create_operation_item', operation_id=operation_item.operation_day.operation.id)
-    else:
-        form = OperationItemActivityForm(instance=operation_item)
-    return render(request, 'operation/modals/item_activity_modal.html', {'form': form, 'operation': operation_item.operation_day.operation})
-
-@login_required
-def create_operation_sub_item_tour(request):
-    if request.method == 'POST':
-        form = OperationSubItemTourForm(request.POST)
-        operation_item_id = request.POST.get('operation_item_id')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_item = OperationItem.objects.get(id=operation_item_id)
-            item.subitem_type = 'TOUR'
-            item.save()
-            messages.success(request, 'Tur başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemTourForm()
-    return render(request, 'operation/modals/sub_item_tour_modal.html', {'form': form})
-
-@login_required
-def update_operation_sub_item_tour(request, operation_sub_item_id):
-    operation_sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
-    if request.method == 'POST':
-        form = OperationSubItemTourForm(request.POST, instance=operation_sub_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Tur başarıyla güncellendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_sub_item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemTourForm(instance=operation_sub_item)
-    return render(request, 'operation/modals/sub_item_tour_modal.html', {'form': form})
-
-@login_required
-def create_operation_sub_item_transfer(request):
-    if request.method == 'POST':
-        form = OperationSubItemTransferForm(request.POST)
-        operation_item_id = request.POST.get('operation_item_id')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_item = OperationItem.objects.get(id=operation_item_id)
-            item.subitem_type = 'TRANSFER'
-            item.save()
-            messages.success(request, 'Transfer başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemTransferForm()
-    return render(request, 'operation/modals/sub_item_transfer_modal.html', {'form': form})
-
-@login_required
-def update_operation_sub_item_transfer(request, operation_sub_item_id):
-    operation_sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
-    if request.method == 'POST':
-        form = OperationSubItemTransferForm(request.POST, instance=operation_sub_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Transfer başarıyla güncellendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_sub_item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemTransferForm(instance=operation_sub_item)
-    return render(request, 'operation/modals/sub_item_transfer_modal.html', {'form': form})
-
-@login_required
-def create_operation_sub_item_museum(request):
-    if request.method == 'POST':
-        form = OperationSubItemMuseumForm(request.POST)
-        operation_item_id = request.POST.get('operation_item_id')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_item = OperationItem.objects.get(id=operation_item_id)
-            item.subitem_type = 'MUSEUM'
-            item.save()
-            messages.success(request, 'Müze başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemMuseumForm()
-    return render(request, 'operation/modals/sub_item_museum_modal.html', {'form': form})
-
-@login_required
-def update_operation_sub_item_museum(request, operation_sub_item_id):
-    operation_sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
-    if request.method == 'POST':
-        form = OperationSubItemMuseumForm(request.POST, instance=operation_sub_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Müze başarıyla güncellendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_sub_item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemMuseumForm(instance=operation_sub_item)
-    return render(request, 'operation/modals/sub_item_museum_modal.html', {'form': form})
-
-@login_required
-def create_operation_sub_item_hotel(request):
-    if request.method == 'POST':
-        form = OperationSubItemHotelForm(request.POST)
-        operation_item_id = request.POST.get('operation_item_id')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_item = OperationItem.objects.get(id=operation_item_id)
-            item.subitem_type = 'HOTEL'
-            item.save()
-            messages.success(request, 'Otel başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemHotelForm()
-    return render(request, 'operation/modals/sub_item_hotel_modal.html', {'form': form})
-
-@login_required
-def update_operation_sub_item_hotel(request, operation_sub_item_id):
-    operation_sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
-    if request.method == 'POST':
-        form = OperationSubItemHotelForm(request.POST, instance=operation_sub_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Otel başarıyla güncellendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_sub_item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemHotelForm(instance=operation_sub_item)
-    return render(request, 'operation/modals/sub_item_hotel_modal.html', {'form': form})
-
-@login_required
-def create_operation_sub_item_guide(request):
-    if request.method == 'POST':
-        form = OperationSubItemGuideForm(request.POST)
-        operation_item_id = request.POST.get('operation_item_id')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_item = OperationItem.objects.get(id=operation_item_id)
-            item.subitem_type = 'GUIDE'
-            item.save()
-            messages.success(request, 'Rehber başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=item.operation_item.operation_day.operation.id)
-        else:
-            print(form.errors)
-    else:
-        form = OperationSubItemGuideForm()
-    return render(request, 'operation/modals/guide_modal.html', {'form': form})
-
-@login_required
-def update_operation_sub_item_guide(request, operation_sub_item_id):
-    operation_sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
-    if request.method == 'POST':
-        form = OperationSubItemGuideForm(request.POST, instance=operation_sub_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Rehber başarıyla güncellendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_sub_item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemGuideForm(instance=operation_sub_item)
-    return render(request, 'operation/modals/guide_modal.html', {'form': form})
-
-@login_required
-def create_operation_sub_item_activity(request): 
-    if request.method == 'POST':
-        form = OperationSubItemActivityForm(request.POST)
-        operation_item_id = request.POST.get('operation_item_id')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_item = OperationItem.objects.get(id=operation_item_id)
-            item.subitem_type = 'ACTIVITY'
-            item.save()
-            messages.success(request, 'Aktivite başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemActivityForm()
-    return render(request, 'operation/modals/sub_item_activity_modal.html', {'form': form})
-
-def update_operation_sub_item_activity(request, operation_sub_item_id):
-    operation_sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
-    if request.method == 'POST':
-        form = OperationSubItemActivityForm(request.POST, instance=operation_sub_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Aktivite başarıyla güncellendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_sub_item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemActivityForm(instance=operation_sub_item)
-    return render(request, 'operation/modals/sub_item_activity_modal.html', {'form': form})
-
-@login_required
-def create_operation_sub_item_other_price(request): 
-    if request.method == 'POST':
-        form = OperationSubItemOtherForm(request.POST)
-        operation_item_id = request.POST.get('operation_item_id')
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.operation_item = OperationItem.objects.get(id=operation_item_id)
-            item.subitem_type = 'OTHER_PRICE'
-            item.save()
-            messages.success(request, 'Diğer fiyat başarıyla eklendi.')
-            return redirect('tour:create_operation_item', operation_id=item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemOtherForm()
-    return render(request, 'operation/modals/sub_item_other_price_modal.html', {'form': form})
-
-@login_required
-def update_operation_sub_item_other_price(request, operation_sub_item_id):
-    operation_sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
-    if request.method == 'POST':
-        form = OperationSubItemOtherForm(request.POST, instance=operation_sub_item)
-        if form.is_valid():
-            item = form.save()
-            messages.success(request, 'Diğer fiyat başarıyla güncellendi.')
-            return redirect('tour:create_operation_item', operation_id=operation_sub_item.operation_item.operation_day.operation.id)
-    else:
-        form = OperationSubItemOtherForm(instance=operation_sub_item)
-    return render(request, 'operation/modals/sub_item_other_price_modal.html', {'form': form})
-
-@login_required
-def operation_list(request):
-    # Ay seçenekleri
-    months = [
-        ('1', 'Ocak'), ('2', 'Şubat'), ('3', 'Mart'), ('4', 'Nisan'),
-        ('5', 'Mayıs'), ('6', 'Haziran'), ('7', 'Temmuz'), ('8', 'Ağustos'),
-        ('9', 'Eylül'), ('10', 'Ekim'), ('11', 'Kasım'), ('12', 'Aralık')
-    ]
-    
-    # Seçili ayı al veya mevcut ayı kullan
-    selected_month = request.GET.get('month', str(timezone.now().month))
-    
-    # Operasyonları al
-    operations = Operation.objects.all()
-    
-    # Arama parametrelerini al
-    reference_number = request.GET.get('reference_number', '')
-    buyer_company = request.GET.get('buyer_company', '')
-    follow_by = request.GET.get('follow_by', '')
-    
-    # Filtreleme işlemleri
-    if reference_number:
-        operations = operations.filter(reference_number__icontains=reference_number)
-    if buyer_company:
-        operations = operations.filter(buyer_company__name__icontains=buyer_company)
-    if follow_by:
-        operations = operations.filter(follow_by__first_name__icontains=follow_by) | \
-                    operations.filter(follow_by__last_name__icontains=follow_by)
-    
-    # Ay filtresi uygula
-    operations = operations.filter(start_date__month=selected_month)
-    
-    # Sıralama
-    operations = operations.order_by('-created_at')
-    
-    return render(request, 'operation/list.html', {
-        'operations': operations,
-        'reference_number': reference_number,
-        'buyer_company': buyer_company,
-        'follow_by': follow_by,
-        'months': months,
-        'selected_month': selected_month,
-        'page_title': 'Operasyonlar'
-    })
-
-
-
-
-def send_sms(request):
-    if request.method == 'POST':
-        form = SendSmsForm(request.POST)
-        if form.is_valid():
-            user = form.cleaned_data['users']
-            message = form.cleaned_data['message']
-            full_message = f"{user.first_name}, Mesajınız: {message} Gönderen: {request.user.first_name} {request.user.last_name} {request.user.role.title()}"
-            sms(user.phone, full_message)
-            messages.success(request, 'SMS başarıyla gönderildi.')
-            return redirect('tour:send_sms')
-    else:
-        form = SendSmsForm()
-    return render(request, 'header/send_sms.html', {'form': form})
-
-
-def check_item_info(item):
-    """Item için eksik veri kontrolü yapar"""
-    missing_info = []
-    
-    # Araçlı item kontrolleri
-    if item.item_type == 'VEHICLE':
-        if not item.pick_time:
-            missing_info.append("Alış saati")
-        if not item.pick_up_location:
-            missing_info.append("Alış lokasyonu")
-        if not item.drop_off_location:
-            missing_info.append("Bırakış lokasyonu")
-        if not item.vehicle_type:
-            missing_info.append("Araç tipi")
-        if not item.vehicle_supplier:
-            missing_info.append("Araç tedarikçisi")
-        if not item.driver_name:
-            missing_info.append("Şoför adı")
-        if not item.driver_phone:
-            missing_info.append("Şoför telefonu")
-        if not item.vehicle_plate_no:
-            missing_info.append("Araç plakası")
-        if not item.cost_price:
-            missing_info.append("Maliyet tutarı")
-        if not item.cost_currency:
-            missing_info.append("Maliyet para birimi")
+            form = form_class()
+            
+        context = {
+            'page_title': f'{model} Oluştur',
+            'model': model,
+            'form': form
+        }
         
-        # Araç maliyeti kontrolü
-        if item.vehicle_supplier and not VehicleCost.objects.filter(
-            supplier=item.vehicle_supplier,
-            tour=item.subitems.first().tour if item.subitems.first() and item.subitems.first().tour else None,
-            transfer=item.subitems.first().transfer if item.subitems.first() and item.subitems.first().transfer else None,
-            is_active=True
-        ).exists():
-            missing_info.append("Araç maliyet kaydı")
-
-    # Araçsız tur kontrolleri
-    elif item.item_type == 'NO_VEHICLE_TOUR':
-        if not item.pick_time:
-            missing_info.append("Başlangıç saati")
-        if not item.pick_up_location:
-            missing_info.append("Başlangıç lokasyonu")
-        if not item.drop_off_location:
-            missing_info.append("Bitiş lokasyonu")
-        if not item.no_vehicle_tour:
-            missing_info.append("Araçsız tur")
-        if not item.sales_price:
-            missing_info.append("Satış tutarı")
-        if not item.sales_currency:
-            missing_info.append("Satış para birimi")
-        if not item.cost_price:
-            missing_info.append("Maliyet tutarı")
-        if not item.cost_currency:
-            missing_info.append("Maliyet para birimi")
-
-    # Araçsız aktivite kontrolleri
-    elif item.item_type == 'NO_VEHICLE_ACTIVITY':
-        if not item.pick_time:
-            missing_info.append("Başlangıç saati")
-        if not item.pick_up_location:
-            missing_info.append("Başlangıç lokasyonu")
-        if not item.drop_off_location:
-            missing_info.append("Bitiş lokasyonu")
-        if not item.no_vehicle_activity:
-            missing_info.append("Araçsız aktivite")
-        if not item.activity_supplier:
-            missing_info.append("Aktivite tedarikçisi")
-        if not item.sales_price:
-            missing_info.append("Satış tutarı")
-        if not item.sales_currency:
-            missing_info.append("Satış para birimi")
-        if not item.cost_price:
-            missing_info.append("Maliyet tutarı")
-        if not item.cost_currency:
-            missing_info.append("Maliyet para birimi")
-
-    # Alt öğeler için kontroller
-    for subitem in item.subitems.all():
-        # Tur veya transfer kontrolü
-        if not subitem.tour and not subitem.transfer:
-            missing_info.append("Tur/Transfer")
+        # HTMX isteği ise sadece form şablonunu döndür
+        if request.headers.get('HX-Request'):
+            return render(request, 'generic/generic_form.html', context)
+            
+        return render(request, 'generic/generic_form.html', context)
         
-        # Subitem tiplerine göre kontroller
-        if subitem.subitem_type == 'TOUR':
-            if not subitem.tour:
-                missing_info.append("Tur seçilmemiş")
-            if not subitem.guide:
-                missing_info.append("Rehber seçilmemiş")
-            if not subitem.sales_price:
-                missing_info.append(f"Tur satış tutarı")
-            if not subitem.sales_currency:
-                missing_info.append(f"Tur satış para birimi")
-            if not subitem.cost_price:
-                missing_info.append(f"Tur maliyet tutarı")
-            if not subitem.cost_currency:
-                missing_info.append(f"Tur maliyet para birimi")
-            
-        elif subitem.subitem_type == 'TRANSFER':
-            if not subitem.transfer:
-                missing_info.append("Transfer seçilmemiş")
-            if not subitem.sales_price:
-                missing_info.append(f"Transfer satış tutarı")
-            if not subitem.sales_currency:
-                missing_info.append(f"Transfer satış para birimi")
-            if not subitem.cost_price:
-                missing_info.append(f"Transfer maliyet tutarı")
-            if not subitem.cost_currency:
-                missing_info.append(f"Transfer maliyet para birimi")
-            
-        elif subitem.subitem_type == 'HOTEL':
-            if not subitem.hotel:
-                missing_info.append("Otel seçilmemiş")
-            if not subitem.sales_price:
-                missing_info.append(f"Otel satış tutarı")
-            if not subitem.sales_currency:
-                missing_info.append(f"Otel satış para birimi")
-            if not subitem.cost_price:
-                missing_info.append(f"Otel maliyet tutarı")
-            if not subitem.cost_currency:
-                missing_info.append(f"Otel maliyet para birimi")
-            
-        elif subitem.subitem_type == 'GUIDE':
-            if not subitem.guide:
-                missing_info.append("Rehber seçilmemiş")
-            if not subitem.cost_price:
-                missing_info.append(f"Rehber maliyet tutarı")
-            if not subitem.cost_currency:
-                missing_info.append(f"Rehber maliyet para birimi")
-            
-        elif subitem.subitem_type == 'ACTIVITY':
-            if not subitem.activity:
-                missing_info.append("Aktivite seçilmemiş")
-            if not subitem.activity_supplier:
-                missing_info.append("Aktivite tedarikçisi seçilmemiş")
-            if not subitem.sales_price:
-                missing_info.append(f"Aktivite satış tutarı")
-            if not subitem.sales_currency:
-                missing_info.append(f"Aktivite satış para birimi")
-            if not subitem.cost_price:
-                missing_info.append(f"Aktivite maliyet tutarı")
-            if not subitem.cost_currency:
-                missing_info.append(f"Aktivite maliyet para birimi")
-            
-        elif subitem.subitem_type == 'MUSEUM':
-            if not subitem.museums.exists():
-                missing_info.append("Müze seçilmemiş")
-            if not subitem.sales_price:
-                missing_info.append(f"Müze satış tutarı")
-            if not subitem.sales_currency:
-                missing_info.append(f"Müze satış para birimi")
-            if not subitem.cost_price:
-                missing_info.append(f"Müze maliyet tutarı")
-            if not subitem.cost_currency:
-                missing_info.append(f"Müze maliyet para birimi")
-            
-        elif subitem.subitem_type == 'OTHER_PRICE':
-            if not subitem.description:
-                missing_info.append("Diğer fiyat açıklaması")
-            if not subitem.sales_price:
-                missing_info.append(f"Diğer fiyat satış tutarı")
-            if not subitem.sales_currency:
-                missing_info.append(f"Diğer fiyat satış para birimi")
-            if not subitem.cost_price:
-                missing_info.append(f"Diğer fiyat maliyet tutarı")
-            if not subitem.cost_currency:
-                missing_info.append(f"Diğer fiyat maliyet para birimi")
+    except (LookupError, ValueError) as e:
+        messages.error(request, f'Model bulunamadı: {str(e)}')
+        return render(request, 'tour/error.html', {'error': 'Model bulunamadı'})
 
-    return list(set(missing_info))  # Tekrar eden eksikleri temizle
 
-@login_required
-def jobs(request):
-    # Bugünün tarihini al
-    today = timezone.now().date()
-    
-    # Bugünden başlayarak 7 günlük operasyon günlerini al
-    days = OperationDay.objects.filter(
-        date__gte=today,
-        date__lt=today + timezone.timedelta(days=7)
-    ).select_related(
-        'operation',
-        'operation__buyer_company',
-        'operation__follow_by'
-    ).prefetch_related(
-        'items',
-        'items__vehicle_type',
-        'items__vehicle_supplier',
-        'items__no_vehicle_tour',
-        'items__no_vehicle_activity',
-        'items__activity_supplier',
-        'items__subitems',
-        'items__subitems__tour',
-        'items__subitems__transfer',
-        'items__subitems__hotel',
-        'items__subitems__guide',
-        'items__subitems__activity',
-        'items__subitems__activity_supplier',
-        'items__subitems__museums'
-    ).order_by('date')
-    
-    # Günleri tarihe göre grupla ve item bilgilerini ekle
-    grouped_days = {}
-    for day in days:
-        if day.date not in grouped_days:
-            grouped_days[day.date] = []
-        
-        # Her item için eksik bilgileri kontrol et
-        for item in day.items.filter(is_active=True):
-            item.missing_info = check_item_info(item)
-        
-        grouped_days[day.date].append(day)
-    
-    # Tarihleri sırala
-    grouped_days = dict(sorted(grouped_days.items()))
-    
-    return render(request, 'operation/jobs.html', {
-        'grouped_days': grouped_days,
-        'today': today,
-        'page_title': '7 Günlük Operasyon Programı'
-    })
-
+#Operasyon İşlemleri
+#Operasyon Durumunu Değiştir
 @login_required
 def toggle_operation(request, operation_id):
     operation = get_object_or_404(Operation, id=operation_id)
@@ -1186,26 +554,29 @@ def toggle_operation(request, operation_id):
         OperationSubItem.objects.filter(operation_item__operation_day__operation=operation).update(is_active=new_status)
     return redirect('tour:operation_list')
 
+#Operasyon Müşteri Durumunu Değiştir
 @login_required
-def toggle_customer(request, operation_customer_id):
+def toggle_operation_customer(request, operation_customer_id):
     customer = get_object_or_404(OperationCustomer, id=operation_customer_id)
     customer.is_active = not customer.is_active
     customer.save()
     next_url = request.GET.get('next')
     if next_url:
         return redirect(next_url)
-    return redirect('tour:operation_list')
+    return redirect('tour:operation_day_create', operation_id=customer.operation.id)
 
+#Operasyon Satış Fiyatı Durumunu Değiştir
 @login_required
-def toggle_sales_price(request, operation_sales_price_id):
+def toggle_operation_sales_price(request, operation_sales_price_id):
     sales_price = get_object_or_404(OperationSalesPrice, id=operation_sales_price_id)
     sales_price.is_active = not sales_price.is_active
     sales_price.save()
     next_url = request.GET.get('next')
     if next_url:
         return redirect(next_url)
-    return redirect('tour:operation_list')
+    return redirect('tour:operation_day_create', operation_id=sales_price.operation.id)
 
+#Operasyon Gün Durumunu Değiştir
 @login_required
 def toggle_operation_day(request, operation_day_id):
     operation_day = get_object_or_404(OperationDay, id=operation_day_id)
@@ -1224,8 +595,9 @@ def toggle_operation_day(request, operation_day_id):
         OperationSubItem.objects.filter(operation_item__operation_day=operation_day).update(is_active=new_status)
     if next_url:
         return redirect(next_url)
-    return redirect('tour:operation_list')
+    return redirect('tour:operation_day_create', operation_id=operation_day.operation.id)
 
+#Operasyon Öğe Durumunu Değiştir
 @login_required
 def toggle_operation_item(request, operation_item_id):
     operation_item = get_object_or_404(OperationItem, id=operation_item_id)
@@ -1241,8 +613,9 @@ def toggle_operation_item(request, operation_item_id):
         OperationSubItem.objects.filter(operation_item=operation_item).update(is_active=new_status)
     if next_url:
         return redirect(next_url)
-    return redirect('tour:operation_list')
+    return redirect('tour:operation_day_create', operation_id=operation_item.operation_day.operation.id)
 
+#Operasyon Alt Öğe Durumunu Değiştir
 @login_required
 def toggle_operation_sub_item(request, operation_sub_item_id):
     operation_sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
@@ -1251,24 +624,1710 @@ def toggle_operation_sub_item(request, operation_sub_item_id):
     next_url = request.GET.get('next')
     if next_url:
         return redirect(next_url)
-    return redirect('tour:operation_list')
+    return redirect('tour:operation_day_create', operation_id=operation_sub_item.operation_item.operation_day.operation.id)
 
-@login_required
-def create_support(request):
+#Operasyon İşlemleri
+#Operasyon Görüntüle
+def operation(request, operation_id):
+    operation = get_object_or_404(Operation, id=operation_id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    return render(request, 'operation/operation.html', {
+        'operation': operation, 
+        'customers': customers, 
+        'sales_prices': sales_prices, 
+        'days': days, 
+        'items': items, 
+        'sub_items': sub_items
+    })
+
+def operation_update(request, operation_id):
+    operation = get_object_or_404(Operation, id=operation_id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationForm(instance=operation)
     if request.method == 'POST':
-        form = SupportForm(request.POST)
+        form = OperationForm(request.POST, instance=operation)
         if form.is_valid():
-            support = form.save(commit=False)
-            support.user = request.user
-            support.save()
-            messages.success(request, 'Destek talebi başarıyla oluşturuldu.')
-            sms("905054471953", f"Destek talebi: {support.subject} {support.message}, Gönderen: {support.user.first_name} {support.user.last_name}")
-            return redirect('tour:create_support')
-    else:
-        form = SupportForm()
-    return render(request, 'header/send_sms.html', {'form': form})
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'page_title': 'Operasyon Düzenle',
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'operation': operation,
+        'page_title': 'Operasyon Düzenle',
+        'form': form,
+        'page_title': 'Operasyon Düzenle',
+        'post_url': reverse('tour:operation_update', args=[operation.id])
+    })
 
-@login_required
-def support_list(request):
-    supports = Support.objects.filter(is_active=True, user=request.user)
-    return render(request, 'header/support_list.html', {'supports': supports})
+def operation_customer_update(request, operation_customer_id):
+    customer = get_object_or_404(OperationCustomer, id=operation_customer_id)
+    operation = get_object_or_404(Operation, id=customer.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationCustomerForm(instance=customer)
+    if request.method == 'POST':
+        form = OperationCustomerForm(request.POST, instance=customer)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'customer': customer,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+        else:
+            print(form.errors)
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'customer': customer,
+        'operation': operation,
+        'page_title': 'Müşteri Düzenle',
+        'post_url': reverse('tour:operation_customer_update', args=[customer.id])
+    })
+
+
+def operation_sales_price_update(request, operation_sales_price_id):
+    sales_price = get_object_or_404(OperationSalesPrice, id=operation_sales_price_id)
+    operation = get_object_or_404(Operation, id=sales_price.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationSalesPriceForm(instance=sales_price)
+    if request.method == 'POST':
+        form = OperationSalesPriceForm(request.POST, instance=sales_price)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'sales_price': sales_price,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'sales_price': sales_price,
+        'operation': operation,
+        'page_title': 'Satış Fiyatı Düzenle',
+        'post_url': reverse('tour:operation_sales_price_update', args=[sales_price.id])
+    })
+
+
+def vehicle_item_create(request, operation_day_id):
+    day = get_object_or_404(OperationDay, id=operation_day_id)
+    operation = get_object_or_404(Operation, id=day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationItemVehicleForm()
+    if request.method == 'POST':
+        form = OperationItemVehicleForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.operation_day = day
+            item.item_type = "VEHICLE"
+            item.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+        else:
+            print(form.errors)
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'day': day,
+        'operation': operation,
+        'page_title': 'Araç Ekle',
+        'post_url': reverse('tour:vehicle_item_create', args=[day.id])
+    })
+
+def vehicle_item_update(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    day = get_object_or_404(OperationDay, id=item.operation_day.id)
+    operation = get_object_or_404(Operation, id=day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationItemVehicleForm(instance=item)
+    if request.method == 'POST':
+        form = OperationItemVehicleForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'day': day,
+        'operation': operation,
+        'page_title': 'Araç Düzenle',
+        'post_url': reverse('tour:vehicle_item_update', args=[item.id])
+    })
+            
+def no_vehicle_activity_item_create(request, operation_day_id):
+    day = get_object_or_404(OperationDay, id=operation_day_id)
+    operation = get_object_or_404(Operation, id=day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationItemActivityForm()
+    if request.method == 'POST':    
+        form = OperationItemActivityForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.operation_day = day
+            item.item_type = "NO_VEHICLE_ACTIVITY"
+            item.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'day': day,
+        'operation': operation,
+        'page_title': 'Araçsız Aktivite Ekle',
+        'post_url': reverse('tour:no_vehicle_activity_item_create', args=[day.id])
+    })
+
+def no_vehicle_activity_item_update(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    day = get_object_or_404(OperationDay, id=item.operation_day.id)
+    operation = get_object_or_404(Operation, id=day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationItemActivityForm(instance=item)
+    if request.method == 'POST':
+        form = OperationItemActivityForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'day': day,
+        'operation': operation,
+        'page_title': 'Araçsız Aktivite Düzenle',
+        'post_url': reverse('tour:no_vehicle_activity_item_update', args=[item.id])
+    })
+    
+        
+def no_vehicle_tour_item_create(request, operation_day_id):
+    day = get_object_or_404(OperationDay, id=operation_day_id)
+    operation = get_object_or_404(Operation, id=day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationItemNoVehicleTourForm()
+    if request.method == 'POST':
+        form = OperationItemNoVehicleTourForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.operation_day = day
+            item.item_type = "NO_VEHICLE_TOUR"
+            item.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'day': day,
+        'operation': operation,
+        'page_title': 'Araçsız Tur Ekle',
+        'post_url': reverse('tour:no_vehicle_tour_item_create', args=[day.id])
+    })
+
+def no_vehicle_tour_item_update(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    day = get_object_or_404(OperationDay, id=item.operation_day.id)
+    operation = get_object_or_404(Operation, id=day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationItemNoVehicleTourForm(instance=item)
+    if request.method == 'POST':
+        form = OperationItemNoVehicleTourForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'day': day,
+        'operation': operation,
+        'page_title': 'Araçsız Tur Düzenle',
+        'post_url': reverse('tour:no_vehicle_tour_item_update', args=[item.id])
+    })
+
+def no_vehicle_guide_item_create(request, operation_day_id):
+    day = get_object_or_404(OperationDay, id=operation_day_id)
+    operation = get_object_or_404(Operation, id=day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation') 
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationItemNoVehicleGuideForm()
+    if request.method == 'POST':
+        form = OperationItemNoVehicleGuideForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.operation_day = day
+            item.item_type = "NO_VEHICLE_GUIDE"
+            item.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'day': day,
+        'operation': operation,
+        'page_title': 'Araçsız Rehber Ekle',
+        'post_url': reverse('tour:no_vehicle_guide_item_create', args=[day.id])
+    })
+
+def no_vehicle_guide_item_update(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    day = get_object_or_404(OperationDay, id=item.operation_day.id)
+    operation = get_object_or_404(Operation, id=day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationItemNoVehicleGuideForm(instance=item)
+    if request.method == 'POST':
+        form = OperationItemNoVehicleGuideForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Araçsız Rehber Düzenle',
+        'post_url': reverse('tour:no_vehicle_guide_item_update', args=[item.id])
+    })
+
+
+def sub_item_tour_create(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    operation = get_object_or_404(Operation, id=item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationSubItemTourForm()
+    if request.method == 'POST':
+        form = OperationSubItemTourForm(request.POST)
+        if form.is_valid():
+            tour = form.save(commit=False)
+            tour.operation_item = item
+            tour.subitem_type = "TOUR"
+            tour.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Tur Ekle',
+        'post_url': reverse('tour:sub_item_tour_create', args=[item.id])
+    })
+
+def sub_item_tour_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    operation = get_object_or_404(Operation, id=sub_item.operation_item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationSubItemTourForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemTourForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Tur Düzenle',
+        'post_url': reverse('tour:sub_item_tour_update', args=[sub_item.id])
+    })
+
+def sub_item_transfer_create(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    operation = get_object_or_404(Operation, id=item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemTransferForm()
+    if request.method == 'POST':
+        form = OperationSubItemTransferForm(request.POST)
+        if form.is_valid():
+            transfer = form.save(commit=False)
+            transfer.operation_item = item
+            transfer.subitem_type = "TRANSFER"
+            transfer.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Transfer Ekle',
+        'post_url': reverse('tour:sub_item_transfer_create', args=[item.id])
+    })
+
+def sub_item_transfer_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    operation = get_object_or_404(Operation, id=sub_item.operation_item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemTransferForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemTransferForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Transfer Düzenle',
+        'post_url': reverse('tour:sub_item_transfer_update', args=[sub_item.id])
+    })
+
+def sub_item_hotel_create(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    operation = get_object_or_404(Operation, id=item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemHotelForm()
+    if request.method == 'POST':
+        form = OperationSubItemHotelForm(request.POST)
+        if form.is_valid():
+            hotel = form.save(commit=False)
+            hotel.operation_item = item
+            hotel.subitem_type = "HOTEL"
+            hotel.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Otel Ekle',
+        'post_url': reverse('tour:sub_item_hotel_create', args=[item.id])
+    })
+
+def sub_item_hotel_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    operation = get_object_or_404(Operation, id=sub_item.operation_item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemHotelForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemHotelForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Otel Düzenle',
+        'post_url': reverse('tour:sub_item_hotel_update', args=[sub_item.id])
+    })
+
+def sub_item_activity_create(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    operation = get_object_or_404(Operation, id=item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemActivityForm()
+    if request.method == 'POST':
+        form = OperationSubItemActivityForm(request.POST)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            activity.operation_item = item
+            activity.subitem_type = "ACTIVITY"
+            activity.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Aktivite Ekle',
+        'post_url': reverse('tour:sub_item_activity_create', args=[item.id])
+    })
+
+def sub_item_activity_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    operation = get_object_or_404(Operation, id=sub_item.operation_item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemActivityForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemActivityForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Aktivite Düzenle',
+        'post_url': reverse('tour:sub_item_activity_update', args=[sub_item.id])
+    })
+
+def sub_item_museum_create(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    operation = get_object_or_404(Operation, id=item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationSubItemMuseumForm()
+    if request.method == 'POST':
+        form = OperationSubItemMuseumForm(request.POST)
+        if form.is_valid():
+            museum = form.save(commit=False)
+            museum.operation_item = item
+            museum.subitem_type = "MUSEUM"
+            museum.save()
+            museum.museums.set(form.cleaned_data['museums'])
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+        else:
+            print(form.errors)
+
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Müze Ekle',
+        'post_url': reverse('tour:sub_item_museum_create', args=[item.id])
+    })
+
+def sub_item_museum_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    operation = get_object_or_404(Operation, id=sub_item.operation_item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationSubItemMuseumForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemMuseumForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            museum = form.save()
+            museum.museums.set(form.cleaned_data['museums'])
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+        else:
+            print(form.errors)
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Müze Düzenle',
+        'post_url': reverse('tour:sub_item_museum_update', args=[sub_item.id])
+    })
+
+def sub_item_guide_create(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    operation = get_object_or_404(Operation, id=item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemGuideForm()
+    if request.method == 'POST':
+        form = OperationSubItemGuideForm(request.POST)
+        if form.is_valid():
+            guide = form.save(commit=False)
+            guide.operation_item = item
+            guide.subitem_type = "GUIDE"
+            guide.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Rehber Ekle',
+        'post_url': reverse('tour:sub_item_guide_create', args=[item.id])
+    })
+
+def sub_item_guide_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    operation = get_object_or_404(Operation, id=sub_item.operation_item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemGuideForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemGuideForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Rehber Düzenle',
+        'post_url': reverse('tour:sub_item_guide_update', args=[sub_item.id])
+    })
+
+def sub_item_other_price_create(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    operation = get_object_or_404(Operation, id=item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemOtherPriceForm()
+    if request.method == 'POST':
+        form = OperationSubItemOtherPriceForm(request.POST)
+        if form.is_valid():
+            other_price = form.save(commit=False)
+            other_price.operation_item = item
+            other_price.subitem_type = "OTHER_PRICE"
+            other_price.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Masraf Ekle',
+        'post_url': reverse('tour:sub_item_other_price_create', args=[item.id])
+    })
+
+def sub_item_other_price_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    operation = get_object_or_404(Operation, id=sub_item.operation_item.operation_day.operation.id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSubItemOtherPriceForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemOtherPriceForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Masraf Düzenle',
+        'post_url': reverse('tour:sub_item_other_price_update', args=[sub_item.id])
+    })
+
+
+def operation_customer_create(request, operation_id):
+    operation = get_object_or_404(Operation, id=operation_id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    ).prefetch_related('museums')
+    form = OperationCustomerForm()
+    if request.method == 'POST':
+        form = OperationCustomerForm(request.POST)
+        if form.is_valid():
+            customer = form.save(commit=False)
+            customer.operation = operation
+            customer.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Müşteri Ekle',
+        'post_url': reverse('tour:operation_customer_create', args=[operation.id])
+    })
+
+
+def operation_sales_price_create(request, operation_id):
+    operation = get_object_or_404(Operation, id=operation_id)
+    customers = OperationCustomer.objects.filter(operation=operation).select_related('operation')
+    sales_prices = OperationSalesPrice.objects.filter(operation=operation).select_related('operation')
+    days = OperationDay.objects.filter(operation=operation).select_related('operation')
+    items = OperationItem.objects.filter(operation_day__in=days).select_related(
+        'operation_day',
+        'vehicle_type',
+        'vehicle_supplier',
+        'no_vehicle_tour',
+        'no_vehicle_activity',
+        'activity_supplier'
+    )
+    sub_items = OperationSubItem.objects.filter(operation_item__in=items).select_related(
+        'operation_item',
+        'tour',
+        'transfer',
+        'hotel',
+        'guide',
+        'activity',
+        'activity_supplier'
+    )
+    form = OperationSalesPriceForm()
+    if request.method == 'POST':
+        form = OperationSalesPriceForm(request.POST)
+        if form.is_valid():
+            sales_price = form.save(commit=False)
+            sales_price.operation = operation
+            sales_price.save()
+            return render(request, 'operation/includes/operation_detail.html', {
+                'form': form,
+                'operation': operation,
+                'customers': customers,
+                'sales_prices': sales_prices,
+                'days': days,
+                'items': items,
+                'sub_items': sub_items
+            })
+    return render(request, 'operation/forms/form.html', {
+        'form': form,
+        'operation': operation,
+        'page_title': 'Satış Fiyatı Ekle',
+        'post_url': reverse('tour:operation_sales_price_create', args=[operation.id])
+    })
+
+def operation_create(request):
+    form = OperationForm()
+    if request.method == 'POST':
+        form = OperationForm(request.POST)
+        if form.is_valid():
+            operation = form.save(commit=False)
+            operation.created_by = request.user
+            operation.save()
+            return redirect('tour:operation', operation_id=operation.id)
+    return render(request, 'operation/operation_create.html', {
+        'form': form,
+        'page_title': 'Operasyon Ekle',
+        'post_url': reverse('tour:operation_create')
+    })
+
+
+def operation_list(request):
+    # Filtreleme parametrelerini al
+    reference_number = request.GET.get('reference_number', '')
+    created_by = request.GET.get('created_by', '')
+    follow_by = request.GET.get('follow_by', '')
+    buyer_company = request.GET.get('buyer_company', '')
+    status = request.GET.get('status', '')
+    month = request.GET.get('month', '')
+
+    # Temel sorguyu oluştur
+    operations = Operation.objects.select_related(
+        'created_by',
+        'follow_by',
+        'buyer_company'
+    )
+
+    # Ay filtresi
+    if month:
+        operations = operations.filter(start_date__month=month)
+    else:
+        # Ay seçilmemişse mevcut ayı göster
+        current_month = datetime.now().month
+        operations = operations.filter(start_date__month=current_month)
+
+    # Diğer filtreleri uygula
+    if reference_number:
+        operations = operations.filter(reference_number__icontains=reference_number)
+    if created_by:
+        operations = operations.filter(created_by__username=created_by)
+    if follow_by:
+        operations = operations.filter(follow_by__username=follow_by)
+    if buyer_company:
+        operations = operations.filter(buyer_company__name=buyer_company)
+    if status:
+        operations = operations.filter(status=status)
+
+    # Filtreleme için gerekli verileri al
+    buyer_companies = BuyerCompany.objects.all()
+    users = CustomUser.objects.all()
+    status_choices = Operation.STATUS_CHOICES
+
+    # Ay seçenekleri
+    months = [
+        (1, 'Ocak'), (2, 'Şubat'), (3, 'Mart'), (4, 'Nisan'),
+        (5, 'Mayıs'), (6, 'Haziran'), (7, 'Temmuz'), (8, 'Ağustos'),
+        (9, 'Eylül'), (10, 'Ekim'), (11, 'Kasım'), (12, 'Aralık')
+    ]
+
+    context = {
+        'operations': operations,
+        'buyer_companies': buyer_companies,
+        'users': users,
+        'status_choices': status_choices,
+        'months': months,
+        'current_month': int(month) if month else datetime.now().month,
+        'filters': {
+            'reference_number': reference_number,
+            'created_by': created_by,
+            'follow_by': follow_by,
+            'buyer_company': buyer_company,
+            'status': status,
+            'month': month
+        }
+    }
+
+    return render(request, 'operation/operation_list.html', context)
+
+
+def operation_jobs(request):
+    # Bugünün tarihini al
+    today = datetime.now().date()
+    
+    # Bugünden başlayarak 7 günlük tarih aralığını oluştur
+    date_range = [today + timedelta(days=i) for i in range(7)]
+    
+    # URL'den seçilen tarihi al, yoksa bugünü kullan
+    selected_date_str = request.GET.get('date')
+    if selected_date_str:
+        try:
+            selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+            # Seçilen tarih 7 günlük aralıkta değilse bugünü kullan
+            if selected_date not in date_range:
+                selected_date = today
+        except ValueError:
+            selected_date = today
+    else:
+        selected_date = today
+    
+    # Her gün için operasyon günlerini ve ilişkili verileri al
+    days = OperationDay.objects.filter(
+        date__in=date_range
+    ).select_related(
+        'operation',
+        'operation__created_by',
+        'operation__follow_by',
+        'operation__buyer_company'
+    ).prefetch_related(
+        Prefetch(
+            'items',
+            queryset=OperationItem.objects.select_related(
+                'vehicle_type',
+                'vehicle_supplier',
+                'no_vehicle_tour',
+                'no_vehicle_activity',
+                'activity_supplier'
+            ).prefetch_related(
+                Prefetch(
+                    'subitems',
+                    queryset=OperationSubItem.objects.select_related(
+                        'tour',
+                        'transfer',
+                        'hotel',
+                        'guide',
+                        'activity',
+                        'activity_supplier'
+                    ).prefetch_related('museums')
+                )
+            )
+        )
+    )
+    
+    context = {
+        'date_range': date_range,
+        'days': days,
+        'today': today,
+        'selected_date': selected_date
+    }
+    
+    return render(request, 'operation/operation_jobs.html', context)
+
+def jobs_vehicle_item_update(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    form = OperationItemVehicleForm(instance=item)
+    if request.method == 'POST':
+        form = OperationItemVehicleForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_item.html', {
+                'form': form,
+                'item': item
+            })
+    return render(request, 'operation/forms/jobs_item_form.html', {
+        'form': form,
+        'item': item,
+        'page_title': 'Araç Düzenle',
+        'post_url': reverse('tour:jobs_vehicle_item_update', args=[item.id])
+    })
+
+def jobs_no_vehicle_tour_item_update(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    form = OperationItemNoVehicleTourForm(instance=item)
+    if request.method == 'POST':
+        form = OperationItemNoVehicleTourForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_item.html', {
+                'form': form,
+                'item': item
+            })
+    return render(request, 'operation/forms/jobs_item_form.html', {
+        'form': form,
+        'item': item,
+        'page_title': 'Araçsız Tur Düzenle',
+        'post_url': reverse('tour:jobs_no_vehicle_tour_item_update', args=[item.id])
+    })
+
+def jobs_no_vehicle_activity_item_update(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    form = OperationItemActivityForm(instance=item)
+    if request.method == 'POST':
+        form = OperationItemActivityForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_item.html', {
+                'form': form,
+                'item': item
+            })
+    return render(request, 'operation/forms/jobs_item_form.html', {
+        'form': form,
+        'item': item,
+        'page_title': 'Araçsız Aktivite Düzenle',
+        'post_url': reverse('tour:jobs_no_vehicle_activity_item_update', args=[item.id])
+    })
+
+def jobs_no_vehicle_guide_item_update(request, operation_item_id):
+    item = get_object_or_404(OperationItem, id=operation_item_id)
+    form = OperationItemNoVehicleGuideForm(instance=item)
+    if request.method == 'POST':
+        form = OperationItemNoVehicleGuideForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_item.html', {
+                'form': form,
+                'item': item
+            })
+    return render(request, 'operation/forms/jobs_item_form.html', {
+        'form': form,
+        'item': item,
+        'page_title': 'Araçsız Rehber Düzenle',
+        'post_url': reverse('tour:jobs_no_vehicle_guide_item_update', args=[item.id])
+    })
+
+
+def jobs_sub_item_tour_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    form = OperationSubItemTourForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemTourForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_subitem.html', {
+                'form': form,
+                'subitem': sub_item
+            })
+    return render(request, 'operation/forms/jobs_subitem_form.html', {
+        'form': form,
+        'subitem': sub_item,
+        'page_title': 'Tur Düzenle',
+        'post_url': reverse('tour:jobs_sub_item_tour_update', args=[sub_item.id])
+    })
+
+def jobs_sub_item_transfer_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    form = OperationSubItemTransferForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemTransferForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_subitem.html', {
+                'form': form,
+                'subitem': sub_item
+            })
+    return render(request, 'operation/forms/jobs_subitem_form.html', {
+        'form': form,
+        'subitem': sub_item,
+        'page_title': 'Transfer Düzenle',
+        'post_url': reverse('tour:jobs_sub_item_transfer_update', args=[sub_item.id])
+    })
+
+
+def jobs_sub_item_hotel_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    form = OperationSubItemHotelForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemHotelForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_subitem.html', {
+                'form': form,
+                'subitem': sub_item
+            })
+    return render(request, 'operation/forms/jobs_subitem_form.html', {
+        'form': form,
+        'subitem': sub_item,
+        'page_title': 'Otel Düzenle',
+        'post_url': reverse('tour:jobs_sub_item_hotel_update', args=[sub_item.id])
+    })  
+
+
+
+def jobs_sub_item_activity_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    form = OperationSubItemActivityForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemActivityForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_subitem.html', {
+                'form': form,
+                'subitem': sub_item
+            })
+    return render(request, 'operation/forms/jobs_subitem_form.html', {
+        'form': form,
+        'subitem': sub_item,
+        'page_title': 'Aktivite Düzenle',
+        'post_url': reverse('tour:jobs_sub_item_activity_update', args=[sub_item.id])
+    })
+
+def jobs_sub_item_museum_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    form = OperationSubItemMuseumForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemMuseumForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_subitem.html', {
+                'form': form,
+                'subitem': sub_item
+            })
+    return render(request, 'operation/forms/jobs_subitem_form.html', {
+        'form': form,
+        'subitem': sub_item,
+        'page_title': 'Müzeler Düzenle',
+        'post_url': reverse('tour:jobs_sub_item_museum_update', args=[sub_item.id])
+    })
+
+def jobs_sub_item_guide_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    form = OperationSubItemGuideForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemGuideForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_subitem.html', {
+                'form': form,
+                'subitem': sub_item
+            })
+    return render(request, 'operation/forms/jobs_subitem_form.html', {
+        'form': form,
+        'subitem': sub_item,
+        'page_title': 'Rehber Düzenle',
+        'post_url': reverse('tour:jobs_sub_item_guide_update', args=[sub_item.id])
+    })
+
+
+
+def jobs_sub_item_other_price_update(request, operation_sub_item_id):
+    sub_item = get_object_or_404(OperationSubItem, id=operation_sub_item_id)
+    form = OperationSubItemOtherPriceForm(instance=sub_item)
+    if request.method == 'POST':
+        form = OperationSubItemOtherPriceForm(request.POST, instance=sub_item)
+        if form.is_valid():
+            form.save()
+            return render(request, 'operation/includes/jobs_subitem.html', {
+                'form': form,
+                'subitem': sub_item
+            })
+    return render(request, 'operation/forms/jobs_subitem_form.html', {
+        'form': form,
+        'subitem': sub_item,
+        'page_title': 'Ekstra Masraf Düzenle',
+        'post_url': reverse('tour:jobs_sub_item_other_price_update', args=[sub_item.id])
+    })
+
+
+
+def my_operation_jobs(request):
+    # Bugünün tarihini al
+    today = datetime.now().date()
+    
+    # Bugünden başlayarak 7 günlük tarih aralığını oluştur
+    date_range = [today + timedelta(days=i) for i in range(7)]
+    
+    # URL'den seçilen tarihi al, yoksa bugünü kullan
+    selected_date_str = request.GET.get('date')
+    if selected_date_str:
+        try:
+            selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+            # Seçilen tarih 7 günlük aralıkta değilse bugünü kullan
+            if selected_date not in date_range:
+                selected_date = today
+        except ValueError:
+            selected_date = today
+    else:
+        selected_date = today
+    
+    # Her gün için operasyon günlerini ve ilişkili verileri al
+    days = OperationDay.objects.filter(
+        date__in=date_range, 
+        operation__follow_by=request.user
+    ).select_related(
+        'operation',
+        'operation__created_by',
+        'operation__follow_by',
+        'operation__buyer_company'
+    ).prefetch_related(
+        Prefetch(
+            'items',
+            queryset=OperationItem.objects.select_related(
+                'vehicle_type',
+                'vehicle_supplier',
+                'no_vehicle_tour',
+                'no_vehicle_activity',
+                'activity_supplier'
+            ).prefetch_related(
+                Prefetch(
+                    'subitems',
+                    queryset=OperationSubItem.objects.select_related(
+                        'tour',
+                        'transfer',
+                        'hotel',
+                        'guide',
+                        'activity',
+                        'activity_supplier'
+                    ).prefetch_related('museums')
+                )
+            )
+        )
+    )
+    
+    context = {
+        'date_range': date_range,
+        'days': days,
+        'today': today,
+        'selected_date': selected_date
+    }
+    
+    return render(request, 'operation/operation_jobs.html', context)
+
+

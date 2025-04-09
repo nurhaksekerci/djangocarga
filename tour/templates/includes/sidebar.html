@@ -1,0 +1,94 @@
+<!-- Sidebar -->
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <h3 class="sidebar-text">Menü</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+        <li class="{% if request.path == '/operation/create/' %}active{% endif %}">
+            <a href="{% url 'tour:operation_create' %}">
+                <i class="fas fa-plus sidebar-icon"></i>
+                <span class="sidebar-text">Opeasyon Oluştur</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/operation/list/' %}active{% endif %}">
+            <a href="{% url 'tour:operation_list' %}">
+                <i class="fas fa-list sidebar-icon"></i>
+                <span class="sidebar-text">Operasyonlar</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/operation/jobs/' %}active{% endif %}">
+            <a href="{% url 'tour:operation_jobs' %}">
+                <i class="fas fa-calendar-alt sidebar-icon"></i>
+                <span class="sidebar-text">Operasyon İşleri</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/operation/jobs/my/' %}active{% endif %}">
+            <a href="{% url 'tour:my_operation_jobs' %}">
+                <i class="fas fa-calendar-alt sidebar-icon"></i>
+                <span class="sidebar-text">İşlerim</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/list/NoVehicleTour/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='NoVehicleTour' %}">
+                <i class="fas fa-walking sidebar-icon"></i>
+                <span class="sidebar-text">Yürüyüş Turları</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/list/Tour/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='Tour' %}">
+                <i class="fas fa-map-marker-alt sidebar-icon"></i>
+                <span class="sidebar-text">Turlar</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/list/Transfer/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='Transfer' %}">
+                <i class="fas fa-car sidebar-icon"></i>
+                <span class="sidebar-text">Transfer</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/list/Hotel/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='Hotel' %}">
+                <i class="fas fa-hotel sidebar-icon"></i>
+                <span class="sidebar-text">Otel</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/list/Activity/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='Activity' %}">
+                <i class="fas fa-basketball-ball sidebar-icon"></i>
+                <span class="sidebar-text">Etkinlikler</span>
+            </a>
+        </li>        
+        <li class="{% if request.path == '/list/Museum/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='Museum' %}">
+                <i class="fas fa-building sidebar-icon"></i>
+                <span class="sidebar-text">Müzeler</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/list/Guide/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='Guide' %}">
+                <i class="fas fa-user-tie sidebar-icon"></i>
+                <span class="sidebar-text">Rehberler</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/list/VehicleSupplier/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='VehicleSupplier' %}">
+                <i class="fas fa-car sidebar-icon"></i>
+                <span class="sidebar-text">Araç Tedarikcileri</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/list/ActivitySupplier/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='ActivitySupplier' %}">
+                <i class="fas fa-basketball-ball sidebar-icon"></i>
+                <span class="sidebar-text">Etkinlik Tedarikcileri</span>
+            </a>
+        </li>
+        <hr>
+        <li class="{% if request.path == '/list/VehicleCost/' %}active{% endif %}">
+            <a href="{% url 'tour:list' model='VehicleCost' %}">
+                <i class="fas fa-car sidebar-icon"></i>
+                <span class="sidebar-text">Araç Maliyetleri</span>
+            </a>
+        </li>
+    </ul>
+</nav>

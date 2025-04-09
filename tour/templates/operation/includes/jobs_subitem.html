@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-md">
+        <h6 class="card-title">Sıra</h6>
+        <p class="card-text">{{ subitem.ordering|default:"-"|upper }}</p>
+    </div>
+    {% if subitem.subitem_type == "TOUR" %}
+    <div class="col-md">
+        <h6 class="card-title">Tur</h6>
+        <p class="card-text">{{ subitem.tour|default:"-"|upper }}</p>
+    </div>
+    {% elif subitem.subitem_type == "TRANSFER" %}
+    <div class="col-md">
+        <h6 class="card-title">Transfer</h6>
+        <p class="card-text">{{ subitem.transfer|default:"-"|upper }}</p>
+    </div>
+    {% elif subitem.subitem_type == "ACTIVITY" %}
+    <div class="col-md">
+        <h6 class="card-title">Aktivite</h6>
+        <p class="card-text">{{ subitem.activity|default:"-"|upper }}</p>
+    </div>
+    <div class="col-md">
+        <h6 class="card-title">Aktivite Tedarikçisi</h6>
+        <p class="card-text">{{ subitem.activity_supplier|default:"-"|upper }}</p>
+    </div>
+    {% elif subitem.subitem_type == "GUIDE" %}
+    <div class="col-md">
+        <h6 class="card-title">Rehber</h6>
+        <p class="card-text">{{ subitem.guide|default:"-"|upper }}</p>
+    </div>
+    {% elif subitem.subitem_type == "HOTEL" %}
+    <div class="col-md">
+        <h6 class="card-title">Otel</h6>
+        <p class="card-text">{{ subitem.hotel|default:"-"|upper }}</p>
+    </div>
+    <div class="col-md">
+        <h6 class="card-title">Oda Türü</h6>
+        <p class="card-text">{{ subitem.room_type|default:"-"|upper }}</p>
+    </div>
+    {% elif subitem.subitem_type == "MUSEUM" %}
+    <div class="col-md">
+        <h6 class="card-title">Müzeler</h6>
+        <p class="card-text">{{ subitem.museums.all|join:", "|default:"-"|upper }}</p>
+    </div>
+    {% elif subitem.subitem_type == "OTHER_PRICE" %}
+    <div class="col-md">
+        <h6 class="card-title">Ekstra Masraflar</h6>
+        <p class="card-text">{{ subitem.other_price_description|default:"-"|upper }}</p>
+    </div>
+    {% endif %}
+    <div class="col-md">
+        <h6 class="card-title">Maliyet</h6>
+        <p class="card-text">{{ subitem.cost_price|default:"-"|upper }} {{ subitem.cost_currency|default:"-"|upper }}</p>
+    </div>
+    <div class="col-md">
+        <h6 class="card-title">Satış Fiyatı</h6>
+        <p class="card-text">{{ subitem.sales_price|default:"-"|upper }} {{ subitem.sales_currency|default:"-"|upper }}</p>
+    </div>
+    <div class="col-md">
+        <h6 class="card-title">Notlar</h6>
+        <p class="card-text">{{ subitem.notes|default:"-"|upper }}</p>
+    </div>
+</div>

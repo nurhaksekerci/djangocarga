@@ -1,0 +1,28 @@
+{% load custom_filters %}
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">{{ page_title }}</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" hx-post={{ post_url }} hx-target="#operation-container" hx-swap="innerHTML">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for field in form %}
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {{ field|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Kaydet</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

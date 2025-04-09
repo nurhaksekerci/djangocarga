@@ -1,0 +1,85 @@
+{% comment %}
+Bu şablon, generic.html içinde kullanılacak form şablonudur.
+Kullanım örneği:
+{% include 'generic/generic_form.html' with form=form %}
+{% endcomment %}
+
+{% load custom_filters %}
+<div id="form-container">
+    <form method="post" enctype="multipart/form-data" hx-post="{{ request.path }}" hx-target="#form-container" hx-swap="outerHTML">
+        {% csrf_token %}
+        <div class="row">
+            {% for field in form %}
+            <div class="col-md-3 mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                    <span class="text-danger">*</span>
+                    {% endif %}
+                </label>
+                
+                {% if field.field.widget.input_type == 'checkbox' %}
+                <div class="form-check">
+                    {{ field|add_class:"form-check-input" }}
+                    <label class="form-check-label" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                </div>
+                {% elif field.field.widget.input_type == 'radio' %}
+                <div class="form-check">
+                    {{ field|add_class:"form-check-input" }}
+                </div>
+                {% elif field.field.widget.input_type == 'select' %}
+                {{ field|add_class:"form-select" }}
+                {% else %}
+                {{ field|add_class:"form-control" }}
+                {% endif %}
+                
+                {% if field.help_text %}
+                <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+                
+                {% if field.errors %}
+                <div class="invalid-feedback d-block">
+                    {% for error in field.errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i>Kaydet
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                    <i class="fas fa-undo me-1"></i>Sıfırla
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    // Form doğrulama için Bootstrap kodu
+    (function() {
+        'use strict';
+        
+        // Tüm formları seç
+        var forms = document.querySelectorAll('.needs-validation');
+        
+        // Her form için doğrulama ekle
+        Array.prototype.slice.call(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Operasyon{% endblock %}
+
+{% block extra_css %}{% endblock %}
+{% block content %}
+
+<div class="container-fluid" id="operation-container">
+    {% include "operation/includes/operation_detail.html" %}
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

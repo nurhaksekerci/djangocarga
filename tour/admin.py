@@ -190,3 +190,93 @@ class OperationSubItemAdmin(admin.ModelAdmin):
     list_filter = ('is_active', 'subitem_type', 'operation_item__item_type')
     search_fields = ('operation_item__operation_day__operation__reference_number', 'notes')
     filter_horizontal = ('museums',)
+
+
+
+#comment
+
+
+
+
+# def operation_day_create(request, operation_id):
+#     operation = get_object_or_404(Operation, id=operation_id)
+#     days = OperationDay.objects.filter(operation=operation)
+#     items = OperationItem.objects.filter(operation_day__in=days)
+#     sub_items = OperationSubItem.objects.filter(operation_item__in=items)
+#     vehicle_form = OperationItemVehicleForm()
+#     no_vehicle_tour_form = OperationItemNoVehicleTourForm()
+#     no_vehicle_activity_form = OperationItemActivityForm()
+#     no_vehicle_guide_form = OperationItemNoVehicleGuideForm()
+#     sub_item_tour_form = OperationSubItemTourForm()
+#     sub_item_transfer_form = OperationSubItemTransferForm()
+#     sub_item_hotel_form = OperationSubItemHotelForm()
+#     sub_item_museum_form = OperationSubItemMuseumForm()
+#     sub_item_activity_form = OperationSubItemActivityForm()
+#     sub_item_guide_form = OperationSubItemGuideForm()
+#     sub_item_other_price_form = OperationSubItemOtherPriceForm()
+#     update_sub_item_tour_form_list = []
+#     update_sub_item_transfer_form_list = []
+#     update_sub_item_hotel_form_list = []
+#     update_sub_item_museum_form_list = []
+#     update_sub_item_activity_form_list = []
+#     update_sub_item_guide_form_list = []
+#     update_sub_item_other_price_form_list = []
+#     update_item_vehicle_form_list = []
+#     update_item_no_vehicle_tour_form_list = []
+#     update_item_no_vehicle_activity_form_list = []
+#     update_item_no_vehicle_guide_form_list = []
+
+#     for item in items:
+#         if item.item_type == 'VEHICLE':
+#             update_item_vehicle_form_list.append(OperationItemVehicleForm(instance=item))
+#         elif item.item_type == 'NO_VEHICLE_TOUR':
+#             update_item_no_vehicle_tour_form_list.append(OperationItemNoVehicleTourForm(instance=item))
+#         elif item.item_type == 'NO_VEHICLE_ACTIVITY':
+#             update_item_no_vehicle_activity_form_list.append(OperationItemActivityForm(instance=item))
+#         elif item.item_type == 'NO_VEHICLE_GUIDE':
+#             update_item_no_vehicle_guide_form_list.append(OperationItemNoVehicleGuideForm(instance=item))
+#     for sub_item in sub_items:
+#         if sub_item.subitem_type == 'TOUR':
+#             update_sub_item_tour_form_list.append(OperationSubItemTourForm(instance=sub_item))
+#         elif sub_item.subitem_type == 'TRANSFER':
+#             update_sub_item_transfer_form_list.append(OperationSubItemTransferForm(instance=sub_item))
+#         elif sub_item.subitem_type == 'HOTEL':
+#             update_sub_item_hotel_form_list.append(OperationSubItemHotelForm(instance=sub_item))
+#         elif sub_item.subitem_type == 'MUSEUM':
+#             update_sub_item_museum_form_list.append(OperationSubItemMuseumForm(instance=sub_item))
+#         elif sub_item.subitem_type == 'ACTIVITY':
+#             update_sub_item_activity_form_list.append(OperationSubItemActivityForm(instance=sub_item))
+#         elif sub_item.subitem_type == 'GUIDE':
+#             update_sub_item_guide_form_list.append(OperationSubItemGuideForm(instance=sub_item))
+#         elif sub_item.subitem_type == 'OTHER_PRICE':
+#             update_sub_item_other_price_form_list.append(OperationSubItemOtherPriceForm(instance=sub_item))
+
+#     context = {
+#         'operation': operation,
+#         'days': days,
+#         'items': items,
+#         'sub_items': sub_items,
+#         'vehicle_form': vehicle_form,
+#         'no_vehicle_tour_form': no_vehicle_tour_form,
+#         'no_vehicle_activity_form': no_vehicle_activity_form,
+#         'no_vehicle_guide_form': no_vehicle_guide_form,
+#         'sub_item_tour_form': sub_item_tour_form,
+#         'sub_item_transfer_form': sub_item_transfer_form,
+#         'sub_item_hotel_form': sub_item_hotel_form,
+#         'sub_item_museum_form': sub_item_museum_form,
+#         'sub_item_activity_form': sub_item_activity_form,
+#         'sub_item_guide_form': sub_item_guide_form,
+#         'sub_item_other_price_form': sub_item_other_price_form,
+#         'update_sub_item_tour_form_list': update_sub_item_tour_form_list,
+#         'update_sub_item_transfer_form_list': update_sub_item_transfer_form_list,
+#         'update_sub_item_hotel_form_list': update_sub_item_hotel_form_list,
+#         'update_sub_item_museum_form_list': update_sub_item_museum_form_list,
+#         'update_sub_item_activity_form_list': update_sub_item_activity_form_list,
+#         'update_sub_item_guide_form_list': update_sub_item_guide_form_list,
+#         'update_sub_item_other_price_form_list': update_sub_item_other_price_form_list,
+#         'update_item_vehicle_form_list': update_item_vehicle_form_list,
+#         'update_item_no_vehicle_tour_form_list': update_item_no_vehicle_tour_form_list,
+#         'update_item_no_vehicle_activity_form_list': update_item_no_vehicle_activity_form_list,
+#         'update_item_no_vehicle_guide_form_list': update_item_no_vehicle_guide_form_list,
+#     }
+#     return render(request, 'operation/operation_day_create.html', context)

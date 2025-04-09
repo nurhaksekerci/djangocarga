@@ -1,0 +1,74 @@
+{% comment %}
+Bu şablon, generic.html içinde kullanılacak tablo şablonudur.
+Kullanım örneği:
+{% include 'generic/generic_table.html' with objects=objects fields=fields detail_url=detail_url update_url=update_url delete_url=delete_url %}
+{% endcomment %}
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                {% for field in fields %}
+                <th>{{ field.verbose_name }}</th>
+                {% endfor %}
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if objects %}
+                {% for object in objects %}
+                    {% include 'generic/generic_tr.html' with object=object fields=fields detail_url=detail_url update_url=update_url delete_url=delete_url %}
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="{{ fields|length|add:1 }}" class="text-center py-4">
+                        <i class="fas fa-info-circle text-muted me-2"></i>
+                        Kayıt bulunamadı.
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% if objects.has_other_pages %}
+<nav aria-label="Sayfalama" class="mt-3">
+    <ul class="pagination justify-content-center">
+        {% if objects.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ objects.previous_page_number }}" hx-get="?page={{ objects.previous_page_number }}" hx-target="#table-container" hx-push-url="true">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link"><i class="fas fa-chevron-left"></i></span>
+        </li>
+        {% endif %}
+        
+        {% for num in objects.paginator.page_range %}
+            {% if objects.number == num %}
+            <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+            </li>
+            {% elif num > objects.number|add:'-3' and num < objects.number|add:'3' %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ num }}" hx-get="?page={{ num }}" hx-target="#table-container" hx-push-url="true">{{ num }}</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if objects.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ objects.next_page_number }}" hx-get="?page={{ objects.next_page_number }}" hx-target="#table-container" hx-push-url="true">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link"><i class="fas fa-chevron-right"></i></span>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}

@@ -28,11 +28,10 @@ def contains(value, arg):
 @register.filter
 def get_item(dictionary, key):
     """
-    Dictionary'den key ile değer almak için kullanılan özel template filtresi
+    Sözlükten anahtar kullanarak değer almak için özel filtre
+    Kullanım: {{ dictionary|get_item:key }}
     """
-    if dictionary is None:
-        return []
-    return dictionary.get(key, [])
+    return dictionary.get(key)
 
 @register.filter
 def add_days(date, days):
@@ -44,3 +43,22 @@ def add_days(date, days):
 def add_class(field, class_name):
     """Verilen alana belirtilen sınıfı ekler"""
     return field.as_widget(attrs={'class': class_name})
+
+@register.filter
+def getattr_filter(obj, attr):
+    """
+    Bir nesnenin belirtilen özelliğini döndüren template filtresi.
+    Kullanım: {{ object|getattr:'field_name' }}
+    """
+    try:
+        return getattr(obj, attr)
+    except (AttributeError, TypeError):
+        return None
+
+@register.filter
+def filter_by_date(days, date):
+    """
+    Belirli bir tarihe ait operasyon günlerini filtreler
+    Kullanım: {{ days|filter_by_date:date }}
+    """
+    return [day for day in days if day.date == date]

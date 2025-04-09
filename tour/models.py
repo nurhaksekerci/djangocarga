@@ -332,11 +332,11 @@ class VehicleCost(models.Model):
     supplier = models.ForeignKey(VehicleSupplier, verbose_name=_("Supplier"), on_delete=models.CASCADE)
     tour = models.ForeignKey(Tour, verbose_name=_("Tour"), on_delete=models.CASCADE, null=True, blank=True)
     transfer = models.ForeignKey(Transfer, verbose_name=_("Transfer"), on_delete=models.CASCADE, null=True, blank=True)
-    car_cost = models.DecimalField(verbose_name=_("Car Cost"), max_digits=10, decimal_places=2)
-    minivan_cost = models.DecimalField(verbose_name=_("Minivan Cost"), max_digits=10, decimal_places=2)
-    minibus_cost = models.DecimalField(verbose_name=_("Minibus Cost"), max_digits=10, decimal_places=2)
-    midibus_cost = models.DecimalField(verbose_name=_("Midibus Cost"), max_digits=10, decimal_places=2)
-    bus_cost = models.DecimalField(verbose_name=_("Bus Cost"), max_digits=10, decimal_places=2)
+    car_cost = models.DecimalField(verbose_name=_("Car Cost"), max_digits=10, decimal_places=2, null=True, blank=True)
+    minivan_cost = models.DecimalField(verbose_name=_("Minivan Cost"), max_digits=10, decimal_places=2, null=True, blank=True)
+    minibus_cost = models.DecimalField(verbose_name=_("Minibus Cost"), max_digits=10, decimal_places=2, null=True, blank=True)
+    midibus_cost = models.DecimalField(verbose_name=_("Midibus Cost"), max_digits=10, decimal_places=2, null=True, blank=True)
+    bus_cost = models.DecimalField(verbose_name=_("Bus Cost"), max_digits=10, decimal_places=2, null=True, blank=True)
     currency = models.ForeignKey(
         Currency, 
         verbose_name=_("Currency"), 
@@ -580,6 +580,18 @@ class Operation(models.Model):
     def __str__(self):
         return f"{self.reference_number} - {self.buyer_company.name} (Follow by: {self.follow_by.get_full_name()})"
 
+    def get_status_color(self):
+        """
+        Durum rengini döndürür
+        """
+        status_colors = {
+            'PENDING': 'warning',
+            'IN_PROGRESS': 'info',
+            'COMPLETED': 'success',
+            'CANCELLED': 'danger',
+        }
+        return status_colors.get(self.status, 'secondary')
+
     class Meta:
         verbose_name = _("Operation")
         verbose_name_plural = _("Operations")
@@ -673,11 +685,13 @@ class OperationItem(models.Model):
     VEHICLE = 'VEHICLE'
     NO_VEHICLE_TOUR = 'NO_VEHICLE_TOUR'
     NO_VEHICLE_ACTIVITY = 'NO_VEHICLE_ACTIVITY'
+    NO_VEHICLE_GUIDE = 'NO_VEHICLE_GUIDE'
 
     ITEM_TYPE_CHOICES = [
         (VEHICLE, 'Araçlı'),
         (NO_VEHICLE_TOUR, 'Araçsız Tur'),
         (NO_VEHICLE_ACTIVITY, 'Araçsız Aktivite'),
+        (NO_VEHICLE_GUIDE, 'Araçsız Rehber'),
     ]
 
     operation_day = models.ForeignKey(OperationDay, verbose_name="Operation Day", on_delete=models.CASCADE, related_name='items')
@@ -703,6 +717,9 @@ class OperationItem(models.Model):
     no_vehicle_activity = models.ForeignKey(Activity, verbose_name="No Vehicle Activity", on_delete=models.PROTECT, null=True, blank=True)
     activity_supplier = models.ForeignKey(ActivitySupplier, verbose_name="Activity Supplier", on_delete=models.PROTECT, null=True, blank=True)
     activity_cost = models.ForeignKey(ActivityCost, verbose_name="Activity Cost", on_delete=models.CASCADE, null=True, blank=True)
+
+    #seçim araçsız rehber ise
+    no_vehicle_guide = models.ForeignKey(Guide, verbose_name="No Vehicle Guide", on_delete=models.PROTECT, null=True, blank=True)
 
     #ortak alanlar 2
     notes = models.TextField(verbose_name="Notes", null=True, blank=True)
@@ -760,7 +777,6 @@ class OperationSubItem(models.Model):
     hotel = models.ForeignKey(Hotel, verbose_name="Hotel", on_delete=models.PROTECT, null=True, blank=True)
     room_type = models.CharField(verbose_name="Room Type", max_length=20, choices=ROOM_TYPE_CHOICES, null=True, blank=True)
 
-    is_guide = models.BooleanField(verbose_name="Is Guide", default=False)
     guide = models.ForeignKey(Guide, verbose_name="Guide", on_delete=models.PROTECT, null=True, blank=True)
 
     activity = models.ForeignKey(Activity, verbose_name="Activity", on_delete=models.PROTECT, null=True, blank=True)

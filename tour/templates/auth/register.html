@@ -1,0 +1,70 @@
+{% extends 'login_base.html' %}
+
+{% block title %}Kayıt Ol - Django Carga{% endblock %}
+
+{% block content %}
+<div class="card-body">
+    <h4 class="card-title text-center mb-4">Kayıt Ol</h4>
+    
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="username" class="form-label">Kullanıcı Adı</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <input type="text" class="form-control" id="username" name="username" required autofocus>
+            </div>
+            <div class="form-text">Kullanıcı adınız benzersiz olmalıdır.</div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="email" class="form-label">E-posta Adresi</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="password1" class="form-label">Şifre</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" class="form-control" id="password1" name="password1" required>
+            </div>
+            <div class="form-text">Şifreniz en az 8 karakter uzunluğunda olmalıdır.</div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="password2" class="form-label">Şifre (Tekrar)</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" class="form-control" id="password2" name="password2" required>
+            </div>
+        </div>
+        
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+            <label class="form-check-label" for="terms">
+                <a href="#" class="text-decoration-none">Kullanım Koşulları</a>'nı ve 
+                <a href="#" class="text-decoration-none">Gizlilik Politikası</a>'nı kabul ediyorum
+            </label>
+        </div>
+        
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-user-plus me-2"></i>Kayıt Ol
+            </button>
+        </div>
+    </form>
+    
+    <hr class="my-4">
+    
+    <div class="text-center">
+        <p class="mb-0">Zaten hesabınız var mı?</p>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary mt-2">
+            <i class="fas fa-sign-in-alt me-2"></i>Giriş Yap
+        </a>
+    </div>
+</div>
+{% endblock %} 
